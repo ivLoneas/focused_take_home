@@ -1,0 +1,120 @@
+{
+  "as_of": "2026-10-30",
+  "total_documents": 1129,
+  "total_bytes": 1821882056,
+  "formats": {
+    "xlsx": 80,
+    "pdf": 918,
+    "html": 128,
+    "docx": 2,
+    "pptx": 1
+  },
+  "company_summaries": [
+    {
+      "company": "adobe",
+      "documents": 23,
+      "quarters": 23,
+      "bytes": 3415306
+    },
+    {
+      "company": "airbnb",
+      "documents": 66,
+      "quarters": 22,
+      "bytes": 188187251
+    },
+    {
+      "company": "alphabet",
+      "documents": 51,
+      "quarters": 23,
+      "bytes": 34643948
+    },
+    {
+      "company": "amazon",
+      "documents": 69,
+      "quarters": 23,
+      "bytes": 30857431
+    },
+    {
+      "company": "amd",
+      "documents": 88,
+      "quarters": 22,
+      "bytes": 52320945
+    },
+    {
+      "company": "apple",
+      "documents": 69,
+      "quarters": 23,
+      "bytes": 81433337
+    },
+    {
+      "company": "intel",
+      "documents": 95,
+      "quarters": 23,
+      "bytes": 134046552
+    },
+    {
+      "company": "meta",
+      "documents": 118,
+      "quarters": 23,
+      "bytes": 63779291
+    },
+    {
+      "company": "microsoft",
+      "documents": 28,
+      "quarters": 24,
+      "bytes": 17603410
+    },
+    {
+      "company": "netflix",
+      "documents": 69,
+      "quarters": 23,
+      "bytes": 24755499
+    },
+    {
+      "company": "nvidia",
+      "documents": 125,
+      "quarters": 24,
+      "bytes": 191465058
+    },
+    {
+      "company": "oracle",
+      "documents": 120,
+      "quarters": 24,
+      "bytes": 111447540
+    },
+    {
+      "company": "salesforce",
+      "documents": 96,
+      "quarters": 24,
+      "bytes": 449891997
+    },
+    {
+      "company": "tesla",
+      "documents": 23,
+      "quarters": 23,
+      "bytes": 171111114
+    },
+    {
+      "company": "uber",
+      "documents": 89,
+      "quarters": 22,
+      "bytes": 266923377
+    }
+  ],
+  "covered_quarters": 346,
+  "not_yet_available_quarters": 14,
+  "missing_quarters": [],
+  "roles": {
+    "supporting_document": 601,
+    "earnings_report": 347,
+    "regulatory_filing": 181
+  },
+  "failed_download_attempts": 39,
+  "total_pdf_pages": 28564,
+  "total_gb": 1.821882,
+  "total_gib": 1.69676,
+  "validation_errors": [],
+  "document_counts_exclude_metadata": true,
+  "unique_content_documents": 1129,
+  "raw_directory_total_bytes_including_metadata": 1827843941
+}
