@@ -1,7 +1,43 @@
 [project]
 name = "focused"
 version = "0.1.0"
-description = "Add your description here"
+description = "Hierarchy-aware financial report retrieval pipeline"
 readme = "README.md"
-requires-python = ">=3.13"
-dependencies = []
+requires-python = ">=3.14,<3.15"
+dependencies = [
+    "docling[vlm]>=2.145.0",
+    "fastapi>=0.121.0",
+    "langchain[openai]>=1.4.7",
+    "langgraph>=1.2.19",
+    "langsmith>=0.14.16",
+    "openai>=3.42.0",
+    "pgvector>=0.5.1",
+    "psycopg[binary]>=3.3.6",
+    "pydantic-settings>=2.12.0",
+    "torch>=2.15.0",
+    "torchvision>=0.20.0",
+    "uvicorn[standard]>=0.38.0",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.2.0",
+    "ruff>=0.17.3",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+
+[tool.ruff]
+target-version = "py314"
+line-length = 120
+
+[tool.uv.sources]
+torch = [{ index = "pytorch-cpu", marker = "sys_platform == 'linux'" }]
+torchvision = [{ index = "pytorch-cpu", marker = "sys_platform == 'linux'" }]
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true

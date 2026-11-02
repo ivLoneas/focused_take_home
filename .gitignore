@@ -8,3 +8,14 @@ wheels/
 
 # Virtual environments
 .venv
+
+# Local credentials and reproducible ETL outputs
+.env
+.env.*
+!.env.example
+data/silver/
+data/gold/
+data/etl_runs/
+.cache/
+.pytest_cache/
+.ruff_cache/

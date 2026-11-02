@@ -1,120 +1,183 @@
 {
-  "as_of": "2026-10-30",
-  "total_documents": 1129,
-  "total_bytes": 1821882056,
-  "formats": {
-    "xlsx": 80,
-    "pdf": 918,
-    "html": 128,
-    "docx": 2,
-    "pptx": 1
+  "as_of": "2026-10-31",
+  "fiscal_years": [
+    2022,
+    2023,
+    2024,
+    2025,
+    2026
+  ],
+  "companies": [
+    "adobe",
+    "airbnb",
+    "alphabet",
+    "amazon",
+    "amd",
+    "apple",
+    "intel",
+    "meta",
+    "microsoft",
+    "netflix",
+    "nvidia",
+    "oracle",
+    "salesforce",
+    "tesla",
+    "uber"
+  ],
+  "total_pdfs": 799,
+  "total_bytes": 1590581590,
+  "total_pages": 27563,
+  "total_mb": 1590.58159,
+  "total_mib": 1516.8968105316162,
+  "total_gb": 1.59058159,
+  "total_gib": 1.4813445415347815,
+  "annual_reports": {
+    "documents": 66,
+    "bytes": 206210587,
+    "pages": 8532
+  },
+  "annual_company_years": 64,
+  "quarterly_and_supporting_documents": {
+    "documents": 733,
+    "bytes": 1384371003,
+    "pages": 19031
   },
   "company_summaries": [
     {
       "company": "adobe",
       "documents": 23,
-      "quarters": 23,
-      "bytes": 3415306
+      "bytes": 5414218,
+      "pages": 559
     },
     {
       "company": "airbnb",
-      "documents": 66,
-      "quarters": 22,
-      "bytes": 188187251
+      "documents": 54,
+      "bytes": 170898851,
+      "pages": 2471
     },
     {
       "company": "alphabet",
-      "documents": 51,
-      "quarters": 23,
-      "bytes": 34643948
+      "documents": 47,
+      "bytes": 34228998,
+      "pages": 1675
     },
     {
       "company": "amazon",
-      "documents": 69,
-      "quarters": 23,
-      "bytes": 30857431
+      "documents": 57,
+      "bytes": 26191204,
+      "pages": 2632
     },
     {
       "company": "amd",
-      "documents": 88,
-      "quarters": 22,
-      "bytes": 52320945
+      "documents": 40,
+      "bytes": 56039532,
+      "pages": 1268
     },
     {
       "company": "apple",
-      "documents": 69,
-      "quarters": 23,
-      "bytes": 81433337
+      "documents": 38,
+      "bytes": 72246403,
+      "pages": 905
     },
     {
       "company": "intel",
-      "documents": 95,
-      "quarters": 23,
-      "bytes": 134046552
+      "documents": 73,
+      "bytes": 114207712,
+      "pages": 1302
     },
     {
       "company": "meta",
-      "documents": 118,
-      "quarters": 23,
-      "bytes": 63779291
+      "documents": 95,
+      "bytes": 54692085,
+      "pages": 3502
     },
     {
       "company": "microsoft",
-      "documents": 28,
-      "quarters": 24,
-      "bytes": 17603410
+      "documents": 5,
+      "bytes": 10696790,
+      "pages": 682
     },
     {
       "company": "netflix",
-      "documents": 69,
-      "quarters": 23,
-      "bytes": 24755499
+      "documents": 42,
+      "bytes": 24431540,
+      "pages": 967
     },
     {
       "company": "nvidia",
-      "documents": 125,
-      "quarters": 24,
-      "bytes": 191465058
+      "documents": 85,
+      "bytes": 158780667,
+      "pages": 2589
     },
     {
       "company": "oracle",
-      "documents": 120,
-      "quarters": 24,
-      "bytes": 111447540
+      "documents": 61,
+      "bytes": 76130970,
+      "pages": 2234
     },
     {
       "company": "salesforce",
-      "documents": 96,
-      "quarters": 24,
-      "bytes": 449891997
+      "documents": 80,
+      "bytes": 376681225,
+      "pages": 3723
     },
     {
       "company": "tesla",
       "documents": 23,
-      "quarters": 23,
-      "bytes": 171111114
+      "bytes": 152945494,
+      "pages": 1252
     },
     {
       "company": "uber",
-      "documents": 89,
-      "quarters": 22,
-      "bytes": 266923377
+      "documents": 76,
+      "bytes": 256995901,
+      "pages": 1802
     }
   ],
-  "covered_quarters": 346,
-  "not_yet_available_quarters": 14,
-  "missing_quarters": [],
-  "roles": {
-    "supporting_document": 601,
-    "earnings_report": 347,
-    "regulatory_filing": 181
+  "year_summaries": [
+    {
+      "fiscal_year": 2022,
+      "documents": 164,
+      "bytes": 270390073,
+      "pages": 6162
+    },
+    {
+      "fiscal_year": 2023,
+      "documents": 170,
+      "bytes": 288414617,
+      "pages": 5920
+    },
+    {
+      "fiscal_year": 2024,
+      "documents": 168,
+      "bytes": 367856401,
+      "pages": 5760
+    },
+    {
+      "fiscal_year": 2025,
+      "documents": 168,
+      "bytes": 436409569,
+      "pages": 5524
+    },
+    {
+      "fiscal_year": 2026,
+      "documents": 129,
+      "bytes": 227510930,
+      "pages": 4197
+    }
+  ],
+  "report_types": {
+    "earnings_report": 206,
+    "annual_report": 66,
+    "supporting_document": 408,
+    "regulatory_filing": 119
   },
-  "failed_download_attempts": 39,
-  "total_pdf_pages": 28564,
-  "total_gb": 1.821882,
-  "total_gib": 1.69676,
-  "validation_errors": [],
-  "document_counts_exclude_metadata": true,
-  "unique_content_documents": 1129,
-  "raw_directory_total_bytes_including_metadata": 1827843941
+  "unique_sha256": 799,
+  "mean_pages": 34.49687108886108,
+  "median_pages": 17,
+  "largest_pdf": "salesforce/2025/Q4/earnings-presentation--84004dfbad.pdf",
+  "longest_pdf": "amazon/2026/Q3/10-q--696f280fd9.pdf",
+  "failed_downloads": 0,
+  "validation": "Every PDF: header, byte size, SHA-256, pypdf page tree, and independent Poppler pdfinfo page count.",
+  "document_totals_exclude_metadata": true
 }

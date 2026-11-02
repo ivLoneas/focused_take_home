@@ -35,28 +35,29 @@ It is a rag based system with a simple agentic workflow. We focus on eval driven
 
 **Data**
 
-see `data` directory. `data/raw` contains downloaded pdfs of reports. These is ground truth dataset we are only working it. No additional data scraping or data sourcing is required for the sake of simplicity and limitations of take-home excersize.
+See `data/AGENTS.md` for the source-data contract. `data/raw` is the complete immutable ground-truth archive: 799 downloaded PDFs from 15 companies covering fiscal years 2022 to 2026 where available. Year 2026 is incomplete. No additional data scraping or sourcing is part of ETL, retrieval, or evaluation.
 
+`data/active_manifest.csv` pins the baseline retrieval and positive-evaluation corpus to 100 PDFs: the newest 20 reports for each of Alphabet, Amazon, Apple, Meta, and Netflix. Code must not infer a different active corpus from the contents of `data/raw`.
 
 **Daga processing**
 
-It has to be extracted to text using Pdf2md hierarchy aware tool. Than chancked and vectorized in postgres pgvector.
-
-**PDF2vectors**
-
-the following ETL workflow will be used for baseline. 
-Extract hierarchical data from pdf using docling as it returns good results 
-according to this paper: https://arxiv.org/pdf/2604.04948
-If it does not work by default with images we really need to make textual annotations to make them trackable in rag. 
-
-Then chunk it up to 1000 characters with overlap 200 (industry standard + used in the paper above). 
-Then Generate embedding using openai embedding model.
-
-Store in pg vector. 
+It has to be extracted to text using Pdf2md hierarchy aware tool. Than chunked and vectorized in postgres pgvector.
 
 **Baseline architecture** 
 See `baseline.png` for more details. 
 Agent should be implemented using langchain. 
 
-** Tracing and trajectories** 
-a solution should be able to track agent usage. 
+**Tracing and trajectories** 
+
+All agents must use LangSmith tracing. A trace must cover the complete agent invocation and preserve nested model calls,
+tool calls, and retrievals so their inputs, outputs, errors, latency, token usage, and execution order can be monitored.
+Implement custom model, tool, and retrieval boundaries with LangChain/LangGraph traceable interfaces (or explicit
+LangSmith instrumentation) rather than untraced calls. Keep credentials out of trace metadata and fail clearly when
+tracing is enabled without valid LangSmith configuration.
+
+**Code style** 
+
+Follow the KISS Principle. DO not add extra abstractions when it is not necessary 
+Follow Testing driven development when writing code and implementing systems: write tests first using pytest library. 
+Test should cover happy paths, edge cases, invalid inputs. Then implement a system. Test sets should be written by 
+an independent subagent. 

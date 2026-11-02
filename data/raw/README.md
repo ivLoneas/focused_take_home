@@ -1,103 +1,86 @@
-# Quarterly technology-company earnings collection
+# FAANG+ financial-report PDF collection
 
-Snapshot date: **30 October 2026**.
+Snapshot: **2026-10-31**. Fiscal years **2022–2026**, where available.
 
-**1,129 original documents; 1,821,882,056 bytes (1.822 GB / 1.697 GiB); 346 company-quarters across 15 companies.**
+**799 PDFs · 27,563 pages · 1,590,581,590 bytes (1.591 GB / 1.481 GiB).**
 
-## Scope and dates
+This README describes the complete Bronze archive. See [`data/AGENTS.md`](../AGENTS.md) for the source-data contract and [`data/active_manifest.csv`](../active_manifest.csv) for the pinned 100-document retrieval corpus.
 
-FAANG (Meta/Facebook, Apple, Amazon, Netflix, Alphabet/Google), plus Microsoft, NVIDIA, Tesla, Uber, AMD, Intel, Adobe, Salesforce, Oracle, and Airbnb.
+## Scope
 
-Folders use each company's **fiscal year and fiscal quarter**, for fiscal years 2021–2026. Fiscal and calendar years differ for several companies: a fiscal 2021 quarter may have ended in calendar 2020. Fiscal 2027 results are outside this collection, even when published in calendar 2026. Q4/full-year earnings releases are included. Only reports already published by the snapshot date are available.
+15 companies: FAANG (Meta, Apple, Amazon, Netflix, Alphabet), plus Microsoft, NVIDIA, Tesla, Uber, AMD, Intel, Adobe, Salesforce, Oracle and Airbnb. This is a practical technology-company selection, not the membership of a particular FAANG+ index or a Fortune 100 ranking.
 
-The collection contains earnings releases/shareholder letters, financial statements/tables, presentations, prepared remarks, transcripts, and regulatory filings linked from quarterly earnings archives. It preserves the downloaded bytes; HTML is saved as HTML rather than converted to PDF. Audio, video, webcast landing pages, and unrelated proxy statements are excluded. PDFs are preferred when the archive also links a redundant HTML earnings release or filing.
+Includes **66 annual reports / Forms 10-K covering 64 company-years**, plus **733 quarterly filings, earnings releases, shareholder letters, presentations, financial tables and earnings-call materials**. Counts are PDF files, not distinct reporting periods. Alphabet has both an annual-report edition and a standalone 10-K for some years; these overlap in content but are distinct PDFs. Annual filings can contain exhibits. Original PDF bytes are preserved; no HTML or Office documents were converted to PDF.
+
+Fiscal-year labels follow the issuer, not the publication date. For example, NVIDIA FY2026 ended January 25, 2026. Calendar-2026 publications labelled FY2027 are outside the requested fiscal-year range. A 2026 proxy does not count as a FY2026 annual financial report.
 
 ## Company totals
 
-| Company | Reported quarters | Documents | MB (decimal) |
+| Company | PDFs | Pages | MB (decimal) | Annual fiscal years downloaded |
+|---|---:|---:|---:|---|
+| adobe | 23 | 559 | 5.41 | 2022, 2023, 2024, 2025 |
+| airbnb | 54 | 2,471 | 170.90 | 2022, 2023, 2024, 2025 |
+| alphabet | 47 | 1,675 | 34.23 | 2022, 2023, 2024, 2025 |
+| amazon | 57 | 2,632 | 26.19 | 2022, 2023, 2024, 2025 |
+| amd | 40 | 1,268 | 56.04 | 2022, 2023, 2024, 2025 |
+| apple | 38 | 905 | 72.25 | 2022, 2023, 2024, 2025 |
+| intel | 73 | 1,302 | 114.21 | 2022, 2023, 2024, 2025 |
+| meta | 95 | 3,502 | 54.69 | 2022, 2023, 2024, 2025 |
+| microsoft | 5 | 682 | 10.70 | 2022, 2023, 2024, 2025, 2026 |
+| netflix | 42 | 967 | 24.43 | 2022, 2023, 2024, 2025 |
+| nvidia | 85 | 2,589 | 158.78 | 2022, 2023, 2024, 2025, 2026 |
+| oracle | 61 | 2,234 | 76.13 | 2022, 2023, 2024, 2025, 2026 |
+| salesforce | 80 | 3,723 | 376.68 | 2022, 2023, 2024, 2025, 2026 |
+| tesla | 23 | 1,252 | 152.95 | 2022, 2023, 2024, 2025 |
+| uber | 76 | 1,802 | 257.00 | 2022, 2023, 2024, 2025 |
+
+## Fiscal-year totals
+
+| Fiscal year | PDFs | Pages | MB (decimal) |
 |---|---:|---:|---:|
-| adobe | 23 | 23 | 3.42 |
-| airbnb | 22 | 66 | 188.19 |
-| alphabet | 23 | 51 | 34.64 |
-| amazon | 23 | 69 | 30.86 |
-| amd | 22 | 88 | 52.32 |
-| apple | 23 | 69 | 81.43 |
-| intel | 23 | 95 | 134.05 |
-| meta | 23 | 118 | 63.78 |
-| microsoft | 24 | 28 | 17.60 |
-| netflix | 23 | 69 | 24.76 |
-| nvidia | 24 | 125 | 191.47 |
-| oracle | 24 | 120 | 111.45 |
-| salesforce | 24 | 96 | 449.89 |
-| tesla | 23 | 23 | 171.11 |
-| uber | 22 | 89 | 266.92 |
+| 2022 | 164 | 6,162 | 270.39 |
+| 2023 | 170 | 5,920 | 288.41 |
+| 2024 | 168 | 5,760 | 367.86 |
+| 2025 | 168 | 5,524 | 436.41 |
+| 2026 | 129 | 4,197 | 227.51 |
 
-## File formats
+Mean length: **34.5 pages**; median: **17 pages**. The largest PDF is Salesforce FY2025 Q4’s earnings presentation (**95.48 MB**, 20 pages); the longest is Amazon FY2026 Q3’s 10-Q filing package (**386 pages**, 2.85 MB). PDF totals exclude metadata, manifests and documentation. GB/MB are decimal; GiB/MiB are binary.
 
-- DOCX: 2
-- HTML: 128
-- PDF: 918
-- PPTX: 1
-- XLSX: 80
+## Coverage and availability
 
-PDFs contain **28,564 pages** in total.
+Annual reports are present for every company for FY2022–FY2025. FY2026 annual reports are included for companies whose reports were located and validated. FY2026 annual-report PDFs were not found in the checked sources for: **adobe, airbnb, alphabet, amazon, amd, apple, intel, meta, netflix, tesla, uber**. This does not mean that all FY2026 reports are unpublished; consult the recorded source archives for updates. Partial FY2026 quarterly reporting is included.
 
-## Layout and provenance
+Quarterly source discovery reuses the repository's 2026-10-30 inventory, filtered to PDF and FY2022–FY2026. Annual reports were separately researched on this snapshot date. The quarter inventory does not claim every publicly available PDF or filing has been collected. In particular, Microsoft's quarterly source materials were HTML/Office files in the prior inventory and are excluded from this PDF collection; its annual reports cover FY2022–FY2026. AMD and some other companies' quarters are represented by financial presentations/supporting materials rather than a standalone PDF earnings release.
+
+The previous repository contained metadata but no report PDFs. Its original inventories are preserved under `_metadata/previous_inventory/`; those historical counts are not the current dataset totals.
+
+## Layout and indexes
 
 ```text
-data/raw/
-  <company>/<fiscal-year>/Q<quarter>/<document>.<format>
-  manifest.csv
-  coverage.csv
-  summary.json
-  _metadata/
+data/raw/<company>/<fiscal-year>/Q<quarter>/<document>.pdf
+data/raw/<company>/<fiscal-year>/annual/<company>-<year>-annual-report.pdf
 ```
 
-- `manifest.csv`: document roles, relative paths, sizes, SHA-256 hashes, download URLs, original archive URLs, and retrieval times.
-- `coverage.csv`: all 360 requested company/year/quarter combinations, with downloaded and not-yet-available states.
-- `summary.json`: exact totals and breakdowns. Report sizes exclude indexes, metadata, and this README.
-- `_metadata/`: original archive/API snapshots, discovery candidates, acquisition log, rejected attempts, exclusions, and validation results.
+- `manifest.csv`: all downloaded PDFs, source URLs, download timestamps, actual bytes/pages and SHA-256.
+- `annual_manifest.csv`: the annual-report subset, referencing the same files without duplication.
+- `annual_coverage.csv`: all 75 company/year annual-report combinations and their availability.
+- `coverage.csv`: quarterly PDF coverage, separating downloaded, no-PDF-in-source-inventory and not-yet-available states.
+- `summary.json`: exact machine-readable totals and breakdowns.
+- `_metadata/annual_candidates.json`: supplemental annual-report source URLs.
+- `_metadata/acquisition.jsonl`: acquisition records and first-three-page text samples.
+- `_metadata/failed_downloads.json`: unresolved download failures (0).
 
-Alphabet's four 2021 earnings PDFs are original Alphabet releases mirrored in Google's public `cloud-samples-data` bucket. The original Alphabet URLs now redirect to the new site, and direct SEC retrieval rejected access. The original SEC exhibit URLs and mirror notes are recorded in the manifest. All four PDFs were checked for the correct quarter and year.
+All retained PDFs were downloaded from company investor-relations sites or their linked document hosts/CDNs. Source URLs and resolved download URLs are recorded separately. Failed AnnualReports.com mirror attempts remain only in acquisition history; none are counted in the retained collection. `_metadata/source_overrides.json` records replacement official links.
 
-Meta's JavaScript filing viewers were resolved through its public filing index to the underlying filing PDFs. One Salesforce FY2025 Q4 archive link points to the same 10-Q as FY2026 Q3; the mislinked FY2025 Q4 copy is excluded. Original fiscal-quarter associations otherwise follow the companies' own earnings archives.
+## Validation and reproduction
 
-Rejected network responses and source links remain in the acquisition log for reproducibility; they are not counted as documents. Some rejected attempts were superseded by working alternate links. These counts do not represent missing earnings quarters.
+Every retained file passed a PDF-header check, full SHA-256 and byte-size check, pypdf page-tree parsing, and an independent Poppler `pdfinfo` page-count check. There are **799 distinct SHA-256 hashes**. Text sampling is a format/content sanity check, not a full transcription or a financial-data accuracy audit.
 
-## Validation
-
-All 1,129 retained files passed SHA-256 and size verification. PDFs were opened and their page trees read; Office ZIP packages were checked for corruption. Earnings reports were checked for financial text. HTML challenge/error pages and non-PDF responses from PDF URLs were rejected.
-
-Unreleased quarters: 14. Missing published quarters: 0.
-
-## Re-run
-
-From the project root:
+Install Python, `pypdf[crypto]`, curl and Poppler (`pdfinfo`), then run from the project root:
 
 ```sh
-uv run --with beautifulsoup4 scripts/download_earnings.py --probe
-uv run --with beautifulsoup4 scripts/download_earnings.py --discover
-uv run --with beautifulsoup4 scripts/download_earnings.py --resolve-filings
-uv run --with beautifulsoup4 scripts/download_earnings.py --collect
-uv run --with beautifulsoup4 --with 'pypdf[crypto]' scripts/audit_earnings.py
+python scripts/download_reports.py
+python scripts/audit_reports.py
 ```
 
-The supplemental candidate file preserves manually researched Tesla/Adobe links and Alphabet mirror links. Downloads are resumable; existing successful records are skipped. The audit removes only files previously created by this downloader that have become superseded or excluded by the selection rules.
-
-## Official archives
-
-- [meta](https://investor.atmeta.com/financials/default.aspx)
-- [apple](https://investor.apple.com/investor-relations/)
-- [amazon](https://ir.aboutamazon.com/quarterly-results/default.aspx)
-- [netflix](https://ir.netflix.net/financials/quarterly-earnings/default.aspx)
-- [alphabet](https://abc.xyz/investor/earnings/)
-- [microsoft](https://www.microsoft.com/en-us/Investor/earnings/FY-2026-Q4/press-release-webcast)
-- [nvidia](https://investor.nvidia.com/financial-info/quarterly-results-and-annual-reports/default.aspx)
-- [uber](https://investor.uber.com/financials/default.aspx)
-- [amd](https://ir.amd.com/financial-information/financial-results)
-- [intel](https://www.intc.com/financial-info/financial-results)
-- [adobe](https://www.adobe.com/investor-relations/financial-documents.html)
-- [salesforce](https://investor.salesforce.com/financials/default.aspx)
-- [oracle](https://investor.oracle.com/financial-reporting/quarterly-reports/default.aspx)
-- [airbnb](https://investors.airbnb.com/financials/default.aspx)
-- [tesla](https://ir.tesla.com/)
+Downloads resume from existing PDFs. Re-running downloads fetches the recorded URLs; it does not automatically discover newly published periods.
