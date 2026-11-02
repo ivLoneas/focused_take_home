@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Run evidence-grounded financial-report agents.">
+    <title>Financial Report Agent</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="#main-content" aria-label="Financial Report Agent home">
+        <span class="brand-mark" aria-hidden="true">F</span>
+        <span>Financial Report Agent</span>
+      </a>
+      <span class="system-status"><span aria-hidden="true"></span> Local interface</span>
+    </header>
+
+    <main id="main-content" class="page-shell">
+      <section class="intro" aria-labelledby="page-title">
+        <p class="eyebrow">Evidence-grounded analysis</p>
+        <h1 id="page-title">Ask a focused question about public financial reports.</h1>
+        <p class="intro-copy">
+          This is not a general chat. Each request is independently scoped, checked, retrieved, and answered from
+          available report evidence.
+        </p>
+      </section>
+
+      <div class="workspace">
+        <section class="run-panel card" aria-labelledby="run-title">
+          <div class="section-heading">
+            <div>
+              <p class="step-label">New analysis</p>
+              <h2 id="run-title">Run an agent</h2>
+            </div>
+            <span class="agent-count">1 available</span>
+          </div>
+
+          <form id="question-form">
+            <div class="field">
+              <label for="agent-select">Agent</label>
+              <select id="agent-select" name="agent_id">
+                <option value="baseline">Baseline — Financial report RAG</option>
+              </select>
+              <p class="field-help">Routes questions, requests missing details, and retrieves supporting evidence.</p>
+            </div>
+
+            <div class="field">
+              <div class="label-row">
+                <label for="question">Question</label>
+                <span id="character-count">0 / 2000</span>
+              </div>
+              <textarea
+                id="question"
+                name="question"
+                rows="5"
+                maxlength="2000"
+                required
+                placeholder="e.g. What was Apple's total net sales in FY2025?"
+              ></textarea>
+              <p class="field-help">Include the company, fiscal period, and metric when possible.</p>
+            </div>
+
+            <div class="example-row" aria-label="Example questions">
+              <span>Try:</span>
+              <button type="button" class="example" data-question="What was Apple's total net sales in FY2025?">
+                Apple net sales
+              </button>
+              <button type="button" class="example" data-question="How did Amazon's operating income change in FY2024?">
+                Amazon operating income
+              </button>
+            </div>
+
+            <button id="run-button" class="primary-button" type="submit">
+              <span class="button-label">Run analysis</span>
+              <span aria-hidden="true">→</span>
+            </button>
+          </form>
+        </section>
+
+        <aside class="flow-panel card" aria-labelledby="flow-title">
+          <p class="step-label">Baseline workflow</p>
+          <h2 id="flow-title">How a request is handled</h2>
+          <ol class="flow-list">
+            <li><span>1</span><div><strong>Scope</strong><p>Reject out-of-domain questions.</p></div></li>
+            <li><span>2</span><div><strong>Clarify</strong><p>Ask for specific missing details.</p></div></li>
+            <li><span>3</span><div><strong>Retrieve</strong><p>Gather evidence, up to 3 attempts.</p></div></li>
+            <li><span>4</span><div><strong>Answer</strong><p>Respond with report citations.</p></div></li>
+          </ol>
+          <p class="privacy-note">History stays in this browser. The backend stores no conversation or session.</p>
+        </aside>
+      </div>
+
+      <section id="result-panel" class="result-panel card" aria-labelledby="result-title" hidden>
+        <div class="section-heading result-heading">
+          <div>
+            <p class="step-label">Latest result</p>
+            <h2 id="result-title">Agent response</h2>
+          </div>
+          <span id="response-status" class="status-badge" role="status" aria-live="polite">Ready</span>
+        </div>
+        <p id="answer" class="answer"></p>
+        <div class="result-meta">
+          <div>
+            <h3>Sources</h3>
+            <ul id="citations" class="citations"></ul>
+          </div>
+          <div class="attempt-card">
+            <span>Retrieval attempts</span>
+            <strong id="retrieval-attempts">0</strong>
+          </div>
+        </div>
+      </section>
+
+      <section class="history-panel" aria-labelledby="history-title">
+        <div class="section-heading">
+          <div>
+            <p class="step-label">Browser memory</p>
+            <h2 id="history-title">Recent runs</h2>
+          </div>
+          <button id="clear-history" class="text-button" type="button">Clear history</button>
+        </div>
+        <p id="empty-history" class="empty-state">Completed runs will appear here on this device.</p>
+        <ul id="history-list" class="history-list" aria-label="Saved runs"></ul>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>

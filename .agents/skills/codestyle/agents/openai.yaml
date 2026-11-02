@@ -1,0 +1,4 @@
+interface:
+  display_name: "Project Codestyle"
+  short_description: "Project-local Python development standards"
+  default_prompt: "Use $codestyle to implement this change according to the project coding standards."

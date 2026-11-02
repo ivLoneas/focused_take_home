@@ -1,0 +1,40 @@
+services:
+  postgres:
+    image: pgvector/pgvector:0.8.2-pg17
+    environment:
+      POSTGRES_USER: rag
+      POSTGRES_PASSWORD: rag_local
+      POSTGRES_DB: rag
+    ports:
+      - "127.0.0.1:55432:5432"
+    volumes:
+      - rag_postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U rag -d rag"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+
+  etl:
+    build:
+      context: .
+    image: focused-take-home-etl:latest
+    init: true
+    user: "${LOCAL_UID:-501}:${LOCAL_GID:-20}"
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgresql://rag:rag_local@postgres:5432/rag
+      HF_HOME: /var/cache/models/huggingface
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./data:/app/data
+      - etl_model_cache:/var/cache/models
+    command: ["run"]
+    profiles: ["etl"]
+
+volumes:
+  rag_postgres:
+  etl_model_cache:

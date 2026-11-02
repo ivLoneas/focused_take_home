@@ -1,0 +1,11 @@
+{
+  "name": "focused-evals",
+  "private": true,
+  "scripts": {
+    "eval": "PYTHONPATH=.. PROMPTFOO_PYTHON=../.venv/bin/python promptfoo eval -c promptfooconfig.yaml",
+    "view": "promptfoo view"
+  },
+  "devDependencies": {
+    "promptfoo": "0.125.1"
+  }
+}
