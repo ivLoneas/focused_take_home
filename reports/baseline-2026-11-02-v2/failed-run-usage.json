@@ -1,0 +1,18 @@
+[
+  {
+    "id": "NOD07",
+    "trace_id": "01a19c96-027a-7106-9eeb-5b00fabd37fa",
+    "trace_url": "https://eu.smith.langchain.com/o/b8806205-c100-4796-9435-f260f5551f1e/projects/p/01a19be6-a6b0-7980-be04-9d8caa856ea8/r/01a19c96-027a-7106-9eeb-5b00fabd37fa?poll=true",
+    "duration_to_error_s": 15.176745,
+    "model_calls": 2,
+    "input_tokens": 2964,
+    "output_tokens": 1171,
+    "total_tokens": 4135,
+    "cached_input_tokens": 0,
+    "reasoning_tokens": 960,
+    "retrieval_calls": 0,
+    "embedding_input_tokens": 0,
+    "error": "ValueError(\"Company 'Microsoft' has no verified company_periods result\")Traceback (most recent call last):\n\n\n  File \"/Users/ivansmirnov/work/focused/.venv/lib/python3.14/site-packages/langgraph/pregel/main.py\", line 3060, in stream\n    for _ in runner.tick(\n             ~~~~~~~~~~~^\n        [t for t in loop.tasks.values() if not t.writes],\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    ...<2 lines>...\n        schedule_task=loop.accept_push,\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    ):\n    ^\n\n\n  File \"/Users/ivansmirnov/work/focused/.venv/lib/python3.14/site-packages/langgraph/pregel/_runner.py\", line 204, in tick\n    run_with_retry(\n    ~~~~~~~~~~~~~~^\n        t,\n        ^^\n    ...<10 lines>...\n        },\n        ^^\n    )\n    ^\n\n\n  File \"/Users/ivansmirnov/work/focused/.venv/lib/python3.14/site-packages/langgraph/pregel/_retry.py\", line 618, in run_with_retry\n    return task.proc.invoke(task.input, config)\n           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^\n\n\n  File \"/Users/ivansmirnov/work/focused/.venv/lib/python3.14/site-packages/langgraph/_internal/_runnable.py\", line 794, in invoke\n    input = context.run(step.invoke, input, config, **kwargs)\n\n\n  File \"/Users/ivansmirnov/work/focused/.venv/lib/python3.14/site-packages/langgraph/_internal/_runnable.py\", line 479, in invoke\n    ret = self.func(*args, **kwargs)\n\n\n  File \"/Users/ivansmirnov/work/focused/agents/baseline/baseline_agent.py\", line 189, in _check_available_data\n    raise ValueError(f\"Company {company!r} has no verified company_periods result\")\n\n\nValueError: Company 'Microsoft' has no verified company_periods result\n\n\nDuring task with name 'check_available_data' and id '3045a129-bdc0-51ce-5570-31d59a171928'",
+    "chat_cost_usd": 0.003083
+  }
+]

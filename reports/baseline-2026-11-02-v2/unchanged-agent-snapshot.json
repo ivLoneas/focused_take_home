@@ -1,0 +1,19 @@
+{
+  "snapshot_at": "2026-11-02T13:55:52.485038+00:00",
+  "agent_and_provider_sha256": {
+    "agents/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "agents/baseline/__init__.py": "df1c526c5b059fddc3c70ee58a8cb14c926cd1b1f8cd777d8244255046f1f1bf",
+    "agents/baseline/baseline_agent.py": "c1d1d156c8a14d45dc3b90adf89284a4a2494292edc08124fca994787db4a4ae",
+    "agents/baseline/models.py": "e6352667115844a0c6e1620d6dc7d4a1de245a2a781231e4c12ff84b59650c34",
+    "agents/baseline/prompts/__init__.py": "9cd3c5fd2bd25c1fe6d7f58957d2215f8d3a792c9969fb39a00385db05cfadbe",
+    "agents/baseline/prompts/templates.py": "a21996c2efdab2319f0ae41d0439279fe9e94acee2212cfd6d9a27bdd3ee7ae4",
+    "agents/settings.py": "4701b0534b9c2bcdb5b1752e51211070241c8276cd21d7d8143cbe2f13a6d58a",
+    "agents/tools/__init__.py": "d2841a1e84e3dc2c034f27c909ff8b943345e5d10b32de87bbecb07bdfe2e66c",
+    "agents/tools/coverage.py": "0fb7156488edb8e7ab10f42d207fe61ecccfbc9e913e5d49e423b30bc76f3c06",
+    "agents/tools/models.py": "60f7728a78689f951fd31ebcfa9f723e4e89d855520922cdb1befdcd9196c780",
+    "agents/tools/retrieval.py": "fe6f87735e8aab7d58e9e948c9980e44e377ee24158d3858c6ea2223d153222d",
+    "evals/provider.py": "b8820d3f6cd8b92fd40f511589b1ab3df114a9278422f899b85ef170893a99f3"
+  },
+  "pre_revision_dataset_sha256": "8faa7acd8bd02d398927c55adcf50450ce461d6a68e542d0404dfd5a438327cf",
+  "pre_revision_cases": 104
+}

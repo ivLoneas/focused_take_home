@@ -1,0 +1,74 @@
+{
+  "method": "Manual primary-cause assignment after the run; no scores changed.",
+  "categories": {
+    "Clarification instead of a grounded answer": [
+      "ACC10",
+      "TOOL01",
+      "MUL05",
+      "MUL06",
+      "MUL09",
+      "IF07",
+      "IF09",
+      "CAL01",
+      "IMG07",
+      "TAB02",
+      "TAB04",
+      "TAB10"
+    ],
+    "Known-gap workflow assertion conflicts with direct scope response": [
+      "NOD02",
+      "NOD03",
+      "NOD04",
+      "NOD05",
+      "NOD06",
+      "NOD07",
+      "NOD08",
+      "NOD09"
+    ],
+    "Refusal specificity / judge sensitivity": [
+      "OOD01",
+      "OOD02",
+      "OOD03",
+      "OOD06",
+      "OOD07",
+      "OOD08",
+      "OOD09",
+      "OOD10"
+    ],
+    "Requested evidence not recovered": [
+      "ACC03",
+      "TOOL08",
+      "IMG09"
+    ],
+    "Correct figure, rejected citation/source": [
+      "ACC01",
+      "ACC04"
+    ],
+    "Wrong chart or metric": [
+      "IMG02",
+      "IMG05"
+    ],
+    "Incomplete missing-data scope response": [
+      "NOD01",
+      "NOD10"
+    ],
+    "Ambiguity contract or grading mismatch": [
+      "AMB04",
+      "AMB07",
+      "AMB09"
+    ],
+    "Material unit omitted": [
+      "IMG01"
+    ],
+    "Final response is a progress message": [
+      "TAB09"
+    ],
+    "Given-input arithmetic routed out of domain": [
+      "TOOL10"
+    ]
+  },
+  "passed_case_blind_spot": {
+    "id": "MUL01",
+    "finding": "Passed despite omitting Meta from retrieval and incorrectly claiming its annual report was absent."
+  }
+}

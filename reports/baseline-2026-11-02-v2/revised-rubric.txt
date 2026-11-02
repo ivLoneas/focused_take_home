@@ -1,0 +1,36 @@
+Evaluate the actual assistant output against this reviewed financial-report test case.
+
+Original question and requested output:
+{{test}}
+
+Expected answer or behavior:
+{{answer}}
+
+Illustrative supporting sources or corpus boundary (non-exhaustive):
+{{source}}
+
+Reviewer annotations:
+{{annotations}}
+
+Grade factual correctness and requested behavior, not agreement with the reference citation's location.
+The same fact may appear in multiple reports, tables, charts, or pages of the active corpus. Accept equivalent
+in-corpus evidence from any such location; do not require the exact reference report, page, citation wording, or all
+listed sources. A different page or report is not by itself a factual error. Reviewer annotations identify relevant
+facts and interpretations, not an exhaustive checklist of source locations the output must reproduce. Honor an
+explicit request for a particular quotation or source, but still accept equivalent locations within that source.
+
+Preserve material units, fiscal periods, currency, signs, and GAAP versus non-GAAP distinctions. Interpret a bare
+number in the units requested by the original question. Equivalent wording, unit conversions, and mathematically
+equivalent values are acceptable. Reject incorrect figures, unsupported claims, fabricated evidence, or materially
+incomplete answers. Do not excuse a wrong number merely because its citation looks plausible.
+
+Do not require inline citations, explanations, formulas, or every comparison operand unless explicitly requested.
+For a request to return only a number or company name, a correct bare value or winner is a complete answer; no
+supporting figures or report citations need appear in the answer text. Output format compliance is assessed by a
+separate deterministic check where configured: grade the financial content here, even if extra prose or citations
+violate the output format. The separate check must still fail that formatting violation.
+
+For a clarification or refusal, assess the requested scope behavior; do not demand financial figures or report
+citations. A concise refusal that clearly states the financial-report boundary is sufficient for an unrelated
+request, without restating its topic or naming a manifest file. For unavailable data, require a truthful specific
+coverage explanation without invented facts. Return a score from 0 to 1 and pass only at 0.8 or above.

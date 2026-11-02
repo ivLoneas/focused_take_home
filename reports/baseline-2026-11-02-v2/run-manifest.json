@@ -1,0 +1,78 @@
+{
+  "rubric_version": "v2-equivalent-evidence",
+  "git_head": "4d6e48ddd13bd5038bbc147cf04e18c1e4642c2c",
+  "worktree_dirty": true,
+  "run_started_after_utc": "2026-11-02T13:59:20.999973+00:00",
+  "cases": 114,
+  "existing_cases": 104,
+  "new_formatting_cases": 10,
+  "settings": {
+    "chat_model": "gpt-5-mini",
+    "grader_model": "gpt-5-mini",
+    "embedding_model": "text-embedding-3-small",
+    "embedding_dimensions": 1536,
+    "retrieval_limit": 8,
+    "max_retrieval_attempts": 3,
+    "langsmith_tracing": true,
+    "langsmith_endpoint": "https://eu.api.smith.langchain.com",
+    "langsmith_agent_id": "focused-baseline",
+    "langsmith_agent_environment": "local",
+    "max_concurrency": 4,
+    "response_cache": false,
+    "repeats": 1
+  },
+  "files_sha256": {
+    "evals/evals_tests.csv": "a77591481c389cc00bbdab097799e739d1a41bb2f84b87ac6b5d887d885e2913",
+    "evals/generate_tests.py": "7731994ce9d466e4140727784f3604b067290f8f002466c3ff3849ef8755bf34",
+    "evals/assertions.py": "91bc3b2cbec0fe8a1b7c9f871a42c92a279507e38df547707066eba7e07857d3",
+    "evals/promptfooconfig.yaml": "0d0256e0851be8f08b3523351893b6571d38610f4edf167d4de3c4786d54fe60",
+    "data/active_manifest.csv": "2a390a2ca11db06a054e242626865fefbd01ff329c19dc9a7ddcc2e086a45142",
+    "uv.lock": "81616412ffc24cd4291cb05ced1caee884f29b49541e18906bc612b6bc9aee55",
+    "evals/package-lock.json": "7452b51d2a5cdb75ccbfcb0f1f8ecb150c82971b6d314c91e120019f2584cf08"
+  },
+  "agent_and_provider_sha256": {
+    "agents/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "agents/baseline/__init__.py": "df1c526c5b059fddc3c70ee58a8cb14c926cd1b1f8cd777d8244255046f1f1bf",
+    "agents/baseline/baseline_agent.py": "c1d1d156c8a14d45dc3b90adf89284a4a2494292edc08124fca994787db4a4ae",
+    "agents/baseline/models.py": "e6352667115844a0c6e1620d6dc7d4a1de245a2a781231e4c12ff84b59650c34",
+    "agents/baseline/prompts/__init__.py": "9cd3c5fd2bd25c1fe6d7f58957d2215f8d3a792c9969fb39a00385db05cfadbe",
+    "agents/baseline/prompts/templates.py": "a21996c2efdab2319f0ae41d0439279fe9e94acee2212cfd6d9a27bdd3ee7ae4",
+    "agents/settings.py": "4701b0534b9c2bcdb5b1752e51211070241c8276cd21d7d8143cbe2f13a6d58a",
+    "agents/tools/__init__.py": "d2841a1e84e3dc2c034f27c909ff8b943345e5d10b32de87bbecb07bdfe2e66c",
+    "agents/tools/coverage.py": "0fb7156488edb8e7ab10f42d207fe61ecccfbc9e913e5d49e423b30bc76f3c06",
+    "agents/tools/models.py": "60f7728a78689f951fd31ebcfa9f723e4e89d855520922cdb1befdcd9196c780",
+    "agents/tools/retrieval.py": "fe6f87735e8aab7d58e9e948c9980e44e377ee24158d3858c6ea2223d153222d",
+    "evals/provider.py": "b8820d3f6cd8b92fd40f511589b1ab3df114a9278422f899b85ef170893a99f3"
+  },
+  "pricing": {
+    "source": "https://developers.openai.com/api/docs/pricing",
+    "checked_date": "2026-11-02",
+    "gpt-5-mini": {
+      "input_per_million": 0.25,
+      "cached_input_per_million": 0.025,
+      "output_per_million": 2
+    },
+    "text-embedding-3-small": {
+      "input_per_million": 0.02
+    }
+  },
+  "promptfoo_eval_id": "eval-2ad-2026-11-02T13:59:24",
+  "test_suite": {
+    "passed": 753,
+    "failed": 0,
+    "skipped": 0,
+    "warnings": 13,
+    "duration_s": 4.66,
+    "integration_database": "disposable validation database"
+  },
+  "run_duration_s": 1121,
+  "run_finished_at_utc": "2026-11-02T14:18:05.233571+00:00",
+  "agent_tools_provider_unchanged": true,
+  "existing_104_cases_preserved": true,
+  "langsmith_roots_verified": 114,
+  "result": {
+    "passed": 84,
+    "assertion_failures": 29,
+    "runtime_errors": 1
+  }
+}

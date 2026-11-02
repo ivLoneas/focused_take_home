@@ -1,0 +1,22 @@
+description: Versioned v2 behavior contract - paired baseline and v2 comparison
+prompts:
+  - id: financial-report-question
+    label: Financial report question
+    raw: "{{test}}"
+providers:
+  - id: file://provider.py
+    label: Baseline
+  - id: file://agent_v2_provider.py
+    label: Agent v2
+defaultTest:
+  options:
+    provider: openai:gpt-5-mini
+tests:
+  - path: file://generate_tests.py:generate_tests
+    config:
+      dataset_path: agent_v2_cases.csv
+evaluateOptions:
+  maxConcurrency: 4
+  timeoutMs: 300000
+  showProgressBar: true
+writeLatestResults: false

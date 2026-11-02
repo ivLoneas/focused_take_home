@@ -1,0 +1,24 @@
+{
+  "as_of": "2026-11-02T16:39:40.954250+00:00",
+  "scope": "Traced real model calls in the configured project since goal start; includes smoke, aborted and completed runs; excludes graders and embeddings",
+  "by_model": {
+    "gpt-5-mini-2025-08-07": {
+      "calls": 351,
+      "input_tokens": 1511238,
+      "output_tokens": 247282,
+      "cached_input_tokens": 124160
+    },
+    "gpt-5-nano-2025-08-07": {
+      "calls": 343,
+      "input_tokens": 1026923,
+      "output_tokens": 147019,
+      "cached_input_tokens": 145664
+    },
+    "jev-1.14.0": {
+      "calls": 172,
+      "input_tokens": 82354,
+      "output_tokens": 6708,
+      "cached_input_tokens": 0
+    }
+  }
+}

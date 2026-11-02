@@ -1,0 +1,33 @@
+{
+  "files": {
+    "agents/agent_v2/models.py": "c828dcd2765248365826675de663d66cfd78e0cf1af732acdd5c9598255d80da",
+    "agents/agent_v2/domain.py": "d687c5085b93be3cdb63a71d2a5d96c75a2e23b0f6d0cd9a5fcb77858c1b2529",
+    "agents/agent_v2/__init__.py": "87186d29fbdac28c967ab07d0857220360d4edb0c291390479b4a5d5570077bf",
+    "agents/agent_v2/prompts.py": "235d37b3707b7493cc0c21ce7ca86b420efa5907a8df5362adb3ca85f659fc76",
+    "agents/agent_v2/agent.py": "39763fcfe8c5cb959f8fd86f1894c0dadc182e5272ba6eeaae162184345fdfbe",
+    "agents/agent_v2/settings.py": "ade6db497730ee0a41236dbbaf1df182097bfc7d458ce0362524789abce292dd",
+    "agents/baseline/models.py": "068f44afc32b94919d0a4c9059dcaf271d1817365b094da155a5a9230d8495cf",
+    "agents/baseline/__init__.py": "df1c526c5b059fddc3c70ee58a8cb14c926cd1b1f8cd777d8244255046f1f1bf",
+    "agents/baseline/baseline_agent.py": "be2c37bba2965da7625a92441543037355e3f8f1172510466043b709392b6585",
+    "agents/baseline/prompts/__init__.py": "9cd3c5fd2bd25c1fe6d7f58957d2215f8d3a792c9969fb39a00385db05cfadbe",
+    "agents/baseline/prompts/templates.py": "b722eed8cbcca99e64f996fbc122bc748f4c01ee4fe20864b72462d3d33e83b9",
+    "evals/agent_v2_provider.py": "422aa5d69c16c2a6e734f2b241ce6a437b50cd8bf8695f3ad8b0c67f4a7c50b9",
+    "evals/provider.py": "b8820d3f6cd8b92fd40f511589b1ab3df114a9278422f899b85ef170893a99f3",
+    "evals/evals_tests.csv": "638fa0425d740af4556ae0629ab01a24325ae480593ba89d9f3568a32bacaf09",
+    "evals/agent_v2_cases.csv": "8b1b78cc45081ec3b74f74d4997bf4ab1b82bf715f2a057e770e391c637bd8d2",
+    "evals/generate_tests.py": "7731994ce9d466e4140727784f3604b067290f8f002466c3ff3849ef8755bf34",
+    "evals/assertions.py": "91bc3b2cbec0fe8a1b7c9f871a42c92a279507e38df547707066eba7e07857d3",
+    "data/active_manifest.csv": "2a390a2ca11db06a054e242626865fefbd01ff329c19dc9a7ddcc2e086a45142"
+  },
+  "candidate": 2,
+  "discovery": "all listed company periods before one plan",
+  "answer_model": "gpt-5-mini",
+  "routing_model": "gpt-5-nano",
+  "reasoning_effort": "low",
+  "typesafe_model": "jev-latest",
+  "max_retrieval_attempts": 3,
+  "retrieval_limit": 8,
+  "embedding_model": "text-embedding-3-small",
+  "budget_usd": 5,
+  "historical_baseline": "reports/baseline-2026-11-02-v2"
+}

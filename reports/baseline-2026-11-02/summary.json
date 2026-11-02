@@ -1,0 +1,1528 @@
+{
+  "eval_id": "eval-MoB-2026-11-02T11:08:56",
+  "overall": {
+    "n": 100,
+    "passed": 57,
+    "pass_rate": 0.57,
+    "runtime_errors": 0,
+    "quality_passed": 66,
+    "quality_evaluated": 100,
+    "workflow_passed": 76,
+    "workflow_evaluated": 100,
+    "validity_passed": 100,
+    "quality_score_mean": 0.699,
+    "latency_s": {
+      "n": 100,
+      "mean": 21.42011728755004,
+      "median": 19.556265042000632,
+      "p90": 43.55232278750102,
+      "p95": 48.803987820850665,
+      "min": 1.9424069590004365,
+      "max": 74.7593611250013
+    },
+    "provider_latency_s": {
+      "n": 100,
+      "mean": 21.45807,
+      "median": 19.5645,
+      "p90": 43.560400000000016,
+      "p95": 48.8122,
+      "min": 1.948,
+      "max": 74.767
+    },
+    "telemetry_coverage": 100,
+    "usage": {
+      "model_calls": 235,
+      "model_errors": 0,
+      "input_tokens": 1054011,
+      "output_tokens": 200065,
+      "total_tokens": 1254076,
+      "cached_input_tokens": 160896,
+      "reasoning_tokens": 172928,
+      "retrieval_calls": 95,
+      "retrieval_errors": 0,
+      "empty_retrievals": 0,
+      "retrieved_chunks": 760,
+      "retrieval_latency_ms": 31818.32241399752,
+      "embedding_calls": 95,
+      "embedding_input_tokens": 4518
+    },
+    "grader_usage": {
+      "total": 99916,
+      "prompt": 49477,
+      "completion": 50439,
+      "numRequests": 100
+    },
+    "cost_usd": {
+      "agent_chat_usd": 0.62743115,
+      "embedding_usd": 9.036000000000001e-05,
+      "agent_usd": 0.62752151,
+      "grader_usd": 0.11324725,
+      "total_usd": 0.74076876
+    },
+    "retrieval_rounds": {
+      "1": 47,
+      "3": 8,
+      "0": 42,
+      "2": 3
+    },
+    "retrieval_calls": {
+      "1": 41,
+      "3": 8,
+      "0": 42,
+      "4": 1,
+      "12": 1,
+      "2": 7
+    },
+    "statuses": {
+      "answered": 66,
+      "needs_clarification": 22,
+      "out_of_domain": 12
+    },
+    "with_citations": 58,
+    "passed_ids": [
+      "ACC02",
+      "ACC05",
+      "ACC06",
+      "ACC07",
+      "ACC08",
+      "ACC09",
+      "TOOL02",
+      "TOOL03",
+      "TOOL04",
+      "TOOL05",
+      "TOOL06",
+      "TOOL07",
+      "TOOL09",
+      "OOD04",
+      "OOD05",
+      "MUL01",
+      "MUL02",
+      "MUL03",
+      "MUL04",
+      "MUL07",
+      "MUL08",
+      "MUL10",
+      "IF01",
+      "IF02",
+      "IF03",
+      "IF04",
+      "IF05",
+      "IF06",
+      "IF08",
+      "IF10",
+      "CAL02",
+      "CAL03",
+      "CAL04",
+      "CAL05",
+      "CAL06",
+      "CAL07",
+      "CAL08",
+      "CAL09",
+      "CAL10",
+      "AMB01",
+      "AMB02",
+      "AMB03",
+      "AMB05",
+      "AMB06",
+      "AMB08",
+      "AMB10",
+      "IMG03",
+      "IMG04",
+      "IMG06",
+      "IMG08",
+      "IMG10",
+      "TAB01",
+      "TAB03",
+      "TAB05",
+      "TAB06",
+      "TAB07",
+      "TAB08"
+    ],
+    "failed_ids": [
+      "ACC01",
+      "ACC03",
+      "ACC04",
+      "ACC10",
+      "TOOL01",
+      "TOOL08",
+      "TOOL10",
+      "OOD01",
+      "OOD02",
+      "OOD03",
+      "OOD06",
+      "OOD07",
+      "OOD08",
+      "OOD09",
+      "OOD10",
+      "MUL05",
+      "MUL06",
+      "MUL09",
+      "IF07",
+      "IF09",
+      "NOD01",
+      "NOD02",
+      "NOD03",
+      "NOD04",
+      "NOD05",
+      "NOD06",
+      "NOD07",
+      "NOD08",
+      "NOD09",
+      "NOD10",
+      "CAL01",
+      "AMB04",
+      "AMB07",
+      "AMB09",
+      "IMG01",
+      "IMG02",
+      "IMG05",
+      "IMG07",
+      "IMG09",
+      "TAB02",
+      "TAB04",
+      "TAB09",
+      "TAB10"
+    ],
+    "wilson_95_interval": [
+      0.47215389549212305,
+      0.6626670147588988
+    ]
+  },
+  "by_topic": {
+    "deterministic_accuracy": {
+      "n": 10,
+      "passed": 6,
+      "pass_rate": 0.6,
+      "runtime_errors": 0,
+      "quality_passed": 6,
+      "quality_evaluated": 10,
+      "workflow_passed": 9,
+      "workflow_evaluated": 10,
+      "validity_passed": 10,
+      "quality_score_mean": 0.72,
+      "latency_s": {
+        "n": 10,
+        "mean": 23.259655879200363,
+        "median": 20.041581187500014,
+        "p90": 37.42653360000113,
+        "p95": 42.68267973750079,
+        "min": 5.988937292000628,
+        "max": 47.938825875000475
+      },
+      "provider_latency_s": {
+        "n": 10,
+        "mean": 23.5804,
+        "median": 20.442,
+        "p90": 38.140499999999996,
+        "p95": 43.043249999999986,
+        "min": 5.995,
+        "max": 47.946
+      },
+      "telemetry_coverage": 10,
+      "usage": {
+        "model_calls": 32,
+        "model_errors": 0,
+        "input_tokens": 146372,
+        "output_tokens": 20393,
+        "total_tokens": 166765,
+        "cached_input_tokens": 16640,
+        "reasoning_tokens": 17600,
+        "retrieval_calls": 13,
+        "retrieval_errors": 0,
+        "empty_retrievals": 0,
+        "retrieved_chunks": 104,
+        "retrieval_latency_ms": 5085.206666994054,
+        "embedding_calls": 13,
+        "embedding_input_tokens": 559
+      },
+      "grader_usage": {
+        "total": 10325,
+        "prompt": 4440,
+        "completion": 5885,
+        "numRequests": 10
+      },
+      "cost_usd": {
+        "agent_chat_usd": 0.073635,
+        "embedding_usd": 1.1180000000000001e-05,
+        "agent_usd": 0.07364618,
+        "grader_usd": 0.012879999999999999,
+        "total_usd": 0.08652618000000001
+      },
+      "retrieval_rounds": {
+        "1": 7,
+        "3": 2,
+        "0": 1
+      },
+      "retrieval_calls": {
+        "1": 7,
+        "3": 2,
+        "0": 1
+      },
+      "statuses": {
+        "answered": 9,
+        "needs_clarification": 1
+      },
+      "with_citations": 9,
+      "passed_ids": [
+        "ACC02",
+        "ACC05",
+        "ACC06",
+        "ACC07",
+        "ACC08",
+        "ACC09"
+      ],
+      "failed_ids": [
+        "ACC01",
+        "ACC03",
+        "ACC04",
+        "ACC10"
+      ]
+    },
+    "tool_usage": {
+      "n": 10,
+      "passed": 7,
+      "pass_rate": 0.7,
+      "runtime_errors": 0,
+      "quality_passed": 7,
+      "quality_evaluated": 10,
+      "workflow_passed": 8,
+      "workflow_evaluated": 10,
+      "validity_passed": 10,
+      "quality_score_mean": 0.69,
+      "latency_s": {
+        "n": 10,
+        "mean": 24.01252320410058,
+        "median": 24.196619020501203,
+        "p90": 36.421267278901176,
+        "p95": 41.31436734795051,
+        "min": 2.9861342910007806,
+        "max": 46.20746741699986
+      },
+      "provider_latency_s": {
+        "n": 10,
+        "mean": 24.0192,
+        "median": 24.2025,
+        "p90": 36.4257,
+        "p95": 41.32034999999999,
+        "min": 2.993,
+        "max": 46.215
+      },
+      "telemetry_coverage": 10,
+      "usage": {
+        "model_calls": 29,
+        "model_errors": 0,
+        "input_tokens": 141333,
+        "output_tokens": 25098,
+        "total_tokens": 166431,
+        "cached_input_tokens": 14976,
+        "reasoning_tokens": 22016,
+        "retrieval_calls": 13,
+        "retrieval_errors": 0,
+        "empty_retrievals": 0,
+        "retrieved_chunks": 104,
+        "retrieval_latency_ms": 3531.5606229996774,
+        "embedding_calls": 13,
+        "embedding_input_tokens": 448
+      },
+      "grader_usage": {
+        "total": 10025,
+        "prompt": 4995,
+        "completion": 5030,
+        "numRequests": 10
+      },
+      "cost_usd": {
+        "agent_chat_usd": 0.08215965,
+        "embedding_usd": 8.96e-06,
+        "agent_usd": 0.08216861,
+        "grader_usd": 0.01130875,
+        "total_usd": 0.09347736000000001
+      },
+      "retrieval_rounds": {
+        "0": 2,
+        "1": 6,
+        "2": 1,
+        "3": 1
+      },
+      "retrieval_calls": {
+        "0": 2,
+        "1": 6,
+        "4": 1,
+        "3": 1
+      },
+      "statuses": {
+        "needs_clarification": 1,
+        "answered": 8,
+        "out_of_domain": 1
+      },
+      "with_citations": 8,
+      "passed_ids": [
+        "TOOL02",
+        "TOOL03",
+        "TOOL04",
+        "TOOL05",
+        "TOOL06",
+        "TOOL07",
+        "TOOL09"
+      ],
+      "failed_ids": [
+        "TOOL01",
+        "TOOL08",
+        "TOOL10"
+      ]
+    },
+    "out_of_distribution": {
+      "n": 10,
+      "passed": 2,
+      "pass_rate": 0.2,
+      "runtime_errors": 0,
+      "quality_passed": 2,
+      "quality_evaluated": 10,
+      "workflow_passed": 10,
+      "workflow_evaluated": 10,
+      "validity_passed": 10,
+      "quality_score_mean": 0.36,
+      "latency_s": {
+        "n": 10,
+        "mean": 2.656114116799472,
+        "median": 2.498495020999144,
+        "p90": 3.6809113372004503,
+        "p95": 3.7233137310997333,
+        "min": 1.9424069590004365,
+        "max": 3.7657161249990168
+      },
+      "provider_latency_s": {
+        "n": 10,
+        "mean": 2.6628,
+        "median": 2.504,
+        "p90": 3.6897,
+        "p95": 3.73335,
+        "min": 1.948,
+        "max": 3.777
+      },
+      "telemetry_coverage": 10,
+      "usage": {
+        "model_calls": 10,
+        "model_errors": 0,
+        "input_tokens": 17710,
+        "output_tokens": 2226,
+        "total_tokens": 19936,
+        "cached_input_tokens": 16640,
+        "reasoning_tokens": 1664,
+        "retrieval_calls": 0,
+        "retrieval_errors": 0,
+        "empty_retrievals": 0,
+        "retrieved_chunks": 0,
+        "retrieval_latency_ms": 0,
+        "embedding_calls": 0,
+        "embedding_input_tokens": 0
+      },
+      "grader_usage": {
+        "total": 8300,
+        "prompt": 3927,
+        "completion": 4373,
+        "numRequests": 10
+      },
+      "cost_usd": {
+        "agent_chat_usd": 0.0051355,
+        "embedding_usd": 0,
+        "agent_usd": 0.0051355,
+        "grader_usd": 0.00972775,
+        "total_usd": 0.01486325
+      },
+      "retrieval_rounds": {
+        "0": 10
+      },
+      "retrieval_calls": {
+        "0": 10
+      },
+      "statuses": {
+        "out_of_domain": 10
+      },
+      "with_citations": 0,
+      "passed_ids": [
+        "OOD04",
+        "OOD05"
+      ],
+      "failed_ids": [
+        "OOD01",
+        "OOD02",
+        "OOD03",
+        "OOD06",
+        "OOD07",
+        "OOD08",
+        "OOD09",
+        "OOD10"
+      ]
+    },
+    "multiple_companies": {
+      "n": 10,
+      "passed": 7,
+      "pass_rate": 0.7,
+      "runtime_errors": 0,
+      "quality_passed": 7,
+      "quality_evaluated": 10,
+      "workflow_passed": 7,
+      "workflow_evaluated": 10,
+      "validity_passed": 10,
+      "quality_score_mean": 0.69,
+      "latency_s": {
+        "n": 10,
+        "mean": 36.50245056690037,
+        "median": 37.99166358350067,
+        "p90": 53.90478398750019,
+        "p95": 64.33207255625072,
+        "min": 8.636867375000293,
+        "max": 74.7593611250013
+      },
+      "provider_latency_s": {
+        "n": 10,
+        "mean": 36.5088,
+        "median": 37.998999999999995,
+        "p90": 53.910399999999996,
+        "p95": 64.33869999999997,
+        "min": 8.648,
+        "max": 74.767
+      },
+      "telemetry_coverage": 10,
+      "usage": {
+        "model_calls": 26,
+        "model_errors": 0,
+        "input_tokens": 227372,
+        "output_tokens": 29441,
+        "total_tokens": 256813,
+        "cached_input_tokens": 16640,
+        "reasoning_tokens": 25408,
+        "retrieval_calls": 25,
+        "retrieval_errors": 0,
+        "empty_retrievals": 0,
+        "retrieved_chunks": 200,
+        "retrieval_latency_ms": 7038.768001004428,
+        "embedding_calls": 25,
+        "embedding_input_tokens": 1501
+      },
+      "grader_usage": {
+        "total": 12681,
+        "prompt": 6182,
+        "completion": 6499,
+        "numRequests": 10
+      },
+      "cost_usd": {
+        "agent_chat_usd": 0.111981,
+        "embedding_usd": 3.002e-05,
+        "agent_usd": 0.11201102,
+        "grader_usd": 0.0145435,
+        "total_usd": 0.12655452
+      },
+      "retrieval_rounds": {
+        "3": 1,
+        "1": 6,
+        "0": 3
+      },
+      "retrieval_calls": {
+        "12": 1,
+        "2": 5,
+        "0": 3,
+        "3": 1
+      },
+      "statuses": {
+        "answered": 7,
+        "needs_clarification": 3
+      },
+      "with_citations": 7,
+      "passed_ids": [
+        "MUL01",
+        "MUL02",
+        "MUL03",
+        "MUL04",
+        "MUL07",
+        "MUL08",
+        "MUL10"
+      ],
+      "failed_ids": [
+        "MUL05",
+        "MUL06",
+        "MUL09"
+      ]
+    },
+    "conditional_reasoning": {
+      "n": 10,
+      "passed": 8,
+      "pass_rate": 0.8,
+      "runtime_errors": 0,
+      "quality_passed": 8,
+      "quality_evaluated": 10,
+      "workflow_passed": 8,
+      "workflow_evaluated": 10,
+      "validity_passed": 10,
+      "quality_score_mean": 0.8,
+      "latency_s": {
+        "n": 10,
+        "mean": 26.621266491699863,
+        "median": 29.19015487500019,
+        "p90": 37.510355250299654,
+        "p95": 38.247442687649254,
+        "min": 5.176902540999436,
+        "max": 38.984530124998855
+      },
+      "provider_latency_s": {
+        "n": 10,
+        "mean": 26.6267,
+        "median": 29.194000000000003,
+        "p90": 37.5158,
+        "p95": 38.2529,
+        "min": 5.181,
+        "max": 38.99
+      },
+      "telemetry_coverage": 10,
+      "usage": {
+        "model_calls": 28,
+        "model_errors": 0,
+        "input_tokens": 108814,
+        "output_tokens": 26166,
+        "total_tokens": 134980,
+        "cached_input_tokens": 16640,
+        "reasoning_tokens": 22080,
+        "retrieval_calls": 10,
+        "retrieval_errors": 0,
+        "empty_retrievals": 0,
+        "retrieved_chunks": 80,
+        "retrieval_latency_ms": 3073.4428750020015,
+        "embedding_calls": 10,
+        "embedding_input_tokens": 544
+      },
+      "grader_usage": {
+        "total": 10358,
+        "prompt": 5834,
+        "completion": 4524,
+        "numRequests": 10
+      },
+      "cost_usd": {
+        "agent_chat_usd": 0.0757915,
+        "embedding_usd": 1.0880000000000001e-05,
+        "agent_usd": 0.07580238,
+        "grader_usd": 0.0105065,
+        "total_usd": 0.08630888
+      },
+      "retrieval_rounds": {
+        "1": 6,
+        "2": 2,
+        "0": 2
+      },
+      "retrieval_calls": {
+        "1": 6,
+        "2": 2,
+        "0": 2
+      },
+      "statuses": {
+        "answered": 8,
+        "needs_clarification": 2
+      },
+      "with_citations": 8,
+      "passed_ids": [
+        "IF01",
+        "IF02",
+        "IF03",
+        "IF04",
+        "IF05",
+        "IF06",
+        "IF08",
+        "IF10"
+      ],
+      "failed_ids": [
+        "IF07",
+        "IF09"
+      ]
+    },
+    "in_domain_no_data": {
+      "n": 10,
+      "passed": 0,
+      "pass_rate": 0.0,
+      "runtime_errors": 0,
+      "quality_passed": 8,
+      "quality_evaluated": 10,
+      "workflow_passed": 0,
+      "workflow_evaluated": 10,
+      "validity_passed": 10,
+      "quality_score_mean": 0.84,
+      "latency_s": {
+        "n": 10,
+        "mean": 8.22705806239992,
+        "median": 7.048828125,
+        "p90": 10.761515212198717,
+        "p95": 14.834530481099492,
+        "min": 2.6869976250000036,
+        "max": 18.90754575000028
+      },
+      "provider_latency_s": {
+        "n": 10,
+        "mean": 8.2327,
+        "median": 7.054,
+        "p90": 10.766199999999998,
+        "p95": 14.83959999999999,
+        "min": 2.694,
+        "max": 18.913
+      },
+      "telemetry_coverage": 10,
+      "usage": {
+        "model_calls": 10,
+        "model_errors": 0,
+        "input_tokens": 17803,
+        "output_tokens": 7955,
+        "total_tokens": 25758,
+        "cached_input_tokens": 14976,
+        "reasoning_tokens": 5952,
+        "retrieval_calls": 0,
+        "retrieval_errors": 0,
+        "empty_retrievals": 0,
+        "retrieved_chunks": 0,
+        "retrieval_latency_ms": 0,
+        "embedding_calls": 0,
+        "embedding_input_tokens": 0
+      },
+      "grader_usage": {
+        "total": 9228,
+        "prompt": 5135,
+        "completion": 4093,
+        "numRequests": 10
+      },
+      "cost_usd": {
+        "agent_chat_usd": 0.01699115,
+        "embedding_usd": 0,
+        "agent_usd": 0.01699115,
+        "grader_usd": 0.00946975,
+        "total_usd": 0.0264609
+      },
+      "retrieval_rounds": {
+        "0": 10
+      },
+      "retrieval_calls": {
+        "0": 10
+      },
+      "statuses": {
+        "out_of_domain": 1,
+        "answered": 8,
+        "needs_clarification": 1
+      },
+      "with_citations": 0,
+      "passed_ids": [],
+      "failed_ids": [
+        "NOD01",
+        "NOD02",
+        "NOD03",
+        "NOD04",
+        "NOD05",
+        "NOD06",
+        "NOD07",
+        "NOD08",
+        "NOD09",
+        "NOD10"
+      ]
+    },
+    "extra_calculation": {
+      "n": 10,
+      "passed": 9,
+      "pass_rate": 0.9,
+      "runtime_errors": 0,
+      "quality_passed": 9,
+      "quality_evaluated": 10,
+      "workflow_passed": 9,
+      "workflow_evaluated": 10,
+      "validity_passed": 10,
+      "quality_score_mean": 0.9,
+      "latency_s": {
+        "n": 10,
+        "mean": 35.54722408329999,
+        "median": 35.394047541500186,
+        "p90": 50.51706342500056,
+        "p95": 58.51563814999997,
+        "min": 4.846595625000191,
+        "max": 66.51421287499943
+      },
+      "provider_latency_s": {
+        "n": 10,
+        "mean": 35.5544,
+        "median": 35.4005,
+        "p90": 50.525299999999994,
+        "p95": 58.52314999999998,
+        "min": 4.852,
+        "max": 66.521
+      },
+      "telemetry_coverage": 10,
+      "usage": {
+        "model_calls": 28,
+        "model_errors": 0,
+        "input_tokens": 97057,
+        "output_tokens": 35149,
+        "total_tokens": 132206,
+        "cached_input_tokens": 16128,
+        "reasoning_tokens": 31680,
+        "retrieval_calls": 9,
+        "retrieval_errors": 0,
+        "empty_retrievals": 0,
+        "retrieved_chunks": 72,
+        "retrieval_latency_ms": 4030.5031659991073,
+        "embedding_calls": 9,
+        "embedding_input_tokens": 326
+      },
+      "grader_usage": {
+        "total": 10006,
+        "prompt": 5513,
+        "completion": 4493,
+        "numRequests": 10
+      },
+      "cost_usd": {
+        "agent_chat_usd": 0.09093345,
+        "embedding_usd": 6.52e-06,
+        "agent_usd": 0.09093997,
+        "grader_usd": 0.01036425,
+        "total_usd": 0.10130422
+      },
+      "retrieval_rounds": {
+        "0": 1,
+        "1": 9
+      },
+      "retrieval_calls": {
+        "0": 1,
+        "1": 9
+      },
+      "statuses": {
+        "needs_clarification": 1,
+        "answered": 9
+      },
+      "with_citations": 9,
+      "passed_ids": [
+        "CAL02",
+        "CAL03",
+        "CAL04",
+        "CAL05",
+        "CAL06",
+        "CAL07",
+        "CAL08",
+        "CAL09",
+        "CAL10"
+      ],
+      "failed_ids": [
+        "CAL01"
+      ]
+    },
+    "ambiguous_questions": {
+      "n": 10,
+      "passed": 7,
+      "pass_rate": 0.7,
+      "runtime_errors": 0,
+      "quality_passed": 8,
+      "quality_evaluated": 10,
+      "workflow_passed": 9,
+      "workflow_evaluated": 10,
+      "validity_passed": 10,
+      "quality_score_mean": 0.85,
+      "latency_s": {
+        "n": 10,
+        "mean": 6.835799904099804,
+        "median": 5.880738416499298,
+        "p90": 7.886742525000223,
+        "p95": 13.00049707500019,
+        "min": 3.4435242079998716,
+        "max": 18.11425162500018
+      },
+      "provider_latency_s": {
+        "n": 10,
+        "mean": 6.8422,
+        "median": 5.8870000000000005,
+        "p90": 7.8936999999999955,
+        "p95": 13.008849999999988,
+        "min": 3.449,
+        "max": 18.124
+      },
+      "telemetry_coverage": 10,
+      "usage": {
+        "model_calls": 12,
+        "model_errors": 0,
+        "input_tokens": 25770,
+        "output_tokens": 6183,
+        "total_tokens": 31953,
+        "cached_input_tokens": 16640,
+        "reasoning_tokens": 5120,
+        "retrieval_calls": 1,
+        "retrieval_errors": 0,
+        "empty_retrievals": 0,
+        "retrieved_chunks": 8,
+        "retrieval_latency_ms": 303.58479200003785,
+        "embedding_calls": 1,
+        "embedding_input_tokens": 28
+      },
+      "grader_usage": {
+        "total": 8744,
+        "prompt": 4168,
+        "completion": 4576,
+        "numRequests": 10
+      },
+      "cost_usd": {
+        "agent_chat_usd": 0.0150645,
+        "embedding_usd": 5.6e-07,
+        "agent_usd": 0.01506506,
+        "grader_usd": 0.010194,
+        "total_usd": 0.02525906
+      },
+      "retrieval_rounds": {
+        "0": 9,
+        "1": 1
+      },
+      "retrieval_calls": {
+        "0": 9,
+        "1": 1
+      },
+      "statuses": {
+        "needs_clarification": 9,
+        "answered": 1
+      },
+      "with_citations": 1,
+      "passed_ids": [
+        "AMB01",
+        "AMB02",
+        "AMB03",
+        "AMB05",
+        "AMB06",
+        "AMB08",
+        "AMB10"
+      ],
+      "failed_ids": [
+        "AMB04",
+        "AMB07",
+        "AMB09"
+      ]
+    },
+    "image_questions": {
+      "n": 10,
+      "passed": 5,
+      "pass_rate": 0.5,
+      "runtime_errors": 0,
+      "quality_passed": 5,
+      "quality_evaluated": 10,
+      "workflow_passed": 9,
+      "workflow_evaluated": 10,
+      "validity_passed": 10,
+      "quality_score_mean": 0.56,
+      "latency_s": {
+        "n": 10,
+        "mean": 28.768143412600146,
+        "median": 23.738487353999517,
+        "p90": 48.581783263101165,
+        "p95": 49.778899944050494,
+        "min": 7.472724042001573,
+        "max": 50.97601662499983
+      },
+      "provider_latency_s": {
+        "n": 10,
+        "mean": 28.775399999999998,
+        "median": 23.747999999999998,
+        "p90": 48.589,
+        "p95": 49.785999999999994,
+        "min": 7.478,
+        "max": 50.983
+      },
+      "telemetry_coverage": 10,
+      "usage": {
+        "model_calls": 32,
+        "model_errors": 0,
+        "input_tokens": 146249,
+        "output_tokens": 26850,
+        "total_tokens": 173099,
+        "cached_input_tokens": 16640,
+        "reasoning_tokens": 23488,
+        "retrieval_calls": 13,
+        "retrieval_errors": 0,
+        "empty_retrievals": 0,
+        "retrieved_chunks": 104,
+        "retrieval_latency_ms": 4267.74841599763,
+        "embedding_calls": 13,
+        "embedding_input_tokens": 563
+      },
+      "grader_usage": {
+        "total": 10027,
+        "prompt": 4976,
+        "completion": 5051,
+        "numRequests": 10
+      },
+      "cost_usd": {
+        "agent_chat_usd": 0.08651825,
+        "embedding_usd": 1.126e-05,
+        "agent_usd": 0.08652951,
+        "grader_usd": 0.011346,
+        "total_usd": 0.09787551
+      },
+      "retrieval_rounds": {
+        "1": 7,
+        "3": 2,
+        "0": 1
+      },
+      "retrieval_calls": {
+        "1": 7,
+        "3": 2,
+        "0": 1
+      },
+      "statuses": {
+        "answered": 9,
+        "needs_clarification": 1
+      },
+      "with_citations": 9,
+      "passed_ids": [
+        "IMG03",
+        "IMG04",
+        "IMG06",
+        "IMG08",
+        "IMG10"
+      ],
+      "failed_ids": [
+        "IMG01",
+        "IMG02",
+        "IMG05",
+        "IMG07",
+        "IMG09"
+      ]
+    },
+    "table_questions": {
+      "n": 10,
+      "passed": 6,
+      "pass_rate": 0.6,
+      "runtime_errors": 0,
+      "quality_passed": 6,
+      "quality_evaluated": 10,
+      "workflow_passed": 7,
+      "workflow_evaluated": 10,
+      "validity_passed": 10,
+      "quality_score_mean": 0.58,
+      "latency_s": {
+        "n": 10,
+        "mean": 21.77093715439987,
+        "median": 20.40019166700131,
+        "p90": 39.29802266309925,
+        "p95": 41.30981383155012,
+        "min": 6.478288874999635,
+        "max": 43.321605000001
+      },
+      "provider_latency_s": {
+        "n": 10,
+        "mean": 21.7781,
+        "median": 20.409,
+        "p90": 39.3061,
+        "p95": 41.31804999999999,
+        "min": 6.482,
+        "max": 43.33
+      },
+      "telemetry_coverage": 10,
+      "usage": {
+        "model_calls": 28,
+        "model_errors": 0,
+        "input_tokens": 125531,
+        "output_tokens": 20604,
+        "total_tokens": 146135,
+        "cached_input_tokens": 14976,
+        "reasoning_tokens": 17920,
+        "retrieval_calls": 11,
+        "retrieval_errors": 0,
+        "empty_retrievals": 0,
+        "retrieved_chunks": 88,
+        "retrieval_latency_ms": 4487.507874000585,
+        "embedding_calls": 11,
+        "embedding_input_tokens": 549
+      },
+      "grader_usage": {
+        "total": 10222,
+        "prompt": 4307,
+        "completion": 5915,
+        "numRequests": 10
+      },
+      "cost_usd": {
+        "agent_chat_usd": 0.06922115,
+        "embedding_usd": 1.098e-05,
+        "agent_usd": 0.06923213,
+        "grader_usd": 0.01290675,
+        "total_usd": 0.08213888
+      },
+      "retrieval_rounds": {
+        "3": 2,
+        "0": 3,
+        "1": 5
+      },
+      "retrieval_calls": {
+        "3": 2,
+        "0": 3,
+        "1": 5
+      },
+      "statuses": {
+        "answered": 7,
+        "needs_clarification": 3
+      },
+      "with_citations": 7,
+      "passed_ids": [
+        "TAB01",
+        "TAB03",
+        "TAB05",
+        "TAB06",
+        "TAB07",
+        "TAB08"
+      ],
+      "failed_ids": [
+        "TAB02",
+        "TAB04",
+        "TAB09",
+        "TAB10"
+      ]
+    }
+  },
+  "by_retrieval_rounds": {
+    "0": {
+      "n": 42,
+      "passed": 9,
+      "pass_rate": 0.21428571428571427,
+      "runtime_errors": 0,
+      "quality_passed": 17,
+      "quality_evaluated": 42,
+      "workflow_passed": 19,
+      "workflow_evaluated": 42,
+      "validity_passed": 42,
+      "quality_score_mean": 0.4642857142857143,
+      "latency_s": {
+        "n": 42,
+        "mean": 6.106844576404564,
+        "median": 6.005754853999861,
+        "p90": 9.672643041599075,
+        "p95": 11.880329119049374,
+        "min": 1.9424069590004365,
+        "max": 18.90754575000028
+      },
+      "provider_latency_s": {
+        "n": 42,
+        "mean": 6.112928571428571,
+        "median": 6.0120000000000005,
+        "p90": 9.6797,
+        "p95": 11.886399999999991,
+        "min": 1.948,
+        "max": 18.913
+      },
+      "telemetry_coverage": 42,
+      "usage": {
+        "model_calls": 42,
+        "model_errors": 0,
+        "input_tokens": 74575,
+        "output_tokens": 23675,
+        "total_tokens": 98250,
+        "cached_input_tokens": 66560,
+        "reasoning_tokens": 18944,
+        "retrieval_calls": 0,
+        "retrieval_errors": 0,
+        "empty_retrievals": 0,
+        "retrieved_chunks": 0,
+        "retrieval_latency_ms": 0,
+        "embedding_calls": 0,
+        "embedding_input_tokens": 0
+      },
+      "grader_usage": {
+        "total": 35925,
+        "prompt": 18345,
+        "completion": 17580,
+        "numRequests": 42
+      },
+      "cost_usd": {
+        "agent_chat_usd": 0.05101775,
+        "embedding_usd": 0,
+        "agent_usd": 0.05101775,
+        "grader_usd": 0.03974625,
+        "total_usd": 0.090764
+      },
+      "retrieval_rounds": {
+        "0": 42
+      },
+      "retrieval_calls": {
+        "0": 42
+      },
+      "statuses": {
+        "needs_clarification": 22,
+        "out_of_domain": 12,
+        "answered": 8
+      },
+      "with_citations": 0,
+      "passed_ids": [
+        "OOD04",
+        "OOD05",
+        "AMB01",
+        "AMB02",
+        "AMB03",
+        "AMB05",
+        "AMB06",
+        "AMB08",
+        "AMB10"
+      ],
+      "failed_ids": [
+        "ACC10",
+        "TOOL01",
+        "TOOL10",
+        "OOD01",
+        "OOD02",
+        "OOD03",
+        "OOD06",
+        "OOD07",
+        "OOD08",
+        "OOD09",
+        "OOD10",
+        "MUL05",
+        "MUL06",
+        "MUL09",
+        "IF07",
+        "IF09",
+        "NOD01",
+        "NOD02",
+        "NOD03",
+        "NOD04",
+        "NOD05",
+        "NOD06",
+        "NOD07",
+        "NOD08",
+        "NOD09",
+        "NOD10",
+        "CAL01",
+        "AMB07",
+        "AMB09",
+        "IMG07",
+        "TAB02",
+        "TAB04",
+        "TAB10"
+      ]
+    },
+    "1": {
+      "n": 47,
+      "passed": 42,
+      "pass_rate": 0.8936170212765957,
+      "runtime_errors": 0,
+      "quality_passed": 43,
+      "quality_evaluated": 47,
+      "workflow_passed": 46,
+      "workflow_evaluated": 47,
+      "validity_passed": 47,
+      "quality_score_mean": 0.948936170212766,
+      "latency_s": {
+        "n": 47,
+        "mean": 29.626292642787412,
+        "median": 27.8415315000002,
+        "p90": 43.291931900000414,
+        "p95": 49.64099861690046,
+        "min": 15.170987749999767,
+        "max": 66.51421287499943
+      },
+      "provider_latency_s": {
+        "n": 47,
+        "mean": 29.683255319148937,
+        "median": 27.846,
+        "p90": 43.29879999999999,
+        "p95": 49.64679999999999,
+        "min": 15.177,
+        "max": 66.521
+      },
+      "telemetry_coverage": 47,
+      "usage": {
+        "model_calls": 141,
+        "model_errors": 0,
+        "input_tokens": 558254,
+        "output_tokens": 128803,
+        "total_tokens": 687057,
+        "cached_input_tokens": 76032,
+        "reasoning_tokens": 112704,
+        "retrieval_calls": 54,
+        "retrieval_errors": 0,
+        "empty_retrievals": 0,
+        "retrieved_chunks": 432,
+        "retrieval_latency_ms": 19813.889874998495,
+        "embedding_calls": 54,
+        "embedding_input_tokens": 2164
+      },
+      "grader_usage": {
+        "total": 52068,
+        "prompt": 24926,
+        "completion": 27142,
+        "numRequests": 47
+      },
+      "cost_usd": {
+        "agent_chat_usd": 0.3800623,
+        "embedding_usd": 4.328e-05,
+        "agent_usd": 0.38010558,
+        "grader_usd": 0.0605155,
+        "total_usd": 0.44062108
+      },
+      "retrieval_rounds": {
+        "1": 47
+      },
+      "retrieval_calls": {
+        "1": 41,
+        "2": 5,
+        "3": 1
+      },
+      "statuses": {
+        "answered": 47
+      },
+      "with_citations": 47,
+      "passed_ids": [
+        "ACC02",
+        "ACC06",
+        "ACC07",
+        "ACC08",
+        "ACC09",
+        "TOOL02",
+        "TOOL04",
+        "TOOL05",
+        "TOOL06",
+        "TOOL07",
+        "TOOL09",
+        "MUL02",
+        "MUL03",
+        "MUL04",
+        "MUL07",
+        "MUL08",
+        "MUL10",
+        "IF01",
+        "IF02",
+        "IF05",
+        "IF06",
+        "IF08",
+        "IF10",
+        "CAL02",
+        "CAL03",
+        "CAL04",
+        "CAL05",
+        "CAL06",
+        "CAL07",
+        "CAL08",
+        "CAL09",
+        "CAL10",
+        "IMG03",
+        "IMG04",
+        "IMG06",
+        "IMG08",
+        "IMG10",
+        "TAB03",
+        "TAB05",
+        "TAB06",
+        "TAB07",
+        "TAB08"
+      ],
+      "failed_ids": [
+        "ACC01",
+        "ACC04",
+        "AMB04",
+        "IMG01",
+        "IMG02"
+      ]
+    },
+    "2": {
+      "n": 3,
+      "passed": 3,
+      "pass_rate": 1.0,
+      "runtime_errors": 0,
+      "quality_passed": 3,
+      "quality_evaluated": 3,
+      "workflow_passed": 3,
+      "workflow_evaluated": 3,
+      "validity_passed": 3,
+      "quality_score_mean": 1,
+      "latency_s": {
+        "n": 3,
+        "mean": 39.111188527999424,
+        "median": 38.984530124998855,
+        "p90": 44.76287995859966,
+        "p95": 45.48517368779976,
+        "min": 32.14156804199956,
+        "max": 46.20746741699986
+      },
+      "provider_latency_s": {
+        "n": 3,
+        "mean": 39.118,
+        "median": 38.99,
+        "p90": 44.77,
+        "p95": 45.4925,
+        "min": 32.149,
+        "max": 46.215
+      },
+      "telemetry_coverage": 3,
+      "usage": {
+        "model_calls": 12,
+        "model_errors": 0,
+        "input_tokens": 75689,
+        "output_tokens": 12651,
+        "total_tokens": 88340,
+        "cached_input_tokens": 4992,
+        "reasoning_tokens": 11200,
+        "retrieval_calls": 8,
+        "retrieval_errors": 0,
+        "empty_retrievals": 0,
+        "retrieved_chunks": 64,
+        "retrieval_latency_ms": 2220.118207998894,
+        "embedding_calls": 8,
+        "embedding_input_tokens": 496
+      },
+      "grader_usage": {
+        "total": 2919,
+        "prompt": 1656,
+        "completion": 1263,
+        "numRequests": 3
+      },
+      "cost_usd": {
+        "agent_chat_usd": 0.04310105,
+        "embedding_usd": 9.92e-06,
+        "agent_usd": 0.04311097,
+        "grader_usd": 0.00294,
+        "total_usd": 0.04605097
+      },
+      "retrieval_rounds": {
+        "2": 3
+      },
+      "retrieval_calls": {
+        "4": 1,
+        "2": 2
+      },
+      "statuses": {
+        "answered": 3
+      },
+      "with_citations": 3,
+      "passed_ids": [
+        "TOOL03",
+        "IF03",
+        "IF04"
+      ],
+      "failed_ids": []
+    },
+    "3": {
+      "n": 8,
+      "passed": 3,
+      "pass_rate": 0.375,
+      "runtime_errors": 0,
+      "quality_passed": 3,
+      "quality_evaluated": 8,
+      "workflow_passed": 8,
+      "workflow_evaluated": 8,
+      "validity_passed": 8,
+      "quality_score_mean": 0.35,
+      "latency_s": {
+        "n": 8,
+        "mean": 46.96936709387569,
+        "median": 45.63021543750074,
+        "p90": 58.11101997500027,
+        "p95": 66.43519055000078,
+        "min": 35.333911708001324,
+        "max": 74.7593611250013
+      },
+      "provider_latency_s": {
+        "n": 8,
+        "mean": 47.074625,
+        "median": 45.638,
+        "p90": 58.118199999999995,
+        "p95": 66.44259999999998,
+        "min": 35.338,
+        "max": 74.767
+      },
+      "telemetry_coverage": 8,
+      "usage": {
+        "model_calls": 40,
+        "model_errors": 0,
+        "input_tokens": 345493,
+        "output_tokens": 34936,
+        "total_tokens": 380429,
+        "cached_input_tokens": 13312,
+        "reasoning_tokens": 30080,
+        "retrieval_calls": 33,
+        "retrieval_errors": 0,
+        "empty_retrievals": 0,
+        "retrieved_chunks": 264,
+        "retrieval_latency_ms": 9784.314331000132,
+        "embedding_calls": 33,
+        "embedding_input_tokens": 1858
+      },
+      "grader_usage": {
+        "total": 9004,
+        "prompt": 4550,
+        "completion": 4454,
+        "numRequests": 8
+      },
+      "cost_usd": {
+        "agent_chat_usd": 0.15325005,
+        "embedding_usd": 3.716e-05,
+        "agent_usd": 0.15328720999999998,
+        "grader_usd": 0.0100455,
+        "total_usd": 0.16333271
+      },
+      "retrieval_rounds": {
+        "3": 8
+      },
+      "retrieval_calls": {
+        "3": 7,
+        "12": 1
+      },
+      "statuses": {
+        "answered": 8
+      },
+      "with_citations": 8,
+      "passed_ids": [
+        "ACC05",
+        "MUL01",
+        "TAB01"
+      ],
+      "failed_ids": [
+        "ACC03",
+        "TOOL08",
+        "IMG05",
+        "IMG09",
+        "TAB09"
+      ]
+    }
+  },
+  "latency_passed_s": {
+    "n": 57,
+    "mean": 27.878445024175576,
+    "median": 26.385164875000555,
+    "p90": 46.90001080020011,
+    "p95": 50.33937078360031,
+    "min": 3.4435242079998716,
+    "max": 74.7593611250013
+  },
+  "latency_failed_s": {
+    "n": 43,
+    "mean": 12.859078194813856,
+    "median": 7.026772791999974,
+    "p90": 36.073583241601234,
+    "p95": 38.63351339229921,
+    "min": 1.9424069590004365,
+    "max": 50.97601662499983
+  },
+  "slowest_ids": [
+    "MUL01",
+    "CAL10",
+    "MUL10",
+    "IMG05",
+    "MUL04"
+  ],
+  "expensive_ids": [
+    "MUL01",
+    "ACC05",
+    "TOOL03",
+    "IMG09",
+    "IMG05"
+  ],
+  "retrieval_provenance": {
+    "full_run_traces": 100,
+    "grounded_questions": 69,
+    "grounded_passed": 48,
+    "grounded_retrieved": 57,
+    "required_source_references": 86,
+    "required_documents_retrieved": 63,
+    "required_pages_retrieved": 35,
+    "questions_all_expected_documents": 51,
+    "questions_all_expected_pages": 28,
+    "repeated_chunks_within_questions": 112,
+    "returned_chunks": 760,
+    "context_insufficient": 7,
+    "context_insufficient_strict_passed": 3
+  },
+  "preparation_costs_usd": {
+    "two_smoke_runs": 0.01506029,
+    "preparation_plus_full_evaluation": 0.75582905
+  }
+}

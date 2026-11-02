@@ -1,0 +1,255 @@
+[
+  {
+    "id": "FMT01",
+    "question": "What was Google's (Alphabet's) total revenue in Q1 fiscal 2025? Return only the number in millions, without commas, currency symbols, prose, or citations.",
+    "result": {
+      "status": "answered",
+      "answer": "90234",
+      "citations": [
+        "PDF | alphabet | FY2025 Q1 | p. 11",
+        "Earnings Slides | alphabet | FY2025 Q1 | p. 4",
+        "PDF | alphabet | FY2025 Q2 | p. 13",
+        "PDF | alphabet | FY2025 Q1 | p. 36",
+        "PDF | alphabet | FY2025 Q3 | p. 13",
+        "PDF | alphabet | FY2025 Q4 | p. 61"
+      ],
+      "retrieval_attempts": 1,
+      "tool_calls": [
+        {
+          "name": "listed_companies",
+          "arguments": {}
+        },
+        {
+          "name": "company_periods",
+          "arguments": {
+            "company": "Alphabet"
+          }
+        }
+      ]
+    },
+    "latency_s": 12.005954958000075,
+    "telemetry": {
+      "model_calls": 5,
+      "model_errors": 0,
+      "input_tokens": 9985,
+      "output_tokens": 1048,
+      "total_tokens": 11033,
+      "cached_input_tokens": 0,
+      "reasoning_tokens": 768,
+      "retrieval_calls": 1,
+      "retrieval_errors": 0,
+      "empty_retrievals": 0,
+      "retrieved_chunks": 8,
+      "retrieval_latency_ms": 308.0907080002362,
+      "embedding_calls": 1,
+      "embedding_input_tokens": 9,
+      "model_names": [
+        "gpt-5-mini",
+        "gpt-5-nano",
+        "jev-latest"
+      ]
+    }
+  },
+  {
+    "id": "IMG02",
+    "question": "On Alphabet's operating-income slide, which 2025 operating margin is higher: Q4 or full year?",
+    "result": {
+      "status": "answered",
+      "answer": "Q4 is higher.\n\n- Q4 2025 operating margin: 41.9% [Earnings Slides | alphabet | FY2025 Q4 | p. 8].  \n- FY 2025 (full year) operating margin: 32.0% [Earnings Slides | alphabet | FY2025 Q4 | p. 6].",
+      "citations": [
+        "Earnings Slides | alphabet | FY2025 Q4 | p. 8",
+        "Earnings Slides | alphabet | FY2025 Q4 | p. 9",
+        "Earnings Slides | alphabet | FY2025 Q4 | p. 6",
+        "Earnings Slides | alphabet | FY2025 Q4 | p. 6-10",
+        "Earnings Slides | alphabet | FY2025 Q1 | p. 4"
+      ],
+      "retrieval_attempts": 1,
+      "tool_calls": [
+        {
+          "name": "listed_companies",
+          "arguments": {}
+        },
+        {
+          "name": "company_periods",
+          "arguments": {
+            "company": "Alphabet"
+          }
+        }
+      ]
+    },
+    "latency_s": 14.567134708002413,
+    "telemetry": {
+      "model_calls": 5,
+      "model_errors": 0,
+      "input_tokens": 9792,
+      "output_tokens": 1558,
+      "total_tokens": 11350,
+      "cached_input_tokens": 0,
+      "reasoning_tokens": 1152,
+      "retrieval_calls": 1,
+      "retrieval_errors": 0,
+      "empty_retrievals": 0,
+      "retrieved_chunks": 8,
+      "retrieval_latency_ms": 391.89674999943236,
+      "embedding_calls": 1,
+      "embedding_input_tokens": 24,
+      "model_names": [
+        "gpt-5-mini",
+        "gpt-5-nano",
+        "jev-latest"
+      ]
+    }
+  },
+  {
+    "id": "V201",
+    "question": "What was Amazon's earnings in 2025?",
+    "result": {
+      "status": "answered",
+      "answer": "- Net income (GAAP), Year ended December 31, 2025: $77,670 million [10-K | amazon | FY2025 Q4 | p. 37].\n\n- Diluted earnings per share, Year ended December 31, 2025: $7.17 [10-K | amazon | FY2025 Q4 | p. 37].",
+      "citations": [
+        "10-K | amazon | FY2025 Q4 | p. 24",
+        "10-K | amazon | FY2025 Q4 | p. 37",
+        "Earnings Release (PDF) | amazon | FY2025 Q1 | p. 10",
+        "Earnings Release (PDF) | amazon | FY2025 Q1 | p. 9",
+        "Earnings Release (PDF) | amazon | FY2025 Q1 | p. 1",
+        "Earnings Release (PDF) | amazon | FY2025 Q4 | p. 9",
+        "Earnings Release (PDF) | amazon | FY2025 Q1 | p. 7",
+        "Earnings Release (PDF) | amazon | FY2025 Q4 | p. 7",
+        "Earnings Release (PDF) | amazon | FY2025 Q1 | p. 5",
+        "10-K | amazon | FY2025 Q4 | p. 27"
+      ],
+      "retrieval_attempts": 2,
+      "tool_calls": [
+        {
+          "name": "listed_companies",
+          "arguments": {}
+        },
+        {
+          "name": "company_periods",
+          "arguments": {
+            "company": "Amazon"
+          }
+        }
+      ]
+    },
+    "latency_s": 18.780544541998097,
+    "telemetry": {
+      "model_calls": 6,
+      "model_errors": 0,
+      "input_tokens": 24500,
+      "output_tokens": 2134,
+      "total_tokens": 26634,
+      "cached_input_tokens": 0,
+      "reasoning_tokens": 1664,
+      "retrieval_calls": 2,
+      "retrieval_errors": 0,
+      "empty_retrievals": 0,
+      "retrieved_chunks": 16,
+      "retrieval_latency_ms": 566.9560000023921,
+      "embedding_calls": 2,
+      "embedding_input_tokens": 50,
+      "model_names": [
+        "gpt-5-mini",
+        "gpt-5-nano",
+        "jev-latest"
+      ]
+    }
+  },
+  {
+    "id": "TAB10",
+    "question": "In Netflix's 2025 statements, what amount is shown for Provision for income taxes?",
+    "result": {
+      "status": "answered",
+      "answer": "Provision for income taxes (Year ended December 31, 2025): $1,741,351 (in thousands) = $1,741,351,000 [Netflix FY2025 annual report / Form 10-K, p. 68].",
+      "citations": [
+        "Netflix FY2025 annual report / Form 10-K | netflix | FY2025 Q4 | p. 68",
+        "Netflix FY2025 annual report / Form 10-K | netflix | FY2025 Q4 | p. 67",
+        "Netflix FY2025 annual report / Form 10-K | netflix | FY2025 Q4 | p. 70",
+        "Netflix FY2024 annual report / Form 10-K | netflix | FY2024 Q4 | p. 64"
+      ],
+      "retrieval_attempts": 1,
+      "tool_calls": [
+        {
+          "name": "listed_companies",
+          "arguments": {}
+        },
+        {
+          "name": "company_periods",
+          "arguments": {
+            "company": "Netflix"
+          }
+        }
+      ]
+    },
+    "latency_s": 15.661893374999636,
+    "telemetry": {
+      "model_calls": 5,
+      "model_errors": 0,
+      "input_tokens": 9280,
+      "output_tokens": 1583,
+      "total_tokens": 10863,
+      "cached_input_tokens": 0,
+      "reasoning_tokens": 1216,
+      "retrieval_calls": 1,
+      "retrieval_errors": 0,
+      "empty_retrievals": 0,
+      "retrieved_chunks": 8,
+      "retrieval_latency_ms": 270.814874998905,
+      "embedding_calls": 1,
+      "embedding_input_tokens": 12,
+      "model_names": [
+        "gpt-5-mini",
+        "gpt-5-nano",
+        "jev-latest"
+      ]
+    }
+  },
+  {
+    "id": "IMG09",
+    "question": "On Alphabet's Q4 2025 Google Cloud chart, what revenue and operating-margin labels are shown?",
+    "result": {
+      "status": "answered",
+      "answer": "I cannot find the Google Cloud Q4 FY2025 chart or its labels in the provided evidence. None of the retrieved slides/text chunks cover Q4 FY2025 \u2014 the available earnings-slide extracts are for Q1, Q2 and Q3 FY2025 (all referencing page 7) [Earnings Slides | alphabet | FY2025 Q1 | p. 7; Earnings Slides | alphabet | FY2025 Q2 | p. 7; Earnings Slides | alphabet | FY2025 Q3 | p. 7].\n\nIf it helps, here are the Google Cloud labels shown in the available quarters (all from page 7 of the cited slides):\n\n- Q1 FY2025 (page 7): Revenues shown in the slide\u2019s revenue chart: 9,574 (Q1\u201924) and 12,260 (Q1\u201925) [Earnings Slides | alphabet | FY2025 Q1 | p. 7]. Operating-margin labels shown below the operating-income chart: 9.4% (Q1\u201924) and 17.8% (Q1\u201925) [Earnings Slides | alphabet | FY2025 Q1 | p. 7].\n\n- Q2 FY2025 (page 7): Revenues shown: 10,347 (Q2\u201924) and 13,624 (Q2\u201925) [Earnings Slides | alphabet | FY2025 Q2 | p. 7]. Operating-margin labels shown: 11.3% (Q2\u201924) and 20.7% (Q2\u201925) [Earnings Slides | alphabet | FY2025 Q2 | p. 7].\n\n- Q3 FY2025 (page 7): Operating-margin labels shown: 17.1% (Q3\u201924) and 23.7% (Q3\u201925) [Earnings Slides | alphabet | FY2025 Q3 | p. 7]. (The Q3 slide also shows operating income values on the chart: 1,947 and 3,594 $MM) [Earnings Slides | alphabet | FY2025 Q3 | p. 7].\n\nWould you like me to search for Alphabet\u2019s Q4 FY2025 earnings slides (page 7) to extract the exact Q4 revenue and operating-margin labels?",
+      "citations": [
+        "Earnings Slides | alphabet | FY2025 Q1 | p. 7",
+        "Earnings Slides | alphabet | FY2025 Q3 | p. 7",
+        "Earnings Slides | alphabet | FY2025 Q2 | p. 7"
+      ],
+      "retrieval_attempts": 3,
+      "tool_calls": [
+        {
+          "name": "listed_companies",
+          "arguments": {}
+        },
+        {
+          "name": "company_periods",
+          "arguments": {
+            "company": "Alphabet"
+          }
+        }
+      ]
+    },
+    "latency_s": 19.38421691700205,
+    "telemetry": {
+      "model_calls": 6,
+      "model_errors": 0,
+      "input_tokens": 21666,
+      "output_tokens": 1804,
+      "total_tokens": 23470,
+      "cached_input_tokens": 0,
+      "reasoning_tokens": 960,
+      "retrieval_calls": 3,
+      "retrieval_errors": 0,
+      "empty_retrievals": 0,
+      "retrieved_chunks": 24,
+      "retrieval_latency_ms": 2165.150999004254,
+      "embedding_calls": 3,
+      "embedding_input_tokens": 70,
+      "model_names": [
+        "gpt-5-mini",
+        "gpt-5-nano",
+        "jev-latest"
+      ]
+    }
+  }
+]

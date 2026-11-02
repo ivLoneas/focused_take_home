@@ -1,0 +1,50 @@
+[
+  {
+    "id": "01a19bf3-2d89-7163-94ac-6ffd8770487a",
+    "project_id": "01a19be6-a6b0-7980-be04-9d8caa856ea8",
+    "start_time": "2026-11-02 11:09:27.817186+00:00",
+    "error": null,
+    "nested_runs": 13,
+    "run_types": [
+      "chain",
+      "llm",
+      "prompt",
+      "retriever",
+      "tool"
+    ],
+    "total_tokens": 2278,
+    "url": "https://eu.smith.langchain.com/o/b8806205-c100-4796-9435-f260f5551f1e/projects/p/01a19be6-a6b0-7980-be04-9d8caa856ea8/r/01a19bf3-2d89-7163-94ac-6ffd8770487a?poll=true"
+  },
+  {
+    "id": "01a19bf3-17e7-71e9-bdd1-00f9dd6a0fdd",
+    "project_id": "01a19be6-a6b0-7980-be04-9d8caa856ea8",
+    "start_time": "2026-11-02 11:09:22.279668+00:00",
+    "error": null,
+    "nested_runs": 22,
+    "run_types": [
+      "chain",
+      "llm",
+      "prompt",
+      "retriever",
+      "tool"
+    ],
+    "total_tokens": 2220,
+    "url": "https://eu.smith.langchain.com/o/b8806205-c100-4796-9435-f260f5551f1e/projects/p/01a19be6-a6b0-7980-be04-9d8caa856ea8/r/01a19bf3-17e7-71e9-bdd1-00f9dd6a0fdd?poll=true"
+  },
+  {
+    "id": "01a19bf2-b6a2-7727-bdde-081e0bae47f8",
+    "project_id": "01a19be6-a6b0-7980-be04-9d8caa856ea8",
+    "start_time": "2026-11-02 11:08:57.378501+00:00",
+    "error": null,
+    "nested_runs": 18,
+    "run_types": [
+      "chain",
+      "llm",
+      "prompt",
+      "retriever",
+      "tool"
+    ],
+    "total_tokens": 11771,
+    "url": "https://eu.smith.langchain.com/o/b8806205-c100-4796-9435-f260f5551f1e/projects/p/01a19be6-a6b0-7980-be04-9d8caa856ea8/r/01a19bf2-b6a2-7727-bdde-081e0bae47f8?poll=true"
+  }
+]

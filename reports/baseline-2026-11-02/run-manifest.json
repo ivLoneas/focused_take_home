@@ -1,0 +1,90 @@
+{
+  "date": "2026-11-02",
+  "git_head": "4d6e48ddd13bd5038bbc147cf04e18c1e4642c2c",
+  "worktree_dirty": true,
+  "settings": {
+    "chat_model": "gpt-5-mini",
+    "embedding_model": "text-embedding-3-small",
+    "embedding_dimensions": 1536,
+    "retrieval_limit": 8,
+    "max_retrieval_attempts": 3,
+    "langsmith_tracing": true,
+    "langsmith_project": "focused-take-home",
+    "langsmith_endpoint": "https://eu.api.smith.langchain.com",
+    "langsmith_agent_id": "focused-baseline",
+    "langsmith_agent_environment": "local",
+    "grader_model": "gpt-5-mini",
+    "promptfoo_concurrency": 4,
+    "promptfoo_response_cache": false,
+    "repeat": 1,
+    "langsmith_destination_mode": "explicit agent address"
+  },
+  "files_sha256": {
+    "evals/evals_tests.csv": "eccc3060e567e57eb30c509a065936a7a0d410dcda26e39850388930ec40c324",
+    "evals/promptfooconfig.yaml": "f1c92b92ff26d4ca313ad8355aac210f16688bc555d1559e345ecc01788db583",
+    "evals/assertions.py": "047f5b6c38c5c8c22604e04802d5571a629e10fa343932cd2ea5c6510873669b",
+    "evals/generate_tests.py": "8c8aa65c02aa9e0220c49eb66e79c6312bd255aec52073ed3c587ccd7aa41623",
+    "evals/provider.py": "c8dac992042b018c05d97af2ea9452090aef112a392f6a47449fb73991becc6c",
+    "evals/telemetry.py": "3e4f898cf6a7a461e1246947344fdc50823be98ea2f5792dc2b3512aa18ae4a7",
+    "agents/baseline/baseline_agent.py": "ed5ebb24f9799bc24a41d97c91f713619149ea520ce4644380d0f3d91f890ad6",
+    "agents/baseline/models.py": "1e1fee7d41cf372a1e04b613f253d5bf050f29c01aecd363c55b05dd3005c26b",
+    "agents/baseline/prompts/templates.py": "def0e3d3078831002784b093dfc07b399954e3554e14245beee5447c535d74f0",
+    "agents/tools/retrieval.py": "fe6f87735e8aab7d58e9e948c9980e44e377ee24158d3858c6ea2223d153222d",
+    "etl/store.py": "6454ff0bcfbfa7ef93bc905210b5f85802eb12527cd3c92817f3caca03a3920d",
+    "etl/schema.sql": "526b1af9bc46ee7458571d4da72ef1603af3564a51e6a26370b5e712a1810d4c",
+    "data/active_manifest.csv": "2a390a2ca11db06a054e242626865fefbd01ff329c19dc9a7ddcc2e086a45142",
+    "uv.lock": "81616412ffc24cd4291cb05ced1caee884f29b49541e18906bc612b6bc9aee55",
+    "evals/package-lock.json": "7452b51d2a5cdb75ccbfcb0f1f8ecb150c82971b6d314c91e120019f2584cf08",
+    "agents/settings.py": "4701b0534b9c2bcdb5b1752e51211070241c8276cd21d7d8143cbe2f13a6d58a"
+  },
+  "corpus": {
+    "documents": 100,
+    "pages": 3503,
+    "chunks": 20274,
+    "chunks_by_company": {
+      "Alphabet": 3353,
+      "Amazon": 5829,
+      "Apple": 2779,
+      "Meta": 5344,
+      "Netflix": 2969
+    },
+    "paths_and_checksums_match_manifest": true
+  },
+  "pricing": {
+    "source": "https://developers.openai.com/api/docs/pricing",
+    "checked_date": "2026-11-02",
+    "usd_per_million_tokens": {
+      "gpt-5-mini": {
+        "input": 0.25,
+        "cached_input": 0.025,
+        "output": 2
+      },
+      "text-embedding-3-small": {
+        "input": 0.02
+      }
+    }
+  },
+  "promptfoo_eval_id": "eval-MoB-2026-11-02T11:08:56",
+  "runtime": {
+    "python": "3.14.3",
+    "node": "v26.7.0",
+    "promptfoo": "0.125.1",
+    "npm": "11.19.0"
+  },
+  "test_suite": {
+    "passed": 653,
+    "failed": 0,
+    "skipped": 0,
+    "warnings": 13,
+    "duration_s": 4.1,
+    "database": "isolated validation database",
+    "tracing": "disabled for network-free fake model/unit tests"
+  },
+  "run_duration_s": 698,
+  "run_finished_at_utc": "2026-11-02T11:20:34.995703+00:00",
+  "tracing_verification": {
+    "completed_baseline_roots": 100,
+    "endpoint": "https://eu.api.smith.langchain.com",
+    "environment": "local"
+  }
+}

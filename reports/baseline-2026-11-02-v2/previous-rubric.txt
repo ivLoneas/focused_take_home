@@ -1,0 +1,15 @@
+Evaluate the actual assistant output against this reviewed financial-report test case.
+
+Expected answer or behavior:
+{{answer}}
+
+Expected supporting source or corpus boundary:
+{{source}}
+
+Reviewer annotations:
+{{annotations}}
+
+Pass only when the output is factually consistent with the expected answer, follows the requested scope or refusal
+behavior, preserves material units and periods, and does not invent evidence. Equivalent wording and mathematically
+equivalent values are acceptable. A source citation need not use identical prose, but grounded answers must identify
+the expected report or an unambiguously equivalent citation. Return a score from 0 to 1 and pass only at 0.8 or above.
