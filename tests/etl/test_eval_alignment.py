@@ -15,7 +15,7 @@ FAANG = ("alphabet", "amazon", "apple", "meta", "netflix")
 TOPICS = {
     "deterministic_accuracy", "tool_usage", "out_of_distribution", "multiple_companies",
     "conditional_reasoning", "in_domain_no_data", "extra_calculation", "ambiguous_questions",
-    "image_questions", "table_questions",
+    "image_questions", "table_questions", "formatting_questions",
 }
 NEGATIVE_TOPICS = {"out_of_distribution", "in_domain_no_data"}
 PDF_REFERENCE = re.compile(r"data/raw/[^\s\"'()<>,;]+?\.pdf", re.IGNORECASE)
@@ -36,12 +36,16 @@ def corpus():
     return inventory, {f"data/raw/{item.path}" for item in active}
 
 
-def test_evaluation_has_100_unique_ids_and_ten_rows_per_topic(evaluation_rows):
-    assert len(evaluation_rows) == 100
+def test_evaluation_has_114_unique_ids_with_coverage_and_formatting_cases(evaluation_rows):
+    assert len(evaluation_rows) == 114
     ids = [row["id"].strip() for row in evaluation_rows]
     assert all(ids), "Every evaluation row needs a nonempty ID"
-    assert len(set(ids)) == 100, "Evaluation IDs must be unique"
-    assert Counter(row["topic"] for row in evaluation_rows) == {topic: 10 for topic in TOPICS}
+    assert len(set(ids)) == 114, "Evaluation IDs must be unique"
+    expected = {topic: 10 for topic in TOPICS}
+    expected["deterministic_accuracy"] = 11
+    expected["ambiguous_questions"] = 9
+    expected["tool_usage"] = 14
+    assert Counter(row["topic"] for row in evaluation_rows) == expected
 
 
 def test_active_corpus_manifest_matches_dynamic_newest_100(corpus):

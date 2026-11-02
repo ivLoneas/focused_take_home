@@ -68,14 +68,30 @@ A restore-tested snapshot of the complete 100-document Gold database is committe
 
 ## Agent retrieval
 
-`agents.retrieval.PgVectorRetriever` is a model-independent LangChain `BaseRetriever` over the Gold pgvector store. It
-accepts injected query embeddings and a database connection factory, supports optional company and fiscal-year
-filters, and returns `Document` objects with source, hierarchy, page, and score metadata. The embedding implementation
+The tools and their contracts live in [`agents/tools`](agents/tools/README.md).
+`agents.tools.PgVectorRetriever` is a model-independent LangChain `BaseRetriever` over the Gold pgvector store. It
+accepts injected query embeddings, a database connection factory, and a required company literal (`Alphabet`, `Amazon`,
+`Apple`, `Meta`, or `Netflix`). Each company has its own `etl_chunks_<company>` table and vector index. An optional
+fiscal-year filter narrows that table. It returns `Document` objects with source, hierarchy, page, and score metadata. The embedding implementation
 must be compatible with the vectors used to build the Gold index.
 
 The baseline graph's custom evidence contract is supported by
-`agents.retrieval.BaselineRetrieverAdapter`. See [`agents/baseline/AGENTS.md`](agents/baseline/AGENTS.md) for a complete
+`agents.tools.BaselineRetrieverAdapter`. See [`agents/baseline/AGENTS.md`](agents/baseline/AGENTS.md) for a complete
 configuration example.
+
+The workflow selects companies explicitly and calls retrieval separately for each company in a comparison.
+`BaselineRetrieverAdapter.as_tool()` exposes required `company` and `query` arguments with the literal company/table
+mapping in its description. Unsupported or missing company selection fails before retrieval.
+
+To migrate an existing shared `etl_chunks` table without re-embedding, back up the database and apply the schema in
+one transaction (ETL initialization also performs this migration):
+
+```sh
+docker compose exec -T postgres psql -U rag -d rag -v ON_ERROR_STOP=1 --single-transaction < etl/schema.sql
+```
+
+The migration preserves report metadata, chunks, provenance, and vectors, then removes the legacy shared table.
+Rerunning it is safe; an unknown company aborts the transaction. Database constraints enforce company/table alignment.
 
 ## Web interface
 
@@ -84,7 +100,7 @@ browser saves recent runs in `localStorage`; it never sends prior turns to the A
 or session state.
 
 See [Quick start: web agent](#quick-start-web-agent) for launch commands. The baseline agent may answer, request a
-missing company/period/metric, or reject an out-of-domain question; retrieval is attempted up to three times before it
+missing company/period/metric, or reject an out-of-domain question; retrieval runs for up to three rounds before it
 formulates its evidence-bound response.
 
 ## LangSmith observability

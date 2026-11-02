@@ -17,8 +17,8 @@ from pydantic import Field, SecretStr, ValidationError
 
 from agents.baseline import baseline_agent as baseline_module
 from agents.baseline.baseline_agent import BaselineAgent
-from agents.retrieval import BaselineRetrieverAdapter
 from agents.settings import AgentConfig
+from agents.tools import BaselineRetrieverAdapter
 
 DEFAULT_LANGSMITH_ENDPOINT = "https://api.smith.langchain.com"
 DEFAULT_LANGSMITH_PROJECT = "focused-take-home"
@@ -233,6 +233,22 @@ class RecordingTracer(BaseCallbackHandler):
             }
         )
 
+    def on_tool_start(
+        self,
+        serialized: dict[str, Any],
+        input_str: str,
+        *,
+        run_id: UUID,
+        parent_run_id: UUID | None = None,
+        inputs: dict[str, Any] | None = None,
+        **kwargs: Any,
+    ) -> None:
+        del serialized, input_str, kwargs
+        self.events.append({
+            "kind": "tool", "run_id": run_id,
+            "parent_run_id": parent_run_id, "inputs": inputs or {},
+        })
+
     def on_retriever_start(
         self,
         serialized: dict[str, Any] | None,
@@ -401,6 +417,7 @@ def test_root_callback_propagates_to_nested_graph_model_and_standard_retriever_r
                 "clarification_question": None,
                 "required_facts": ["Apple FY2025 net sales"],
                 "retrieval_query": "Apple FY2025 net sales annual report",
+                "companies": ["Apple"],
             }
         ],
         assessments=[{"is_sufficient": True, "refined_query": None}],
@@ -422,7 +439,7 @@ def test_root_callback_propagates_to_nested_graph_model_and_standard_retriever_r
     )
     agent = BaselineAgent(
         model,
-        retriever=BaselineRetrieverAdapter(retriever=document_retriever),
+        retriever=BaselineRetrieverAdapter(retrievers={"Apple": document_retriever}),
         config=settings,
     )
 
@@ -438,6 +455,14 @@ def test_root_callback_propagates_to_nested_graph_model_and_standard_retriever_r
     assert root_events[0]["metadata"]["component"] == "baseline-agent"
     assert any(event["kind"] == "chain" and event["parent_run_id"] is not None for event in tracer.events)
     assert any(event["kind"] == "model" and event["parent_run_id"] is not None for event in tracer.events)
+    tool_events = [event for event in tracer.events if event["kind"] == "tool"]
+    assert len(tool_events) == 1
+    assert tool_events[0]["parent_run_id"] is not None
+    assert tool_events[0]["inputs"]["company"] == "Apple"
+    assert any(
+        event["kind"] == "retriever" and event["parent_run_id"] == tool_events[0]["run_id"]
+        for event in tracer.events
+    )
     assert any(
         event["kind"] == "retriever"
         and event["parent_run_id"] is not None

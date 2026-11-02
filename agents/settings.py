@@ -1,5 +1,6 @@
 """Validated runtime configuration shared by agent implementations."""
 
+from typing import Literal
 from urllib.parse import urlparse
 
 from pydantic import Field, SecretStr, field_validator, model_validator
@@ -25,6 +26,16 @@ class AgentConfig(BaseSettings):
     langsmith_api_key: SecretStr | None = None
     langsmith_project: str = DEFAULT_LANGSMITH_PROJECT
     langsmith_endpoint: str = DEFAULT_LANGSMITH_ENDPOINT
+    langsmith_agent_id: str | None = None
+    langsmith_agent_environment: Literal["local", "development", "staging", "production"] | None = None
+
+    @field_validator("langsmith_agent_id", "langsmith_agent_environment", mode="before")
+    @classmethod
+    def normalize_agent_destination(cls, value: object, info) -> object:
+        value = normalize_optional_string(value)
+        if isinstance(value, str) and info.field_name == "langsmith_agent_environment":
+            return value.lower()
+        return value
 
     @field_validator("langsmith_api_key", mode="before")
     @classmethod
@@ -47,6 +58,8 @@ class AgentConfig(BaseSettings):
 
     @model_validator(mode="after")
     def require_api_key_for_tracing(self) -> AgentConfig:
+        if bool(self.langsmith_agent_id) != bool(self.langsmith_agent_environment):
+            raise ValueError("LANGSMITH_AGENT_ID and LANGSMITH_AGENT_ENVIRONMENT must be configured together")
         if self.langsmith_tracing and self.langsmith_api_key is None:
             raise ValueError("LANGSMITH_API_KEY is required when LANGSMITH_TRACING is enabled")
         return self

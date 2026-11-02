@@ -26,19 +26,23 @@ def vector(axis=0):
 @pytest.fixture
 def database():
     prefix = "etl-test-" + uuid.uuid4().hex
+    schema = "company_store_" + uuid.uuid4().hex
     owned_ids = []
     with psycopg.connect(os.environ["ETL_TEST_DATABASE_URL"], autocommit=True) as conn:
+        conn.execute("CREATE EXTENSION IF NOT EXISTS vector")
+        conn.execute(psycopg.sql.SQL("CREATE SCHEMA {}").format(psycopg.sql.Identifier(schema)))
+        conn.execute(psycopg.sql.SQL("SET search_path TO {}, public").format(psycopg.sql.Identifier(schema)))
         initialize(conn)
 
         def make_source(suffix="primary", year=2025):
             document_id = f"{prefix}-{suffix}"
             owned_ids.append(document_id)
-            return SourceDocument(document_id=document_id, path=f"{document_id}.pdf", sha256="a" * 64, company=prefix, fiscal_year=year, quarter="4", report_type="annual_report", title="Annual financial results", url="https://example.com/annual.pdf", pages=10)
+            return SourceDocument(document_id=document_id, path=f"{document_id}.pdf", sha256="a" * 64, company="Apple", fiscal_year=year, quarter="4", report_type="annual_report", title="Annual financial results", url="https://example.com/annual.pdf", pages=10)
 
         try:
             yield conn, make_source
         finally:
-            conn.execute("DELETE FROM etl_documents WHERE document_id = ANY(%s)", (owned_ids,))
+            conn.execute(psycopg.sql.SQL("DROP SCHEMA {} CASCADE").format(psycopg.sql.Identifier(schema)))
 
 
 def chunks_for(source, count=2):
@@ -59,7 +63,7 @@ def test_replacement_is_idempotent_and_tracks_expected_count(database):
     assert is_current(conn, source.document_id, "generation-1", 2)
     assert not is_current(conn, source.document_id, "other-generation", 2)
     assert not is_current(conn, source.document_id, "generation-1", 3)
-    assert conn.execute("SELECT count(*) FROM etl_chunks WHERE document_id = %s", (source.document_id,)).fetchone()[0] == 2
+    assert conn.execute("SELECT count(*) FROM etl_chunks_apple WHERE document_id = %s", (source.document_id,)).fetchone()[0] == 2
 
 
 def test_replacement_removes_stale_chunks(database):
@@ -70,7 +74,7 @@ def test_replacement_removes_stale_chunks(database):
     replacement = [replace(original[0], text="New revenue disclosure")]
     publish(conn, source, replacement, generation="generation-2")
     assert is_current(conn, source.document_id, "generation-2", 1)
-    rows = conn.execute("SELECT chunk_id, body FROM etl_chunks WHERE document_id = %s", (source.document_id,)).fetchall()
+    rows = conn.execute("SELECT chunk_id, body FROM etl_chunks_apple WHERE document_id = %s", (source.document_id,)).fetchall()
     assert rows == [(replacement[0].chunk_id, "New revenue disclosure")]
 
 
@@ -87,7 +91,7 @@ def test_insert_failure_rolls_back_previous_generation(database):
         publish(conn, source, [colliding_chunk], generation="broken-generation")
     assert is_current(conn, source.document_id, "generation-1", 1)
     assert is_current(conn, other_source.document_id, "generation-1", 1)
-    assert conn.execute("SELECT body FROM etl_chunks WHERE document_id = %s", (source.document_id,)).fetchone()[0] == original[0].text
+    assert conn.execute("SELECT body FROM etl_chunks_apple WHERE document_id = %s", (source.document_id,)).fetchone()[0] == original[0].text
 
 
 @pytest.mark.parametrize("problem", ["vector-count", "text-count", "dimension", "zero", "nan"])
@@ -144,7 +148,7 @@ def test_source_metadata_is_updated_on_replacement(database):
     source = make_source()
     chunks = chunks_for(source, 1)
     publish(conn, source, chunks)
-    updated = replace(source, company=source.company + "-renamed", title="Corrected annual report")
+    updated = replace(source, company="Amazon", title="Corrected annual report")
     publish(conn, updated, chunks, generation="updated-metadata")
     assert search(conn, vector(), company=source.company) == []
     hit = search(conn, vector(), company=updated.company)[0]
@@ -180,8 +184,11 @@ def test_runner_commits_each_document_visible_to_other_connections(database, mon
     result = runner.run(
         raw_dir=tmp_path / "raw", silver_dir=tmp_path / "silver",
         cache_dir=tmp_path / "cache", report_path=tmp_path / "report.json",
-        database_url=os.environ["ETL_TEST_DATABASE_URL"], openai_client=None,
+        database_url=psycopg.conninfo.make_conninfo(
+            os.environ["ETL_TEST_DATABASE_URL"],
+            options="-csearch_path=" + observer.execute("SELECT current_schema()").fetchone()[0] + ",public",
+        ), openai_client=None,
         pictures=False, fail_fast=True,
     )
     assert result["status"] == "complete"
-    assert observer.execute("SELECT count(*) FROM etl_chunks WHERE document_id = %s", (source.document_id,)).fetchone()[0] == 1
+    assert observer.execute("SELECT count(*) FROM etl_chunks_apple WHERE document_id = %s", (source.document_id,)).fetchone()[0] == 1

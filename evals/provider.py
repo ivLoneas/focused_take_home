@@ -2,17 +2,21 @@
 
 from functools import lru_cache, partial
 from pathlib import Path
+from time import perf_counter
 from typing import Any
 
+import httpx
 import psycopg
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from pydantic import AliasChoices, Field, SecretStr, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 from agents.baseline.baseline_agent import BaselineAgent
-from agents.retrieval import BaselineRetrieverAdapter, PgVectorRetriever
 from agents.settings import AgentConfig
+from agents.tools import BaselineRetrieverAdapter, DatabaseCoverage, PgVectorRetriever
+from etl.companies import COMPANY_TABLES
 from etl.settings import DEFAULT_DATABASE_URL
+from evals.telemetry import RunMetrics, record_embedding_response
 from utils import normalize_optional_string, require_nonblank_string
 
 _REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
@@ -61,18 +65,24 @@ def build_agent(settings: ProviderSettings) -> BaselineAgent:
         model=settings.embedding_model,
         dimensions=settings.embedding_dimensions,
         api_key=api_key,
+        http_client=httpx.Client(event_hooks={"response": [record_embedding_response]}),
     )
-    retriever = PgVectorRetriever(
-        embeddings=embeddings,
-        connection_factory=partial(psycopg.connect, settings.database_url),
-        limit=settings.retrieval_limit,
-    )
-    adapter = BaselineRetrieverAdapter(retriever=retriever)  # ty: ignore[invalid-argument-type]
+    retrievers = {
+        company: PgVectorRetriever(
+            embeddings=embeddings,
+            connection_factory=partial(psycopg.connect, settings.database_url),
+            limit=settings.retrieval_limit,
+            company=company,
+        )
+        for company in COMPANY_TABLES
+    }
+    adapter = BaselineRetrieverAdapter(retrievers=retrievers)  # ty: ignore[invalid-argument-type]
     return BaselineAgent(
         model,  # ty: ignore[invalid-argument-type]
         retriever=adapter,
         max_retrieval_attempts=settings.max_retrieval_attempts,
         config=agent_config,
+        coverage=DatabaseCoverage(connection_factory=partial(psycopg.connect, settings.database_url)),
     )
 
 
@@ -89,12 +99,26 @@ def call_api(prompt: object, options: dict[str, Any], context: dict[str, Any]) -
     del options, context
     prompt = require_nonblank_string(prompt, field_name="prompt")
 
-    result = get_agent().invoke(prompt)
+    started = perf_counter()
+    with RunMetrics() as metrics:
+        result = get_agent().invoke(prompt)
+    latency_ms = (perf_counter() - started) * 1000
+    usage = metrics.metadata()
     return {
         "output": result.answer,
         "metadata": {
             "status": result.status,
             "citations": list(result.citations),
             "retrieval_attempts": result.retrieval_attempts,
+            "tool_calls": list(getattr(result, "tool_calls", ())),
+            "answer_latency_ms": latency_ms,
+            "telemetry": usage,
+        },
+        "tokenUsage": {
+            "prompt": usage["input_tokens"],
+            "completion": usage["output_tokens"],
+            "total": usage["total_tokens"],
+            "cached": usage["cached_input_tokens"],
+            "numRequests": usage["model_calls"],
         },
     }

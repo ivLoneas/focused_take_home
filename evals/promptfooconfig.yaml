@@ -1,5 +1,5 @@
 # yaml-language-server: $schema=https://promptfoo.dev/config-schema.json
-description: Baseline financial-report agent evaluation
+description: Baseline evaluation v2 - equivalent evidence and exact output formatting
 
 prompts:
   - id: financial-report-question

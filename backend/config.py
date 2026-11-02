@@ -24,6 +24,13 @@ class Settings(BaseSettings):
     max_question_length: int = Field(default=2_000, ge=1, strict=True)
     cors_origins: list[str] = Field(default_factory=lambda: list(DEFAULT_CORS_ORIGINS))
 
+    @field_validator("retrieval_limit", "max_question_length", mode="before")
+    @classmethod
+    def parse_integer_setting(cls, value: object) -> object:
+        if isinstance(value, str) and value.isdecimal():
+            return int(value)
+        return value
+
     @field_validator("database_url")
     @classmethod
     def validate_database_url(cls, value: str) -> str:

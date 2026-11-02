@@ -12,9 +12,9 @@ from pgvector.psycopg.vector import register_vector_info
 from psycopg.adapt import AdaptersMap, PyFormat, Transformer
 from psycopg.types import TypeInfo
 
-from agents.baseline.models import RetrievalRequest, RetrievedChunk
-from agents.retrieval import BaselineRetrieverAdapter, PgVectorRetriever
-from agents.retrieval import retriever as retrieval_module
+from agents.tools import BaselineRetrieverAdapter, PgVectorRetriever
+from agents.tools import retrieval as retrieval_module
+from agents.tools.models import RetrievalRequest, RetrievedChunk
 from etl import store
 
 
@@ -66,6 +66,7 @@ def make_retriever(
     retriever = PgVectorRetriever(
         embeddings=embeddings,
         connection_factory=connection_factory,
+        company=configuration.pop("company", "Apple"),
         **configuration,
     )
     return retriever, embeddings, connection_factory, connection, register_vector, search
@@ -144,7 +145,7 @@ def test_pgvector_retriever_is_langchain_retriever_and_maps_complete_search_row(
     assert row["source_refs"] == ["#/texts/101", "#/tables/4"]
 
 
-def test_pgvector_retriever_defaults_to_unfiltered_search(monkeypatch):
+def test_pgvector_retriever_defaults_to_company_search(monkeypatch):
     retriever, _, _, connection, register_vector, search = make_retriever(monkeypatch)
 
     assert retriever.invoke("revenue") == []
@@ -153,7 +154,7 @@ def test_pgvector_retriever_defaults_to_unfiltered_search(monkeypatch):
         connection,
         [0.1, 0.2, 0.3],
         limit=5,
-        company=None,
+        company="Apple",
         fiscal_year=None,
     )
     register_vector.assert_called_once_with(connection)
@@ -294,6 +295,7 @@ def test_limit_must_be_an_integer(limit):
         PgVectorRetriever(
             embeddings=FakeEmbeddings(),
             connection_factory=Mock(),
+            company="Apple",
             limit=limit,
         )
 
@@ -304,6 +306,7 @@ def test_limit_must_be_within_store_bounds(limit):
         PgVectorRetriever(
             embeddings=FakeEmbeddings(),
             connection_factory=Mock(),
+            company="Apple",
             limit=limit,
         )
 
@@ -334,6 +337,7 @@ def test_fiscal_year_filter_must_be_a_non_boolean_integer(fiscal_year):
         PgVectorRetriever(
             embeddings=FakeEmbeddings(),
             connection_factory=Mock(),
+            company="Apple",
             fiscal_year=fiscal_year,
         )
 
@@ -344,6 +348,7 @@ def test_fiscal_year_filter_must_be_positive(fiscal_year):
         PgVectorRetriever(
             embeddings=FakeEmbeddings(),
             connection_factory=Mock(),
+            company="Apple",
             fiscal_year=fiscal_year,
         )
 
@@ -361,8 +366,9 @@ def test_baseline_adapter_delegates_query_and_maps_documents_to_chunks():
     }
     document = Document(page_content="Net sales were $416.161 billion.", metadata=dict(metadata))
     retriever = FakeDocumentRetriever([document])
-    adapter = BaselineRetrieverAdapter(retriever=retriever)
+    adapter = BaselineRetrieverAdapter(retrievers={"Apple": retriever})
     request = RetrievalRequest(
+        company="Apple",
         query="Apple FY2025 net sales",
         required_facts=("net sales",),
         attempt=2,
@@ -389,9 +395,9 @@ def test_baseline_adapter_delegates_query_and_maps_documents_to_chunks():
 )
 def test_baseline_adapter_builds_source_label_from_sparse_metadata(metadata, expected_label_part):
     document = Document(page_content="Evidence", metadata=metadata)
-    adapter = BaselineRetrieverAdapter(retriever=FakeDocumentRetriever([document]))
+    adapter = BaselineRetrieverAdapter(retrievers={"Apple": FakeDocumentRetriever([document])})
 
-    chunks = adapter.invoke(RetrievalRequest(query="evidence", required_facts=(), attempt=1))
+    chunks = adapter.invoke(RetrievalRequest(company="Apple", query="evidence", required_facts=(), attempt=1))
 
     assert len(chunks) == 1
     assert expected_label_part in chunks[0].source
@@ -400,9 +406,9 @@ def test_baseline_adapter_builds_source_label_from_sparse_metadata(metadata, exp
 
 def test_baseline_adapter_propagates_standard_retriever_errors():
     error = RuntimeError("retrieval failed")
-    adapter = BaselineRetrieverAdapter(retriever=FakeDocumentRetriever(error))
+    adapter = BaselineRetrieverAdapter(retrievers={"Apple": FakeDocumentRetriever(error)})
 
     with pytest.raises(RuntimeError, match="retrieval failed") as raised:
-        adapter.invoke(RetrievalRequest(query="Apple revenue", required_facts=(), attempt=1))
+        adapter.invoke(RetrievalRequest(company="Apple", query="Apple revenue", required_facts=(), attempt=1))
 
     assert raised.value is error

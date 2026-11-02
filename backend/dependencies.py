@@ -8,10 +8,11 @@ from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 
 from agents.baseline import BaselineAgent
 from agents.baseline.baseline_agent import ChatModel
-from agents.retrieval import BaselineRetrieverAdapter, PgVectorRetriever
-from agents.retrieval.retriever import DocumentRetriever
 from agents.settings import AgentConfig
+from agents.tools import BaselineRetrieverAdapter, DatabaseCoverage, PgVectorRetriever
+from agents.tools.models import DocumentRetriever
 from backend.config import Settings
+from etl.companies import COMPANY_TABLES
 
 
 def build_baseline_agent(settings: Settings) -> BaselineAgent:
@@ -24,10 +25,17 @@ def build_baseline_agent(settings: Settings) -> BaselineAgent:
     agent_config = AgentConfig(model=settings.chat_model)
     model = ChatOpenAI(model=agent_config.model, api_key=api_key)
     embeddings = OpenAIEmbeddings(model=settings.embedding_model, api_key=api_key)
-    retriever = PgVectorRetriever(
-        embeddings=embeddings,
-        connection_factory=partial(psycopg.connect, settings.database_url),
-        limit=settings.retrieval_limit,
+    retrievers = {
+        company: cast(DocumentRetriever, PgVectorRetriever(
+            embeddings=embeddings,
+            connection_factory=partial(psycopg.connect, settings.database_url),
+            limit=settings.retrieval_limit,
+            company=company,
+        ))
+        for company in COMPANY_TABLES
+    }
+    adapter = BaselineRetrieverAdapter(retrievers=retrievers)
+    return BaselineAgent(
+        cast(ChatModel, model), retriever=adapter, config=agent_config,
+        coverage=DatabaseCoverage(connection_factory=partial(psycopg.connect, settings.database_url)),
     )
-    adapter = BaselineRetrieverAdapter(retriever=cast(DocumentRetriever, retriever))
-    return BaselineAgent(cast(ChatModel, model), retriever=adapter, config=agent_config)

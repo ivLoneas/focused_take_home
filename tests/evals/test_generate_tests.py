@@ -4,6 +4,7 @@ import csv
 from pathlib import Path
 
 import pytest
+
 from evals.generate_tests import REQUIRED_FIELDS, SUPPORTED_TOPICS, generate_tests
 
 EXPECTED_FIELDS = ("id", "test", "topic", "answer", "source", "annotations")
@@ -12,6 +13,7 @@ EXPECTED_TOPICS = {
     "conditional_reasoning",
     "deterministic_accuracy",
     "extra_calculation",
+    "formatting_questions",
     "image_questions",
     "in_domain_no_data",
     "multiple_companies",
@@ -76,10 +78,10 @@ def test_generates_exactly_one_case_per_csv_row_and_preserves_all_fields(tmp_pat
         assert case["metadata"] == {"id": source_row["id"], "topic": source_row["topic"]}
 
 
-def test_real_dataset_generates_all_100_rows_in_csv_order() -> None:
+def test_real_dataset_generates_all_114_rows_in_csv_order() -> None:
     cases = generate_tests()
 
-    assert len(cases) == 100
+    assert len(cases) == 114
     assert [case["vars"]["id"] for case in cases[:3]] == ["ACC01", "ACC02", "ACC03"]
     assert {case["vars"]["topic"] for case in cases} == EXPECTED_TOPICS
 

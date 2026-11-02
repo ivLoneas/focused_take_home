@@ -38,7 +38,22 @@ The Silver cache key includes the source checksum, inventory page count, parser 
 
 Embedding requests use content-addressed batches of at most 64 chunks under `data/gold/embedding_cache`. Each cache record includes API-reported token usage and an integrity hash. Completed batches survive retries; corrupt batches are requested again. Gold publication replaces one document atomically, so a failed insert leaves the previous generation visible.
 
-`etl_documents` stores source/filter/citation metadata. `etl_chunks` stores body, contextualized embedding text, headings, pages, Docling refs, full-text search data, and `vector(1536)`. The schema creates GIN full-text and HNSW cosine indexes. Filtered vector queries deliberately use exact search to avoid ANN post-filter under-filling on small company/year subsets. After every selected document publishes successfully, Gold reconciliation removes documents outside the selected manifest and cascades their chunks. Reconciliation is skipped after any document failure so a previous usable corpus is preserved.
+`etl_documents` stores shared source/filter/citation metadata. Five physical tables (`etl_chunks_alphabet`,
+`etl_chunks_amazon`, `etl_chunks_apple`, `etl_chunks_meta`, `etl_chunks_netflix`) store each company's body,
+contextualized embedding text, headings, pages, Docling refs, full-text search data, and `vector(1536)`. Each table has
+its own GIN full-text and HNSW cosine indexes. A company CHECK and composite document/company foreign key enforce
+isolation while preserving lowercase manifest metadata. `etl.companies` defines the canonical tool literals and table
+mapping; ETL accepts the corresponding lowercase manifest names. Unsupported companies fail before publication.
+
+`initialize` runs the schema in a transaction, migrates existing `etl_chunks` rows without re-embedding, and removes
+the legacy table only after all rows copy successfully. Unknown companies abort the entire migration. Initialization
+is idempotent and serializes against publication through a document-table lock. Apply `schema.sql` manually with
+`psql --single-transaction -v ON_ERROR_STOP=1`; never execute the migration outside a transaction.
+
+Search requires a canonical company and queries only its physical table. Fiscal-year-filtered vector queries use
+exact search to avoid ANN post-filter under-filling. After every selected document publishes successfully, Gold
+reconciliation removes documents outside the selected manifest and cascades their chunks across all five tables.
+Reconciliation is skipped after any document failure so a previous usable corpus is preserved.
 
 ## Hierarchy-aware chunking
 

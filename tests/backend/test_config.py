@@ -124,12 +124,14 @@ def test_build_baseline_agent_wires_existing_components_without_connecting(monke
     embeddings = object()
     pgvector_retriever = object()
     adapter = object()
+    coverage = object()
     baseline_agent = object()
 
     chat_openai = Mock(return_value=chat_model)
     openai_embeddings = Mock(return_value=embeddings)
     pgvector = Mock(return_value=pgvector_retriever)
     adapter_factory = Mock(return_value=adapter)
+    coverage_factory = Mock(return_value=coverage)
     baseline_factory = Mock(return_value=baseline_agent)
     agent_config_type = Mock(return_value=agent_config)
     connect = Mock()
@@ -138,6 +140,7 @@ def test_build_baseline_agent_wires_existing_components_without_connecting(monke
     monkeypatch.setattr(dependencies, "OpenAIEmbeddings", openai_embeddings)
     monkeypatch.setattr(dependencies, "PgVectorRetriever", pgvector)
     monkeypatch.setattr(dependencies, "BaselineRetrieverAdapter", adapter_factory)
+    monkeypatch.setattr(dependencies, "DatabaseCoverage", coverage_factory, raising=False)
     monkeypatch.setattr(dependencies, "BaselineAgent", baseline_factory)
     monkeypatch.setattr(dependencies, "AgentConfig", agent_config_type)
     monkeypatch.setattr(dependencies.psycopg, "connect", connect)
@@ -161,14 +164,21 @@ def test_build_baseline_agent_wires_existing_components_without_connecting(monke
         model="embedding-test-model",
         api_key=settings.openai_api_key,
     )
-    pgvector.assert_called_once()
+    assert pgvector.call_count == 5
+    assert {call.kwargs["company"] for call in pgvector.call_args_list} == {
+        "Alphabet", "Amazon", "Apple", "Meta", "Netflix"
+    }
     assert pgvector.call_args.kwargs["embeddings"] is embeddings
     assert pgvector.call_args.kwargs["limit"] == 7
     connection_factory = pgvector.call_args.kwargs["connection_factory"]
     assert callable(connection_factory)
     connect.assert_not_called()
-    adapter_factory.assert_called_once_with(retriever=pgvector_retriever)
-    baseline_factory.assert_called_once_with(chat_model, retriever=adapter, config=agent_config)
+    adapter_factory.assert_called_once_with(retrievers={
+        company: pgvector_retriever for company in ("Alphabet", "Amazon", "Apple", "Meta", "Netflix")
+    })
+    coverage_factory.assert_called_once()
+    assert callable(coverage_factory.call_args.kwargs["connection_factory"])
+    baseline_factory.assert_called_once_with(chat_model, retriever=adapter, config=agent_config, coverage=coverage)
 
     connection_factory()
 

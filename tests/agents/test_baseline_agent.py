@@ -17,6 +17,7 @@ def analysis(
     clarification_question: str | None = None,
     required_facts: list[str] | None = None,
     retrieval_query: str = "",
+    companies: list[str] | None = None,
 ) -> dict[str, Any]:
     return {
         "out_of_domain": out_of_domain,
@@ -24,6 +25,7 @@ def analysis(
         "clarification_question": clarification_question,
         "required_facts": required_facts or [],
         "retrieval_query": retrieval_query,
+        "companies": ["Apple"] if companies is None else companies,
     }
 
 
@@ -142,6 +144,7 @@ def test_answers_in_domain_question_with_sufficient_context_and_citations():
     assert result.retrieval_attempts == 1
     assert retriever.requests == [
         RetrievalRequest(
+            company="Apple",
             query="Apple FY2025 net sales annual report",
             required_facts=("Apple FY2025 net sales",),
             attempt=1,
@@ -332,3 +335,78 @@ def test_retriever_failures_propagate_instead_of_producing_an_unsupported_answer
 
     assert len(retriever.requests) == 1
     assert model.prompts["answer"] == []
+
+
+def test_retrieval_node_uses_shared_tool_boundary_and_keeps_graph_state(monkeypatch):
+    """The graph delegates tool invocation while retaining evidence accumulation and attempt accounting."""
+    from agents.baseline import baseline_agent as baseline_module
+
+    model = FakeModel(
+        analyses=[analysis(required_facts=["Apple FY2025 net sales"], retrieval_query="Apple FY2025 net sales")],
+        assessments=[assessment(False, "Apple FY2025 report net sales"), assessment(True)],
+        answers=[answer("Supported answer [Apple report p. 1] [Apple report p. 2].")],
+    )
+    evidence = [chunk("First fact", "Apple report p. 1"), chunk("Second fact", "Apple report p. 2")]
+    retriever = object()
+    calls = []
+
+    def invoke_tool(received_retriever, request):
+        assert received_retriever is retriever
+        calls.append(request)
+        return [evidence[len(calls) - 1]]
+
+    monkeypatch.setattr(baseline_module, "invoke_retriever", invoke_tool)
+
+    result = BaselineAgent(model, retriever=retriever).invoke("What were Apple's FY2025 net sales?")
+
+    assert [request.attempt for request in calls] == [1, 2]
+    assert [request.query for request in calls] == ["Apple FY2025 net sales", "Apple FY2025 report net sales"]
+    assert all(request.required_facts == ("Apple FY2025 net sales",) for request in calls)
+    assert result.retrieval_attempts == 2
+    assert result.citations == tuple(item.source for item in evidence)
+    assert all(item.text in model.prompts["answer"][0] for item in evidence)
+
+
+def test_comparison_searches_each_selected_company_separately_and_keeps_retry_rounds():
+    model = FakeModel(
+        analyses=[analysis(
+            companies=["Apple", "Amazon"],
+            required_facts=["Apple revenue", "Amazon revenue"],
+            retrieval_query="FY2025 annual revenue",
+        )],
+        assessments=[assessment(False, "FY2025 annual revenue exact financial statements"), assessment(True)],
+        answers=[answer("Comparison [Apple p. 1] [Amazon p. 2].")],
+    )
+    evidence = [
+        chunk("Apple first", "Apple p. 1"), chunk("Amazon first", "Amazon p. 2"),
+        chunk("Apple second", "Apple p. 3"), chunk("Amazon second", "Amazon p. 4"),
+    ]
+    retriever = FakeRetriever(*([item] for item in evidence))
+
+    result = BaselineAgent(model, retriever=retriever).invoke("Compare Apple and Amazon FY2025 revenue")
+
+    assert [(request.company, request.attempt) for request in retriever.requests] == [
+        ("Apple", 1), ("Amazon", 1), ("Apple", 2), ("Amazon", 2),
+    ]
+    assert result.retrieval_attempts == 2
+    assert all(item.text in model.prompts["answer"][0] for item in evidence)
+
+
+def test_factual_analysis_without_company_fails_before_retrieval():
+    model = FakeModel(analyses=[analysis(companies=[], required_facts=["revenue"], retrieval_query="FY2025 revenue")])
+    retriever = FakeRetriever()
+    with pytest.raises(ValueError, match="compan"):
+        BaselineAgent(model, retriever=retriever).invoke("What was revenue?")
+    assert retriever.requests == []
+    assert model.prompts["answer"] == []
+
+
+def test_repeated_company_in_analysis_does_not_duplicate_retrieval():
+    model = FakeModel(
+        analyses=[analysis(companies=["Apple", "Apple"], required_facts=["revenue"], retrieval_query="FY2025 revenue")],
+        assessments=[assessment(True)], answers=[answer("Evidence [Apple p. 1].")],
+    )
+    retriever = FakeRetriever([chunk("Apple revenue", "Apple p. 1")])
+    BaselineAgent(model, retriever=retriever).invoke("What was Apple's FY2025 revenue?")
+    assert len(retriever.requests) == 1
+    assert retriever.requests[0].company == "Apple"

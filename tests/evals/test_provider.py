@@ -4,9 +4,12 @@ from types import SimpleNamespace
 from unittest.mock import Mock
 
 import pytest
+from langchain_core.language_models.fake_chat_models import FakeMessagesListChatModel
+from langchain_core.messages import AIMessage
 from pydantic import SecretStr, ValidationError
 
 from evals import provider
+from evals.telemetry import RunMetrics, record_embedding_response
 
 
 def settings(**overrides: object) -> provider.ProviderSettings:
@@ -49,11 +52,13 @@ def test_build_agent_wires_openai_pgvector_adapter_and_baseline(monkeypatch: pyt
     embeddings = object()
     pgvector_retriever = object()
     adapter = object()
+    coverage = object()
     built_agent = object()
     chat_openai = Mock(return_value=chat_model)
     openai_embeddings = Mock(return_value=embeddings)
     pgvector = Mock(return_value=pgvector_retriever)
     adapter_type = Mock(return_value=adapter)
+    coverage_type = Mock(return_value=coverage)
     baseline_type = Mock(return_value=built_agent)
     agent_config_type = Mock(return_value=agent_config)
     connect = Mock(return_value=object())
@@ -61,6 +66,7 @@ def test_build_agent_wires_openai_pgvector_adapter_and_baseline(monkeypatch: pyt
     monkeypatch.setattr(provider, "OpenAIEmbeddings", openai_embeddings)
     monkeypatch.setattr(provider, "PgVectorRetriever", pgvector)
     monkeypatch.setattr(provider, "BaselineRetrieverAdapter", adapter_type)
+    monkeypatch.setattr(provider, "DatabaseCoverage", coverage_type, raising=False)
     monkeypatch.setattr(provider, "BaselineAgent", baseline_type)
     monkeypatch.setattr(provider, "AgentConfig", agent_config_type)
     monkeypatch.setattr(provider.psycopg, "connect", connect)
@@ -71,12 +77,20 @@ def test_build_agent_wires_openai_pgvector_adapter_and_baseline(monkeypatch: pyt
     assert result is built_agent
     agent_config_type.assert_called_once_with(model="chat-test")
     chat_openai.assert_called_once_with(model="chat-test", temperature=0, api_key="sk-test")
-    openai_embeddings.assert_called_once_with(
-        model="embedding-test",
-        dimensions=1536,
-        api_key="sk-test",
-    )
-    pgvector.assert_called_once()
+    openai_embeddings.assert_called_once()
+    embedding_kwargs = openai_embeddings.call_args.kwargs
+    assert embedding_kwargs["model"] == "embedding-test"
+    assert embedding_kwargs["dimensions"] == 1536
+    assert embedding_kwargs["api_key"] == "sk-test"
+    assert embedding_kwargs["http_client"].event_hooks["response"] == [record_embedding_response]
+    assert pgvector.call_count == 5
+    assert {call.kwargs["company"] for call in pgvector.call_args_list} == {
+        "Alphabet",
+        "Amazon",
+        "Apple",
+        "Meta",
+        "Netflix",
+    }
     pgvector_kwargs = pgvector.call_args.kwargs
     assert pgvector_kwargs["embeddings"] is embeddings
     assert pgvector_kwargs["limit"] == 7
@@ -85,12 +99,17 @@ def test_build_agent_wires_openai_pgvector_adapter_and_baseline(monkeypatch: pyt
     connection = pgvector_kwargs["connection_factory"]()
     assert connection is connect.return_value
     connect.assert_called_once_with(configured.database_url)
-    adapter_type.assert_called_once_with(retriever=pgvector_retriever)
+    adapter_type.assert_called_once_with(
+        retrievers={company: pgvector_retriever for company in ("Alphabet", "Amazon", "Apple", "Meta", "Netflix")}
+    )
+    coverage_type.assert_called_once()
+    assert callable(coverage_type.call_args.kwargs["connection_factory"])
     baseline_type.assert_called_once_with(
         chat_model,
         retriever=adapter,
         max_retrieval_attempts=2,
         config=agent_config,
+        coverage=coverage,
     )
 
 
@@ -119,6 +138,7 @@ def test_call_api_returns_agent_answer_and_trajectory_metadata(monkeypatch: pyte
         status="answered",
         citations=("ExampleCo report p. 10",),
         retrieval_attempts=2,
+        tool_calls=(),
     )
     agent = Mock()
     agent.invoke.return_value = result
@@ -131,14 +151,81 @@ def test_call_api_returns_agent_answer_and_trajectory_metadata(monkeypatch: pyte
     )
 
     agent.invoke.assert_called_once_with("What revenue did ExampleCo report?")
+    latency = response["metadata"]["answer_latency_ms"]
+    assert isinstance(latency, (int, float))
+    assert latency >= 0
     assert response == {
         "output": result.answer,
         "metadata": {
             "status": "answered",
             "citations": ["ExampleCo report p. 10"],
             "retrieval_attempts": 2,
+            "tool_calls": [],
+            "telemetry": RunMetrics().metadata(),
+            "answer_latency_ms": latency,
         },
+        "tokenUsage": {"prompt": 0, "completion": 0, "total": 0, "cached": 0, "numRequests": 0},
     }
+
+
+def test_call_api_reports_actual_nested_model_tokens_in_promptfoo_contract(monkeypatch: pytest.MonkeyPatch) -> None:
+    model = FakeMessagesListChatModel(
+        responses=[
+            AIMessage(
+                content="answer",
+                usage_metadata={
+                    "input_tokens": 100,
+                    "output_tokens": 20,
+                    "total_tokens": 120,
+                    "input_token_details": {"cache_read": 40},
+                    "output_token_details": {"reasoning": 6},
+                },
+            )
+        ]
+    )
+
+    def invoke(question: str):
+        model.invoke(question)
+        return SimpleNamespace(answer="answer", status="answered", citations=(), retrieval_attempts=0, tool_calls=())
+
+    agent = SimpleNamespace(invoke=invoke)
+    monkeypatch.setattr(provider, "get_agent", lambda: agent)
+
+    response = provider.call_api("question", {}, {})
+
+    assert response["tokenUsage"] == {
+        "prompt": 100,
+        "completion": 20,
+        "total": 120,
+        "cached": 40,
+        "numRequests": 1,
+    }
+    telemetry = response["metadata"]["telemetry"]
+    assert telemetry["model_calls"] == 1
+    assert telemetry["input_tokens"] == 100
+    assert telemetry["output_tokens"] == 20
+    assert telemetry["total_tokens"] == 120
+    assert telemetry["cached_input_tokens"] == 40
+    assert telemetry["reasoning_tokens"] == 6
+
+
+def test_call_api_latency_includes_runtime_construction_and_invocation(monkeypatch: pytest.MonkeyPatch) -> None:
+    clock = [10.0]
+    monkeypatch.setattr(provider, "perf_counter", lambda: clock[0], raising=False)
+
+    def invoke(question: str):
+        clock[0] += 0.08
+        return SimpleNamespace(answer="answer", status="answered", citations=(), retrieval_attempts=0, tool_calls=())
+
+    def get_agent():
+        clock[0] += 0.02
+        return SimpleNamespace(invoke=invoke)
+
+    monkeypatch.setattr(provider, "get_agent", get_agent)
+
+    response = provider.call_api("question", {}, {})
+
+    assert response["metadata"]["answer_latency_ms"] == pytest.approx(100.0)
 
 
 @pytest.mark.parametrize(

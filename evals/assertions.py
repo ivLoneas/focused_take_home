@@ -1,5 +1,6 @@
 """Deterministic Promptfoo checks for response shape and agent trajectory."""
 
+import re
 from collections.abc import Mapping
 from typing import Any
 
@@ -10,6 +11,7 @@ _GROUNDED_TOPICS = frozenset(
         "conditional_reasoning",
         "deterministic_accuracy",
         "extra_calculation",
+        "formatting_questions",
         "image_questions",
         "multiple_companies",
         "table_questions",
@@ -24,6 +26,26 @@ def assert_non_empty_output(output: object, context: Mapping[str, Any]) -> Gradi
     if not isinstance(output, str) or not output.strip():
         return _failure("Provider output must be a nonblank string")
     return _success("Provider returned a nonblank response")
+
+
+def assert_output_format(output: object, context: Mapping[str, Any]) -> GradingResult:
+    """Check the entire requested output shape independently of financial correctness."""
+
+    if not isinstance(output, str) or not output.strip():
+        return _failure("Formatted output must be a nonblank string")
+    values = context.get("vars")
+    if not isinstance(values, Mapping):
+        return _failure("Test vars metadata is missing or malformed")
+    pattern = values.get("output_pattern")
+    if not isinstance(pattern, str) or not pattern.strip():
+        return _failure("Test output_pattern must be a nonblank regular expression")
+    try:
+        matched = re.fullmatch(pattern, output.strip())
+    except re.error:
+        return _failure("Test output_pattern is an invalid regular expression")
+    if matched is None:
+        return _failure("Response does not match the required output format")
+    return _success("Response matches the required output format")
 
 
 def assert_trajectory(output: object, context: Mapping[str, Any]) -> GradingResult:
@@ -56,6 +78,16 @@ def assert_trajectory(output: object, context: Mapping[str, Any]) -> GradingResu
         return _failure("Provider metadata citations must be a list of strings")
     if isinstance(attempts, bool) or not isinstance(attempts, int) or attempts < 0:
         return _failure("Provider metadata retrieval_attempts must be a non-negative integer")
+
+    discovery_failure = _check_discovery(values, metadata)
+    if discovery_failure is not None:
+        return discovery_failure
+    if values.get("allow_no_retrieval") == "true" and attempts == 0:
+        if status != "answered":
+            return _failure(f"{case_id} must finish with status answered, got {status}")
+        if citations:
+            return _failure(f"{case_id} must not return report citations without retrieval")
+        return _success(f"{case_id} verified coverage through discovery tools without report retrieval")
 
     if topic == "out_of_distribution":
         return _expect_no_retrieval(
@@ -95,6 +127,41 @@ def assert_trajectory(output: object, context: Mapping[str, Any]) -> GradingResu
     if not citations:
         return _failure(f"{case_id} must return at least one citation for a grounded answer")
     return _success(f"{case_id} used retrieval and returned cited evidence")
+
+
+def _check_discovery(values: Mapping[str, Any], metadata: Mapping[str, Any]) -> GradingResult | None:
+    required_tools = values.get("required_tools", "")
+    required_companies = values.get("required_period_companies", "")
+    if not isinstance(required_tools, str) or not isinstance(required_companies, str):
+        return _failure("Required tool/company expectations must be comma-separated strings")
+    tools = {name.strip() for name in required_tools.split(",") if name.strip()}
+    companies = {name.strip() for name in required_companies.split(",") if name.strip()}
+    if not tools and not companies:
+        return None
+    calls = metadata.get("tool_calls")
+    if not isinstance(calls, list):
+        return _failure("Provider metadata tool_calls must record actual tool invocations")
+    seen = set()
+    checked_companies = set()
+    for call in calls:
+        if not isinstance(call, Mapping) or not isinstance(call.get("name"), str):
+            return _failure("Malformed tool call record")
+        arguments = call.get("arguments")
+        if not isinstance(arguments, Mapping):
+            return _failure("Malformed tool call arguments")
+        if call["name"] == "company_periods":
+            if "listed_companies" not in seen:
+                return _failure("company_periods tool must follow listed_companies")
+            company = arguments.get("company")
+            if not isinstance(company, str) or not company.strip():
+                return _failure("company_periods tool requires a company argument")
+            checked_companies.add(company)
+        seen.add(call["name"])
+    if tools - seen:
+        return _failure(f"Missing required tool calls: {', '.join(sorted(tools - seen))}")
+    if companies - checked_companies:
+        return _failure(f"Missing company_periods tool calls for: {', '.join(sorted(companies - checked_companies))}")
+    return None
 
 
 def _provider_metadata(context: Mapping[str, Any]) -> object:
