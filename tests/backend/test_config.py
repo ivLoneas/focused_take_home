@@ -10,11 +10,23 @@ from backend import dependencies
 from backend.config import Settings
 
 
+def test_chat_model_defaults_to_current_answer_model_without_local_overrides(monkeypatch):
+    monkeypatch.delenv("CHAT_MODEL", raising=False)
+
+    assert Settings(_env_file=None).chat_model == "gpt-6.1-terra"
+
+
+def test_chat_model_environment_override_is_trimmed(monkeypatch):
+    monkeypatch.setenv("CHAT_MODEL", "  custom-answer-model  ")
+
+    assert Settings(_env_file=None).chat_model == "custom-answer-model"
+
+
 def valid_settings(**overrides) -> Settings:
     values = {
         "database_url": "postgresql://rag:rag@localhost:5432/rag",
         "openai_api_key": "test-openai-secret",
-        "chat_model": "gpt-4.1-mini",
+        "chat_model": "gpt-6.1-terra",
         "embedding_model": "text-embedding-3-small",
         "retrieval_limit": 5,
         "max_question_length": 2000,
@@ -83,7 +95,7 @@ def test_openai_api_key_is_loaded_from_dotenv_as_a_masked_secret(monkeypatch, tm
 
     settings = Settings(
         database_url="postgresql://rag:rag@localhost:5432/rag",
-        chat_model="gpt-4.1-mini",
+        chat_model="gpt-6.1-terra",
         embedding_model="text-embedding-3-small",
         retrieval_limit=5,
         max_question_length=2000,

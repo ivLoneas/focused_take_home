@@ -12,6 +12,28 @@ from evals import provider
 from evals.telemetry import RunMetrics, record_embedding_response
 
 
+def test_default_answer_model_matches_runtime_without_local_overrides(monkeypatch):
+    monkeypatch.delenv("EVAL_CHAT_MODEL", raising=False)
+
+    configured = provider.ProviderSettings(openai_api_key="sk-test", _env_file=None)
+
+    assert configured.chat_model == "gpt-6.1-terra"
+
+
+def test_evaluation_model_override_is_trimmed(monkeypatch):
+    monkeypatch.setenv("EVAL_CHAT_MODEL", "  custom-evaluation-model  ")
+
+    configured = provider.ProviderSettings(openai_api_key="sk-test", _env_file=None)
+
+    assert configured.chat_model == "custom-evaluation-model"
+
+
+@pytest.mark.parametrize("value", [None, "", " \t", 123, True])
+def test_invalid_evaluation_model_names_are_rejected(value):
+    with pytest.raises(ValidationError, match="chat_model"):
+        settings(chat_model=value)
+
+
 def settings(**overrides: object) -> provider.ProviderSettings:
     values = {
         "openai_api_key": "sk-test",
@@ -76,7 +98,7 @@ def test_build_agent_wires_openai_pgvector_adapter_and_baseline(monkeypatch: pyt
 
     assert result is built_agent
     agent_config_type.assert_called_once_with(model="chat-test")
-    chat_openai.assert_called_once_with(model="chat-test", temperature=0, api_key="sk-test")
+    chat_openai.assert_called_once_with(model="chat-test", api_key="sk-test")
     openai_embeddings.assert_called_once()
     embedding_kwargs = openai_embeddings.call_args.kwargs
     assert embedding_kwargs["model"] == "embedding-test"

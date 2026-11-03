@@ -1,0 +1,646 @@
+{
+  "full.json": {
+    "eval_id": "eval-Woy-2026-11-03T15:08:01",
+    "providers": {
+      "Agent v2 - unchanged": {
+        "cases": 114,
+        "strict_passes": 109,
+        "provider_errors": [],
+        "failures": [
+          {
+            "id": "TOOL08",
+            "reason": "The answer omits both requested figures and incorrectly treats the cited excerpt as sufficient to conclude the figures are unavailable. The slides report Google Cloud revenue of $17.664 billion and an operating margin of 30.1%."
+          },
+          {
+            "id": "CAL03",
+            "reason": "The response does not provide the requested percentage and incorrectly claims the figures are unavailable; the Apple 2025 Form 10-K contains them. The answer is approximately 26.23%."
+          },
+          {
+            "id": "IMG05",
+            "reason": "The output does not provide either requested endpoint value and incorrectly claims the evidence is unavailable."
+          },
+          {
+            "id": "IMG09",
+            "reason": "The answer provides neither requested label and incorrectly claims the chart is unavailable despite the cited earnings slides containing it."
+          },
+          {
+            "id": "FMT01",
+            "reason": "The response fails to provide the requested revenue figure and incorrectly claims it is absent from the available evidence. The reported figure is 90234 million."
+          }
+        ],
+        "mean_answer_seconds": 6.968821012447287,
+        "median_answer_seconds": 6.885886354499235,
+        "p95_answer_seconds": 12.55824016599945,
+        "completed_responses": 114,
+        "checks": {
+          "response_validity": {
+            "checks": 114,
+            "passed": 114
+          },
+          "workflow_behavior": {
+            "checks": 114,
+            "passed": 114
+          },
+          "answer_quality": {
+            "checks": 114,
+            "passed": 109
+          },
+          "format_compliance": {
+            "checks": 10,
+            "passed": 9
+          }
+        },
+        "topics": {
+          "deterministic_accuracy": {
+            "cases": 11,
+            "passed": 11
+          },
+          "tool_usage": {
+            "cases": 14,
+            "passed": 13
+          },
+          "out_of_distribution": {
+            "cases": 10,
+            "passed": 10
+          },
+          "multiple_companies": {
+            "cases": 10,
+            "passed": 10
+          },
+          "conditional_reasoning": {
+            "cases": 10,
+            "passed": 10
+          },
+          "in_domain_no_data": {
+            "cases": 10,
+            "passed": 10
+          },
+          "extra_calculation": {
+            "cases": 10,
+            "passed": 9
+          },
+          "ambiguous_questions": {
+            "cases": 9,
+            "passed": 9
+          },
+          "image_questions": {
+            "cases": 10,
+            "passed": 8
+          },
+          "table_questions": {
+            "cases": 10,
+            "passed": 10
+          },
+          "formatting_questions": {
+            "cases": 10,
+            "passed": 9
+          }
+        },
+        "telemetry_totals": {
+          "model_calls": 416,
+          "model_errors": 0,
+          "input_tokens": 1460091,
+          "output_tokens": 35621,
+          "total_tokens": 1495712,
+          "cached_input_tokens": 287443,
+          "reasoning_tokens": 11978,
+          "retrieval_calls": 148,
+          "retrieval_errors": 0,
+          "empty_retrievals": 0,
+          "retrieved_chunks": 1184,
+          "retrieval_latency_ms": 48793.31416398054,
+          "embedding_calls": 148,
+          "embedding_input_tokens": 4972
+        },
+        "by_model": {
+          "jev-1.14.0": {
+            "model_calls": 114,
+            "input_tokens": 54589,
+            "output_tokens": 4446,
+            "total_tokens": 59035,
+            "cached_input_tokens": 0,
+            "reasoning_tokens": 0
+          },
+          "gpt-6-luna": {
+            "model_calls": 207,
+            "input_tokens": 777346,
+            "output_tokens": 25731,
+            "total_tokens": 803077,
+            "cached_input_tokens": 151783,
+            "reasoning_tokens": 11353
+          },
+          "gpt-6.1-terra": {
+            "model_calls": 95,
+            "input_tokens": 628156,
+            "output_tokens": 5444,
+            "total_tokens": 633600,
+            "cached_input_tokens": 135660,
+            "reasoning_tokens": 625
+          }
+        },
+        "usage_limit": "Provider exceptions may omit incurred usage. No dollar estimates use historical model rates."
+      },
+      "Baseline - aligned prompts": {
+        "cases": 114,
+        "strict_passes": 109,
+        "provider_errors": [],
+        "failures": [
+          {
+            "id": "TOOL08",
+            "reason": "The answer gives neither requested figure and incorrectly claims the evidence does not establish them. The expected revenue is $17.664 billion and operating margin is 30.1%."
+          },
+          {
+            "id": "TOOL10",
+            "reason": "The output refuses to calculate gross profit from the supplied values and does not provide the correct answer of $45 million."
+          },
+          {
+            "id": "IMG05",
+            "reason": "The answer provides neither requested endpoint value, although the chart is available in the cited corpus. Its claim that the evidence is unavailable is unsupported."
+          },
+          {
+            "id": "IMG07",
+            "reason": "The annual increase is correct, but the answer does not identify it as the larger increase and incorrectly says the quarterly comparison cannot be made. The quarterly increase was $7.301 billion."
+          },
+          {
+            "id": "IMG09",
+            "reason": "The answer provides neither requested label and incorrectly claims the relevant chart is unavailable in the corpus."
+          }
+        ],
+        "mean_answer_seconds": 9.524453955421082,
+        "median_answer_seconds": 9.120100145999459,
+        "p95_answer_seconds": 15.720600791999459,
+        "completed_responses": 114,
+        "checks": {
+          "response_validity": {
+            "checks": 114,
+            "passed": 114
+          },
+          "workflow_behavior": {
+            "checks": 114,
+            "passed": 113
+          },
+          "answer_quality": {
+            "checks": 114,
+            "passed": 109
+          },
+          "format_compliance": {
+            "checks": 10,
+            "passed": 10
+          }
+        },
+        "topics": {
+          "deterministic_accuracy": {
+            "cases": 11,
+            "passed": 11
+          },
+          "tool_usage": {
+            "cases": 14,
+            "passed": 12
+          },
+          "out_of_distribution": {
+            "cases": 10,
+            "passed": 10
+          },
+          "multiple_companies": {
+            "cases": 10,
+            "passed": 10
+          },
+          "conditional_reasoning": {
+            "cases": 10,
+            "passed": 10
+          },
+          "in_domain_no_data": {
+            "cases": 10,
+            "passed": 10
+          },
+          "extra_calculation": {
+            "cases": 10,
+            "passed": 10
+          },
+          "ambiguous_questions": {
+            "cases": 9,
+            "passed": 9
+          },
+          "image_questions": {
+            "cases": 10,
+            "passed": 7
+          },
+          "table_questions": {
+            "cases": 10,
+            "passed": 10
+          },
+          "formatting_questions": {
+            "cases": 10,
+            "passed": 10
+          }
+        },
+        "telemetry_totals": {
+          "model_calls": 421,
+          "model_errors": 0,
+          "input_tokens": 1752977,
+          "output_tokens": 44048,
+          "total_tokens": 1797025,
+          "cached_input_tokens": 719732,
+          "reasoning_tokens": 13600,
+          "retrieval_calls": 135,
+          "retrieval_errors": 0,
+          "empty_retrievals": 0,
+          "retrieved_chunks": 1080,
+          "retrieval_latency_ms": 45643.370671030425,
+          "embedding_calls": 135,
+          "embedding_input_tokens": 3541
+        },
+        "by_model": {},
+        "usage_limit": "Provider exceptions may omit incurred usage. No dollar estimates use historical model rates."
+      }
+    },
+    "paired_vars_assertions_match": true,
+    "paired_outcomes": {
+      "both_pass": [
+        "ACC01",
+        "ACC02",
+        "ACC03",
+        "ACC04",
+        "ACC05",
+        "ACC06",
+        "ACC07",
+        "ACC08",
+        "ACC09",
+        "ACC10",
+        "TOOL01",
+        "TOOL02",
+        "TOOL03",
+        "TOOL04",
+        "TOOL05",
+        "TOOL06",
+        "TOOL07",
+        "TOOL09",
+        "OOD01",
+        "OOD02",
+        "OOD03",
+        "OOD04",
+        "OOD05",
+        "OOD06",
+        "OOD07",
+        "OOD08",
+        "OOD09",
+        "OOD10",
+        "MUL01",
+        "MUL02",
+        "MUL03",
+        "MUL04",
+        "MUL05",
+        "MUL06",
+        "MUL07",
+        "MUL08",
+        "MUL09",
+        "MUL10",
+        "IF01",
+        "IF02",
+        "IF03",
+        "IF04",
+        "IF05",
+        "IF06",
+        "IF07",
+        "IF08",
+        "IF09",
+        "IF10",
+        "NOD01",
+        "NOD02",
+        "NOD03",
+        "NOD04",
+        "NOD05",
+        "NOD06",
+        "NOD07",
+        "NOD08",
+        "NOD09",
+        "NOD10",
+        "CAL01",
+        "CAL02",
+        "CAL04",
+        "CAL05",
+        "CAL06",
+        "CAL07",
+        "CAL08",
+        "CAL09",
+        "CAL10",
+        "AMB01",
+        "AMB02",
+        "AMB03",
+        "AMB04",
+        "AMB05",
+        "AMB06",
+        "AMB07",
+        "AMB08",
+        "AMB09",
+        "AMB10",
+        "IMG01",
+        "IMG02",
+        "IMG03",
+        "IMG04",
+        "IMG06",
+        "IMG08",
+        "IMG10",
+        "TAB01",
+        "TAB02",
+        "TAB03",
+        "TAB04",
+        "TAB05",
+        "TAB06",
+        "TAB07",
+        "TAB08",
+        "TAB09",
+        "TAB10",
+        "COV01",
+        "COV02",
+        "COV03",
+        "COV04",
+        "FMT02",
+        "FMT03",
+        "FMT04",
+        "FMT05",
+        "FMT06",
+        "FMT07",
+        "FMT08",
+        "FMT09",
+        "FMT10"
+      ],
+      "both_fail": [
+        "TOOL08",
+        "IMG05",
+        "IMG09"
+      ],
+      "v2_only_pass": [
+        "TOOL10",
+        "IMG07"
+      ],
+      "baseline_only_pass": [
+        "CAL03",
+        "FMT01"
+      ]
+    },
+    "stats": {
+      "successes": 218,
+      "failures": 10,
+      "errors": 0,
+      "tokenUsage": {
+        "prompt": 3213068,
+        "completion": 79669,
+        "cached": 1007175,
+        "total": 3292737,
+        "numRequests": 837,
+        "completionDetails": {
+          "reasoning": 0,
+          "acceptedPrediction": 0,
+          "rejectedPrediction": 0,
+          "cacheReadInputTokens": 0,
+          "cacheCreationInputTokens": 0
+        },
+        "assertions": {
+          "total": 201518,
+          "prompt": 188707,
+          "completion": 12811,
+          "cached": 0,
+          "numRequests": 228,
+          "completionDetails": {
+            "reasoning": 3151,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 3258
+          }
+        }
+      },
+      "durationMs": 613114,
+      "evaluationDurationMs": 613114
+    }
+  },
+  "behavior.json": {
+    "eval_id": "eval-8XK-2026-11-03T15:18:56",
+    "providers": {
+      "Agent v2": {
+        "cases": 10,
+        "strict_passes": 7,
+        "provider_errors": [],
+        "failures": [
+          {
+            "id": "V201",
+            "reason": "The revenue and net income figures are correct and cited, but the answer does not explicitly address fiscal versus calendar year or provide evidence that the periods match."
+          },
+          {
+            "id": "V204",
+            "reason": "The answer correctly reports 15% annual growth, but fails to identify the 18% figure as Q4 year-over-year growth and incorrectly says the supplied evidence does not establish the quarterly comparison."
+          },
+          {
+            "id": "V207",
+            "reason": "The output does not provide the requested revenue figure and incorrectly claims the evidence is unavailable; the answer is 90234 million."
+          }
+        ],
+        "mean_answer_seconds": 8.029758483200203,
+        "median_answer_seconds": 6.5744335835006495,
+        "p95_answer_seconds": 11.619691707997845,
+        "completed_responses": 10,
+        "checks": {
+          "response_validity": {
+            "checks": 10,
+            "passed": 10
+          },
+          "workflow_behavior": {
+            "checks": 10,
+            "passed": 10
+          },
+          "answer_quality": {
+            "checks": 10,
+            "passed": 7
+          },
+          "format_compliance": {
+            "checks": 3,
+            "passed": 2
+          }
+        },
+        "topics": {
+          "deterministic_accuracy": {
+            "cases": 8,
+            "passed": 5
+          },
+          "multiple_companies": {
+            "cases": 2,
+            "passed": 2
+          }
+        },
+        "telemetry_totals": {
+          "model_calls": 43,
+          "model_errors": 0,
+          "input_tokens": 159843,
+          "output_tokens": 3535,
+          "total_tokens": 163378,
+          "cached_input_tokens": 29670,
+          "reasoning_tokens": 1048,
+          "retrieval_calls": 18,
+          "retrieval_errors": 0,
+          "empty_retrievals": 0,
+          "retrieved_chunks": 144,
+          "retrieval_latency_ms": 5626.05320700095,
+          "embedding_calls": 18,
+          "embedding_input_tokens": 520
+        },
+        "by_model": {
+          "jev-1.14.0": {
+            "model_calls": 10,
+            "input_tokens": 4818,
+            "output_tokens": 390,
+            "total_tokens": 5208,
+            "cached_input_tokens": 0,
+            "reasoning_tokens": 0
+          },
+          "gpt-6-luna": {
+            "model_calls": 23,
+            "input_tokens": 85457,
+            "output_tokens": 2509,
+            "total_tokens": 87966,
+            "cached_input_tokens": 15390,
+            "reasoning_tokens": 971
+          },
+          "gpt-6.1-terra": {
+            "model_calls": 10,
+            "input_tokens": 69568,
+            "output_tokens": 636,
+            "total_tokens": 70204,
+            "cached_input_tokens": 14280,
+            "reasoning_tokens": 77
+          }
+        },
+        "usage_limit": "Provider exceptions may omit incurred usage. No dollar estimates use historical model rates."
+      },
+      "Baseline": {
+        "cases": 10,
+        "strict_passes": 6,
+        "provider_errors": [],
+        "failures": [
+          {
+            "id": "V201",
+            "reason": "The figures and source page are provided, but the answer does not explicitly address whether Amazon\u2019s fiscal and calendar years coincide or identify an evidence gap, as required."
+          },
+          {
+            "id": "V204",
+            "reason": "The 18% Q4 and 15% full-year figures are correctly distinguished and cited. However, the claim that the available evidence does not establish Q1 revenue is false: subtracting the stated Q2, Q3 and Q4 revenues from the annual total gives Q1 revenue of $90.234 billion."
+          },
+          {
+            "id": "V205",
+            "reason": "The response asks for clarification instead of providing both Q4 and full-year 2025 capital expenditures."
+          },
+          {
+            "id": "V210",
+            "reason": "The operating margins and Apple\u2019s net margin are correct, but the answer omits Netflix\u2019s available net margin of about 24.30% and incorrectly says it cannot be determined. This leaves the requested comparison materially incomplete."
+          }
+        ],
+        "mean_answer_seconds": 12.73999533319984,
+        "median_answer_seconds": 10.421897499998522,
+        "p95_answer_seconds": 22.316927832998772,
+        "completed_responses": 10,
+        "checks": {
+          "response_validity": {
+            "checks": 10,
+            "passed": 10
+          },
+          "workflow_behavior": {
+            "checks": 10,
+            "passed": 9
+          },
+          "answer_quality": {
+            "checks": 10,
+            "passed": 6
+          },
+          "format_compliance": {
+            "checks": 3,
+            "passed": 3
+          }
+        },
+        "topics": {
+          "deterministic_accuracy": {
+            "cases": 8,
+            "passed": 5
+          },
+          "multiple_companies": {
+            "cases": 2,
+            "passed": 1
+          }
+        },
+        "telemetry_totals": {
+          "model_calls": 44,
+          "model_errors": 0,
+          "input_tokens": 236746,
+          "output_tokens": 5236,
+          "total_tokens": 241982,
+          "cached_input_tokens": 72775,
+          "reasoning_tokens": 1644,
+          "retrieval_calls": 20,
+          "retrieval_errors": 0,
+          "empty_retrievals": 0,
+          "retrieved_chunks": 160,
+          "retrieval_latency_ms": 5888.0425809911685,
+          "embedding_calls": 20,
+          "embedding_input_tokens": 590
+        },
+        "by_model": {},
+        "usage_limit": "Provider exceptions may omit incurred usage. No dollar estimates use historical model rates."
+      }
+    },
+    "paired_vars_assertions_match": true,
+    "paired_outcomes": {
+      "both_fail": [
+        "V201",
+        "V204"
+      ],
+      "both_pass": [
+        "V202",
+        "V203",
+        "V206",
+        "V208",
+        "V209"
+      ],
+      "v2_only_pass": [
+        "V205",
+        "V210"
+      ],
+      "baseline_only_pass": [
+        "V207"
+      ]
+    },
+    "stats": {
+      "successes": 13,
+      "failures": 7,
+      "errors": 0,
+      "tokenUsage": {
+        "prompt": 396589,
+        "completion": 8771,
+        "cached": 102445,
+        "total": 405360,
+        "numRequests": 87,
+        "completionDetails": {
+          "reasoning": 0,
+          "acceptedPrediction": 0,
+          "rejectedPrediction": 0,
+          "cacheReadInputTokens": 0,
+          "cacheCreationInputTokens": 0
+        },
+        "assertions": {
+          "total": 19304,
+          "prompt": 17625,
+          "completion": 1679,
+          "cached": 0,
+          "numRequests": 20,
+          "completionDetails": {
+            "reasoning": 722,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 3148
+          }
+        }
+      },
+      "durationMs": 80307,
+      "evaluationDurationMs": 80307
+    }
+  }
+}

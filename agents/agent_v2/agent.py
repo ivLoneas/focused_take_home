@@ -9,15 +9,15 @@ from langgraph.graph import END, START, StateGraph
 from agents.agent_v2.models import QuestionPlan
 from agents.agent_v2.prompts import ANSWER_PROMPT, CONTEXT_ASSESSMENT_PROMPT, QUESTION_ANALYSIS_PROMPT
 from agents.agent_v2.settings import AgentV2Config
-from agents.baseline.baseline_agent import BaselineAgent, ChatModel
-from agents.baseline.models import BaselineResult, ContextAssessment, QuestionAnalysis, WorkflowState
+from agents.models import AgentResult, ChatModel, ContextAssessment, QuestionAnalysis, WorkflowState
 from agents.tools import DatabaseCoverage, placeholder_retriever
 from agents.tools.models import Retriever
+from agents.workflow import FinancialReportAgent
 from utils import format_bullets, format_evidence, require_nonblank_string
 
 
-class AgentV2(BaselineAgent):
-    """Reuse the baseline's retrieval contracts and tracer, preserving its standalone workflow."""
+class AgentV2(FinancialReportAgent):
+    """Screen domain, discover coverage and plan retrieval independently of the baseline."""
 
     def __init__(
         self,
@@ -39,7 +39,7 @@ class AgentV2(BaselineAgent):
             max_retrieval_attempts=max_retrieval_attempts, config=config or AgentV2Config(),
         )
 
-    def invoke(self, question: str) -> BaselineResult:
+    def invoke(self, question: str) -> AgentResult:
         question = require_nonblank_string(question, field_name="question")
         config: dict[str, Any] = {
             "recursion_limit": 2 * self.max_retrieval_attempts + 12,
@@ -54,7 +54,7 @@ class AgentV2(BaselineAgent):
         if self.tracer is not None:
             config["callbacks"] = [self.tracer]
         state = self.graph.invoke({"question": question, "context": [], "retrieval_attempts": 0}, config)
-        return BaselineResult(
+        return AgentResult(
             status=state["status"], answer=state["answer"],
             citations=tuple(dict.fromkeys(chunk.source for chunk in state.get("context", []))),
             retrieval_attempts=state.get("retrieval_attempts", 0), tool_calls=tuple(state.get("tool_calls", [])),

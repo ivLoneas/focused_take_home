@@ -43,6 +43,8 @@ mkdir -p reports
 npm --prefix evals run eval -- --env-file ../.env --no-cache --no-share -o ../reports/baseline.json
 ```
 
+The current answer and grader default is `gpt-6.1-terra`; v2 uses `gpt-6-luna` for planning and sufficiency. Baseline leaves reasoning at the model default and omits sampling parameters; v2 uses low reasoning. The paired model-refresh results and frozen inputs are in [the 3 November model-refresh report](../reports/model-refresh-2026-11-03/report.md).
+
 The provider exports per-question answer latency, nested chat-model token usage (including cached and reasoning
 tokens), embedding API usage, and retrieval calls, errors, empty results, chunks, and cumulative retrieval latency in
 `response.metadata`. Retrieval rounds and company-specific retrieval calls are separate counts. Chat tokens also
@@ -55,7 +57,7 @@ the pair it uses `LANGSMITH_PROJECT`. Look under the agent's Tracing tab and sel
 keys into exported configuration or reports.
 
 Promptfoo runs one case at a time with a five-minute per-case timeout. The target provider uses the repository's
-virtual environment; the LLM rubric uses `openai:gpt-5-mini`. Results remain local under Promptfoo's storage. To open
+virtual environment; the LLM rubric uses `openai:gpt-6.1-terra`. Results remain local under Promptfoo's storage. To open
 the result viewer:
 
 ```sh
@@ -116,4 +118,4 @@ PYTHONPATH=.. PROMPTFOO_PYTHON=/Users/ivansmirnov/work/focused/.venv/bin/python 
 
 Then run `promptfooconfig.agent_v2_behavior.yaml` without a provider filter for the paired ten-case acceptance
 comparison. Baseline retains its original single-model/default-reasoning setup; v2 retains Jev screening and
-nano/mini low-reasoning stages. This measures the complete configured agents, not Jev's isolated contribution.
+Luna/Terra low-reasoning stages. This measures the complete configured agents, not Jev's isolated contribution.

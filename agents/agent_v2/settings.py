@@ -7,7 +7,7 @@ from utils import normalize_optional_string, require_nonblank_string
 
 
 class AgentV2Config(AgentConfig):
-    routing_model: str = Field(default="gpt-5-nano", validation_alias="AGENT_V2_ROUTING_MODEL", strict=True)
+    routing_model: str = Field(default="gpt-6-luna", validation_alias="AGENT_V2_ROUTING_MODEL", strict=True)
     typesafe_model: str = Field(default="jev-latest", strict=True)
     typesafe_api_key: SecretStr | None = None
     typesafe_timeout_seconds: float = Field(default=15, gt=0, allow_inf_nan=False)

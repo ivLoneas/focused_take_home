@@ -10,7 +10,7 @@ providers:
     label: Agent v2 - unchanged
 defaultTest:
   options:
-    provider: openai:gpt-5-mini
+    provider: openai:gpt-6.1-terra
 tests:
   - file://generate_tests.py:generate_tests
 evaluateOptions:

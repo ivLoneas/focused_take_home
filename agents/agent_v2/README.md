@@ -4,16 +4,16 @@
 
 ```
 question -> Jev domain judgments -> bounded refusal
-                               -> discovery of all listed company periods -> nano plan
+                               -> discovery of all listed company periods -> Luna plan
                                       -> essential clarification / coverage answer
-                                      -> retrieve per company -> nano evidence check -> refine
-                                                             -> mini answer
+                                      -> retrieve per company -> Luna evidence check -> refine
+                                                             -> Terra answer
 ```
 
 Coverage is discovered deterministically before the single planning call. With the current five-company corpus,
 these extra local metadata queries replace a model round trip and prevent incomplete discovery plans.
 
-Defaults: `gpt-5-nano` handles planning and sufficiency, `gpt-5-mini` answers, and `jev-latest` screens domain.
+Defaults: `gpt-6-luna` handles planning and sufficiency, `gpt-6.1-terra` answers, and `jev-latest` screens domain.
 The Promptfoo builder uses low reasoning for routing and answers. These are experiment
 settings, not a guarantee that smaller models retain quality. The last retrieval round goes straight to answering,
 where support is checked again; it is never marked sufficient simply because the retry limit was reached.
@@ -38,8 +38,8 @@ Add these server-side settings to the project-root `.env`:
 TYPESAFE_API_KEY=...
 TYPESAFE_MODEL=jev-latest
 TYPESAFE_TIMEOUT_SECONDS=15
-AGENT_MODEL=gpt-5-mini
-AGENT_V2_ROUTING_MODEL=gpt-5-nano
+AGENT_MODEL=gpt-6.1-terra
+AGENT_V2_ROUTING_MODEL=gpt-6-luna
 ```
 
 `AgentV2Config` inherits existing `LANGSMITH_*` configuration and validation. Enabled tracing requires a nonblank
@@ -70,8 +70,10 @@ Both models, the gate, coverage and retrieval are injectable. An optional `plann
 stage; omitting it or passing `None` uses `routing_model` for planning and sufficiency as before. This enables
 separate planner experiments without changing the default evaluation configuration. The result uses the existing
 `BaselineResult` contract.
-The implementation reuses the baseline's tracer, retrieval boundary, result models and deterministic routing helpers;
-its graph and model/prompt policy are separate. The application backend remains on the baseline until deliberately
+`BaselineAgent` (v1) and `AgentV2` are sibling implementations of `FinancialReportAgent` in `agents/workflow.py`.
+The shared base owns tracing, validation, retrieval and deterministic routing helpers; each version owns its graph
+and model/prompt policy. Shared contracts live in `agents/models.py`; `BaselineResult` remains a compatible alias
+for `AgentResult`. The application backend remains on the baseline until deliberately
 switched; v2 can be evaluated without changing the demo.
 
 ## Jev policy

@@ -4,7 +4,7 @@ from typing import Literal
 
 from pydantic import BaseModel, Field
 
-from agents.baseline.models import QuestionAnalysis
+from agents.models import QuestionAnalysis
 from etl.companies import Company
 
 

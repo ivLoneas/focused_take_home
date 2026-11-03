@@ -1,0 +1,24 @@
+Loading environment variables from ../.env
+Cache is disabled.
+Starting evaluation eval-gs9-2026-11-03T15:07:04
+Running 2 test cases (up to 2 at a time)...
+✓ Eval complete (ID: eval-gs9-2026-11-03T15:07:04)
+
+» View results: promptfoo view
+» Feedback: https://promptfoo.dev/feedback
+
+Total Tokens: 25,815
+  Provider: 24,125 (23,605 prompt, 520 completion, 1,992 cached)
+  Grading: 1,690 (1,616 prompt, 74 completion)
+
+Providers:
+  file://provider.py: 13,709 (4 requests; 13,372 prompt, 337 completion, 1,992 cached)
+  file://agent_v2_provider.py: 10,416 (4 requests; 10,233 prompt, 183 completion)
+
+Results:
+  ✓ 2 passed (100%)
+  0 failed (0%)
+  0 errors (0%)
+Duration: 14s (concurrency: 2)
+
+Writing output to /Users/ivansmirnov/work/focused/reports/model-refresh-2026-11-03/smoke.json

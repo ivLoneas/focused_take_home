@@ -8,7 +8,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 from utils import normalize_optional_string, require_nonblank_string
 
-DEFAULT_AGENT_MODEL = "gpt-5-mini"
+DEFAULT_AGENT_MODEL = "gpt-6.1-terra"
 DEFAULT_LANGSMITH_ENDPOINT = "https://api.smith.langchain.com"
 DEFAULT_LANGSMITH_PROJECT = "focused-take-home"
 

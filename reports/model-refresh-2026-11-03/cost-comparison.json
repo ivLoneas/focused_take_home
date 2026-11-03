@@ -1,0 +1,179 @@
+{
+  "agent-v2-aligned-comparison-2026-11-03": {
+    "full.json": {
+      "v2": {
+        "cases": 114,
+        "model_usd": 0.273533168,
+        "embedding_usd": 7.44e-05,
+        "grading_usd": 0.11220649999999997,
+        "missing_usage": [],
+        "model_breakdown": {
+          "jev-1.14.0": 0.002292738,
+          "gpt-5-nano-2025-08-07": 0.06169413000000001,
+          "gpt-5-mini-2025-08-07": 0.20954629999999994
+        },
+        "tokens": {},
+        "runtime_usd": 0.27360756799999997,
+        "all_in_usd": 0.38581406799999995,
+        "runtime_per_1000": 2.4000663859649123
+      },
+      "baseline": {
+        "cases": 114,
+        "model_usd": 0.8801965499999999,
+        "embedding_usd": 8.766000000000002e-05,
+        "grading_usd": 0.09735174999999999,
+        "missing_usage": [
+          "ACC04",
+          "IF07",
+          "NOD06",
+          "CAL02",
+          "CAL07"
+        ],
+        "model_breakdown": {
+          "gpt-5-mini": 0.8801965499999999
+        },
+        "tokens": {},
+        "runtime_usd": 0.8802842099999999,
+        "all_in_usd": 0.9776359599999999,
+        "runtime_per_1000": 7.721791315789473
+      }
+    },
+    "behavior.json": {
+      "v2": {
+        "cases": 10,
+        "model_usd": 0.027918876000000002,
+        "embedding_usd": 1.618e-05,
+        "grading_usd": 0.009818499999999999,
+        "missing_usage": [],
+        "model_breakdown": {
+          "jev-1.14.0": 0.00020235600000000003,
+          "gpt-5-nano-2025-08-07": 0.00707952,
+          "gpt-5-mini-2025-08-07": 0.020637
+        },
+        "tokens": {},
+        "runtime_usd": 0.027935056000000003,
+        "all_in_usd": 0.037753556,
+        "runtime_per_1000": 2.7935056
+      },
+      "baseline": {
+        "cases": 10,
+        "model_usd": 0.10819985,
+        "embedding_usd": 1.3240000000000002e-05,
+        "grading_usd": 0.010098999999999999,
+        "missing_usage": [],
+        "model_breakdown": {
+          "gpt-5-mini": 0.10819985
+        },
+        "tokens": {},
+        "runtime_usd": 0.10821309,
+        "all_in_usd": 0.11831209,
+        "runtime_per_1000": 10.821309
+      }
+    }
+  },
+  "model-refresh-2026-11-03": {
+    "full.json": {
+      "v2": {
+        "cases": 114,
+        "model_usd": 0.6057313680000008,
+        "embedding_usd": 9.944000000000006e-05,
+        "grading_usd": 0.12602200000000002,
+        "missing_usage": [],
+        "model_breakdown": {
+          "jev-1.14.0": 0.002292738,
+          "gpt-6-luna": 0.07693963000000005,
+          "gpt-6.1-terra": 0.526499
+        },
+        "tokens": {},
+        "runtime_usd": 0.6058308080000008,
+        "all_in_usd": 0.7318528080000009,
+        "runtime_per_1000": 5.3143053333333405
+      },
+      "baseline": {
+        "cases": 114,
+        "model_usd": 1.2894716000000004,
+        "embedding_usd": 7.082000000000004e-05,
+        "grading_usd": 0.12755450000000007,
+        "missing_usage": [],
+        "model_breakdown": {
+          "gpt-6.1-terra": 1.2894716000000004
+        },
+        "tokens": {},
+        "runtime_usd": 1.2895424200000003,
+        "all_in_usd": 1.4170969200000003,
+        "runtime_per_1000": 11.31177561403509
+      }
+    },
+    "behavior.json": {
+      "v2": {
+        "cases": 10,
+        "model_usd": 0.06779945600000001,
+        "embedding_usd": 1.0400000000000002e-05,
+        "grading_usd": 0.01217325,
+        "missing_usage": [],
+        "model_breakdown": {
+          "jev-1.14.0": 0.00020235600000000003,
+          "gpt-6-luna": 0.0084151,
+          "gpt-6.1-terra": 0.059182
+        },
+        "tokens": {},
+        "runtime_usd": 0.067809856,
+        "all_in_usd": 0.079983106,
+        "runtime_per_1000": 6.7809856
+      },
+      "baseline": {
+        "cases": 10,
+        "model_usd": 0.19378975,
+        "embedding_usd": 1.18e-05,
+        "grading_usd": 0.01463375,
+        "missing_usage": [],
+        "model_breakdown": {
+          "gpt-6.1-terra": 0.19378975
+        },
+        "tokens": {},
+        "runtime_usd": 0.19380155000000002,
+        "all_in_usd": 0.20843530000000002,
+        "runtime_per_1000": 19.380155000000002
+      }
+    }
+  },
+  "method": {
+    "rates_per_million_input_cached_output": {
+      "gpt-5-mini": [
+        0.25,
+        0.025,
+        2
+      ],
+      "gpt-5-nano": [
+        0.05,
+        0.005,
+        0.4
+      ],
+      "gpt-6.1-terra": [
+        1,
+        0.05,
+        5
+      ],
+      "gpt-6-luna": [
+        0.1,
+        0.01,
+        0.5
+      ],
+      "jev": [
+        0.042,
+        0,
+        0
+      ]
+    },
+    "pricing_source": "https://developers.openai.com/api/docs/pricing",
+    "verified_date": "2026-11-03",
+    "basis": "Standard short-context list rates; runtime includes model calls and embeddings; grading separate; reasoning output included once",
+    "excluded": "Unrecorded runtime cache-write premiums, discounts/credits, regional/Fast surcharges, taxes, infrastructure, LangSmith fees, smoke/preflight calls",
+    "baseline_matched_109": {
+      "old_usd": 0.8802842099999997,
+      "new_usd": 1.2309734500000005,
+      "increase_percent": 39.8381836248092
+    },
+    "jev_rate_source": "Previous report records Jev input at $0.042/M and free output; unchanged contribution on both runs."
+  }
+}

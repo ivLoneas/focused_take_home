@@ -18,7 +18,7 @@ class Settings(BaseSettings):
 
     database_url: str = DEFAULT_DATABASE_URL
     openai_api_key: SecretStr | None = None
-    chat_model: str = "gpt-4.1-mini"
+    chat_model: str = "gpt-6.1-terra"
     embedding_model: str = "text-embedding-3-small"
     retrieval_limit: int = Field(default=5, ge=1, le=100, strict=True)
     max_question_length: int = Field(default=2_000, ge=1, strict=True)

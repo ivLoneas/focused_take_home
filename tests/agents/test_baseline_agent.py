@@ -339,7 +339,7 @@ def test_retriever_failures_propagate_instead_of_producing_an_unsupported_answer
 
 def test_retrieval_node_uses_shared_tool_boundary_and_keeps_graph_state(monkeypatch):
     """The graph delegates tool invocation while retaining evidence accumulation and attempt accounting."""
-    from agents.baseline import baseline_agent as baseline_module
+    from agents import workflow as workflow_module
 
     model = FakeModel(
         analyses=[analysis(required_facts=["Apple FY2025 net sales"], retrieval_query="Apple FY2025 net sales")],
@@ -355,7 +355,7 @@ def test_retrieval_node_uses_shared_tool_boundary_and_keeps_graph_state(monkeypa
         calls.append(request)
         return [evidence[len(calls) - 1]]
 
-    monkeypatch.setattr(baseline_module, "invoke_retriever", invoke_tool)
+    monkeypatch.setattr(workflow_module, "invoke_retriever", invoke_tool)
 
     result = BaselineAgent(model, retriever=retriever).invoke("What were Apple's FY2025 net sales?")
 

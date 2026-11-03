@@ -15,7 +15,7 @@ from langchain_core.retrievers import BaseRetriever
 from langchain_core.runnables import RunnableLambda
 from pydantic import Field, SecretStr, ValidationError
 
-from agents.baseline import baseline_agent as baseline_module
+from agents import workflow as workflow_module
 from agents.baseline.baseline_agent import BaselineAgent
 from agents.settings import AgentConfig
 from agents.tools import BaselineRetrieverAdapter
@@ -41,7 +41,7 @@ def isolate_langsmith_environment(monkeypatch: pytest.MonkeyPatch) -> None:
 def test_agent_config_defaults_model_and_disables_tracing_without_credentials() -> None:
     config = AgentConfig(_env_file=None)
 
-    assert config.model == "gpt-5-mini"
+    assert config.model == "gpt-6.1-terra"
     assert config.langsmith_tracing is False
     assert config.langsmith_api_key is None
     assert config.langsmith_project == DEFAULT_LANGSMITH_PROJECT
@@ -49,20 +49,20 @@ def test_agent_config_defaults_model_and_disables_tracing_without_credentials() 
 
 
 def test_agent_config_trims_an_explicit_model_name() -> None:
-    config = AgentConfig(model="  gpt-5.2  ", _env_file=None)
+    config = AgentConfig(model="  override-test-model  ", _env_file=None)
 
-    assert config.model == "gpt-5.2"
+    assert config.model == "override-test-model"
 
 
 def test_agent_config_loads_and_trims_model_from_environment(monkeypatch: pytest.MonkeyPatch) -> None:
-    monkeypatch.setenv("AGENT_MODEL", "  gpt-5.2-mini  ")
+    monkeypatch.setenv("AGENT_MODEL", "  override-test-model  ")
 
     config = AgentConfig(_env_file=None)
 
-    assert config.model == "gpt-5.2-mini"
+    assert config.model == "override-test-model"
 
 
-@pytest.mark.parametrize("value", [None, "", " ", "\t\n", 123, True, b"gpt-5-mini"])
+@pytest.mark.parametrize("value", [None, "", " ", "\t\n", 123, True, b"gpt-6.1-terra"])
 def test_agent_config_rejects_invalid_model_names(value: object) -> None:
     with pytest.raises(ValidationError, match="model"):
         AgentConfig(model=value, _env_file=None)
@@ -277,8 +277,8 @@ class RecordingTracer(BaseCallbackHandler):
 def recording_langsmith(monkeypatch: pytest.MonkeyPatch) -> tuple[type[RecordingClient], type[RecordingTracer]]:
     RecordingClient.instances.clear()
     RecordingTracer.instances.clear()
-    monkeypatch.setattr(baseline_module, "Client", RecordingClient)
-    monkeypatch.setattr(baseline_module, "LangChainTracer", RecordingTracer)
+    monkeypatch.setattr(workflow_module, "Client", RecordingClient)
+    monkeypatch.setattr(workflow_module, "LangChainTracer", RecordingTracer)
     return RecordingClient, RecordingTracer
 
 
@@ -299,7 +299,7 @@ def test_enabled_agent_attaches_configured_langsmith_tracer_to_root_graph_invoca
 ) -> None:
     client_type, tracer_type = recording_langsmith
     settings = AgentConfig(
-        model="gpt-5.2-mini",
+        model="override-test-model",
         langsmith_tracing=True,
         langsmith_api_key="trace-secret",
         langsmith_project="baseline-observability",
@@ -339,7 +339,7 @@ def test_enabled_agent_attaches_configured_langsmith_tracer_to_root_graph_invoca
     assert "baseline" in config["tags"]
     assert config["metadata"]["component"] == "baseline-agent"
     assert config["metadata"]["workflow"] == "financial-report-rag"
-    assert config["metadata"]["model"] == "gpt-5.2-mini"
+    assert config["metadata"]["model"] == "override-test-model"
     assert config["metadata"]["max_retrieval_attempts"] == 3
     assert "trace-secret" not in repr(config)
     assert "How do I make sourdough bread?" not in repr(config["metadata"])
@@ -476,8 +476,8 @@ def test_disabled_tracing_is_network_free_and_preserves_existing_behavior(
 ) -> None:
     client = Mock(side_effect=AssertionError("disabled tracing must not construct a LangSmith client"))
     tracer = Mock(side_effect=AssertionError("disabled tracing must not construct a LangSmith tracer"))
-    monkeypatch.setattr(baseline_module, "Client", client)
-    monkeypatch.setattr(baseline_module, "LangChainTracer", tracer)
+    monkeypatch.setattr(workflow_module, "Client", client)
+    monkeypatch.setattr(workflow_module, "LangChainTracer", tracer)
     model = TraceableModel(
         analyses=[
             {

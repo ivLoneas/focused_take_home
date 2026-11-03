@@ -1,0 +1,19 @@
+{
+  "frozen_source_hashes_match": true,
+  "active_manifest_unchanged": true,
+  "paired_runs_complete": {
+    "full.json": {
+      "invocations": 228,
+      "cases_per_provider": 114,
+      "grader": "openai:gpt-6.1-terra"
+    },
+    "behavior.json": {
+      "invocations": 20,
+      "cases_per_provider": 10,
+      "grader": "openai:gpt-6.1-terra"
+    }
+  },
+  "no_active_legacy_gpt_ids": true,
+  "v2_actual_usage_uses_requested_models": true,
+  "configured_secrets_absent_from_artifacts": true
+}

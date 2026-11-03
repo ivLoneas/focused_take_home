@@ -35,7 +35,7 @@ class ProviderSettings(BaseSettings):
         default=DEFAULT_DATABASE_URL,
         validation_alias=AliasChoices("EVAL_DATABASE_URL", "DATABASE_URL"),
     )
-    chat_model: str = "gpt-5-mini"
+    chat_model: str = "gpt-6.1-terra"
     embedding_model: str = "text-embedding-3-small"
     embedding_dimensions: int = Field(default=1536, gt=0)
     retrieval_limit: int = Field(default=8, gt=0, le=100)
@@ -60,7 +60,7 @@ def build_agent(settings: ProviderSettings) -> BaselineAgent:
 
     api_key = settings.openai_api_key.get_secret_value()
     agent_config = AgentConfig(model=settings.chat_model)
-    model = ChatOpenAI(model=agent_config.model, temperature=0, api_key=api_key)
+    model = ChatOpenAI(model=agent_config.model, api_key=api_key)
     embeddings = OpenAIEmbeddings(
         model=settings.embedding_model,
         dimensions=settings.embedding_dimensions,

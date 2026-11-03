@@ -37,8 +37,8 @@ def body(report=0.9, advice=0.1):
 
 def test_defaults_keep_answer_model_but_use_smaller_routing_model():
     settings = config()
-    assert settings.model == "gpt-5-mini"
-    assert settings.routing_model == "gpt-5-nano"
+    assert settings.model == "gpt-6.1-terra"
+    assert settings.routing_model == "gpt-6-luna"
     assert settings.typesafe_model == "jev-latest"
     assert settings.typesafe_api_key is None
     assert settings.typesafe_timeout_seconds > 0

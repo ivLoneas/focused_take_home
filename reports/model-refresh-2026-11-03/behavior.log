@@ -1,0 +1,24 @@
+Loading environment variables from ../.env
+Cache is disabled.
+Starting evaluation eval-8XK-2026-11-03T15:18:56
+Running 20 test cases (up to 4 at a time)...
+✓ Eval complete (ID: eval-8XK-2026-11-03T15:18:56)
+
+» View results: promptfoo view
+» Feedback: https://promptfoo.dev/feedback
+
+Total Tokens: 424,664
+  Provider: 405,360 (396,589 prompt, 8,771 completion, 102,445 cached)
+  Grading: 19,304 (17,625 prompt, 1,679 completion, 722 reasoning)
+
+Providers:
+  file://provider.py: 241,982 (44 requests; 236,746 prompt, 5,236 completion, 72,775 cached)
+  file://agent_v2_provider.py: 163,378 (43 requests; 159,843 prompt, 3,535 completion, 29,670 cached)
+
+Results:
+  ✓ 13 passed (65.00%)
+  ✗ 7 failed (35.00%)
+  0 errors (0%)
+Duration: 1m 20s (concurrency: 4)
+
+Writing output to /Users/ivansmirnov/work/focused/reports/model-refresh-2026-11-03/behavior.json

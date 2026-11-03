@@ -5,7 +5,6 @@ from uuid import uuid4
 
 import httpx
 import pytest
-from evals.telemetry import RunMetrics, record_embedding_response
 from langchain_core.callbacks import BaseCallbackHandler
 from langchain_core.documents import Document
 from langchain_core.language_models.fake_chat_models import FakeListChatModel
@@ -13,6 +12,8 @@ from langchain_core.messages import AIMessage
 from langchain_core.outputs import ChatGeneration, Generation, LLMResult
 from langchain_core.retrievers import BaseRetriever
 from langchain_core.runnables import RunnableLambda
+
+from evals.telemetry import RunMetrics, record_embedding_response
 
 
 class ExampleRetriever(BaseRetriever):
@@ -265,7 +266,7 @@ def test_embedding_hook_aggregates_usage_only_inside_active_context() -> None:
     [
         httpx.Response(200, content=b"invalid json"),
         httpx.Response(500, json={"error": "private error details"}),
-        httpx.Response(200, json={"model": "gpt-5-mini", "usage": {"prompt_tokens": 13}}),
+        httpx.Response(200, json={"model": "gpt-6.1-terra", "usage": {"prompt_tokens": 13}}),
         httpx.Response(200, json={"model": "text-embedding-3-small"}),
         httpx.Response(200, json={"model": "text-embedding-3-small", "usage": None}),
         httpx.Response(200, json=[]),

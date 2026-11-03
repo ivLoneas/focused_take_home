@@ -5,10 +5,10 @@ prompts:
     raw: "{{test}}"
 providers:
   - id: file://agent_v2_provider.py
-    label: Agent v2 - Jev, nano routing, mini answers
+    label: Agent v2 - Jev, Luna routing, Terra answers
 defaultTest:
   options:
-    provider: openai:gpt-5-mini
+    provider: openai:gpt-6.1-terra
 tests:
   - file://generate_tests.py:generate_tests
 evaluateOptions:

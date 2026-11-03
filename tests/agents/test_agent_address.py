@@ -10,7 +10,7 @@ from langchain_core.runnables import RunnableLambda
 from langsmith import agent_address
 from pydantic import ValidationError
 
-from agents.baseline import baseline_agent as baseline_module
+from agents import workflow as workflow_module
 from agents.baseline.baseline_agent import BaselineAgent
 from agents.baseline.models import QuestionAnalysis
 from agents.settings import AgentConfig
@@ -92,8 +92,8 @@ def test_address_tracer_uses_configured_eu_client_and_omits_project_name(monkeyp
     client_type = Mock(return_value=client)
     tracer = BaseCallbackHandler()
     tracer_type = Mock(return_value=tracer)
-    monkeypatch.setattr(baseline_module, "Client", client_type)
-    monkeypatch.setattr(baseline_module, "LangChainTracer", tracer_type)
+    monkeypatch.setattr(workflow_module, "Client", client_type)
+    monkeypatch.setattr(workflow_module, "LangChainTracer", tracer_type)
     settings = config(
         langsmith_tracing=True,
         langsmith_api_key="test-secret",
@@ -114,8 +114,8 @@ def test_project_tracer_remains_available_without_agent_pair(monkeypatch: pytest
     client = Mock()
     tracer = BaseCallbackHandler()
     tracer_type = Mock(return_value=tracer)
-    monkeypatch.setattr(baseline_module, "Client", Mock(return_value=client))
-    monkeypatch.setattr(baseline_module, "LangChainTracer", tracer_type)
+    monkeypatch.setattr(workflow_module, "Client", Mock(return_value=client))
+    monkeypatch.setattr(workflow_module, "LangChainTracer", tracer_type)
 
     BaselineAgent(
         Mock(),
@@ -131,7 +131,7 @@ def test_project_tracer_remains_available_without_agent_pair(monkeypatch: pytest
 
 def test_disabled_tracing_does_not_construct_client_for_agent_pair(monkeypatch: pytest.MonkeyPatch) -> None:
     client_type = Mock()
-    monkeypatch.setattr(baseline_module, "Client", client_type)
+    monkeypatch.setattr(workflow_module, "Client", client_type)
 
     agent = BaselineAgent(
         Mock(),
@@ -157,8 +157,8 @@ def test_agent_address_preserves_root_and_nested_model_callbacks(monkeypatch: py
             events.append(("model", run_id, parent_run_id, kwargs.get("metadata", {})))
 
     tracer = RecordingTracer()
-    monkeypatch.setattr(baseline_module, "Client", Mock(return_value=Mock()))
-    monkeypatch.setattr(baseline_module, "LangChainTracer", Mock(return_value=tracer))
+    monkeypatch.setattr(workflow_module, "Client", Mock(return_value=Mock()))
+    monkeypatch.setattr(workflow_module, "LangChainTracer", Mock(return_value=tracer))
     chat = FakeMessagesListChatModel(responses=[AIMessage(content="analysis")])
 
     class Model:

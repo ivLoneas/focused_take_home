@@ -25,7 +25,7 @@ attempt count, sufficiency decision, and final response. Nodes return state upda
 
 ## Public interface
 
-- `AgentConfig(model="gpt-5-mini")` validates the selected model name and LangSmith configuration. It reads the model
+- `AgentConfig(model="gpt-6.1-terra")` validates the selected model name and LangSmith configuration. It reads the model
   override from `AGENT_MODEL`.
 - `BaselineAgent(model, retriever=placeholder_retriever, max_retrieval_attempts=3, config=None, coverage=None)` compiles the workflow
   once and loads `AgentConfig` when none is supplied. The injected model keeps construction and testing independent of
@@ -50,7 +50,7 @@ from agents.settings import AgentConfig
 from agents.tools import BaselineRetrieverAdapter, DatabaseCoverage, PgVectorRetriever
 
 config = AgentConfig()
-model = ChatOpenAI(model=config.model, temperature=0)
+model = ChatOpenAI(model=config.model)
 retriever = PgVectorRetriever(
     embeddings=OpenAIEmbeddings(model="text-embedding-3-small", dimensions=1536),
     connection_factory=partial(psycopg.connect, "<database-url>"),
