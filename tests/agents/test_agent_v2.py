@@ -114,12 +114,13 @@ def test_jev_rejection_returns_without_any_openai_database_or_retrieval_call():
     retriever.assert_not_called()
 
 
-def test_routing_model_plans_and_assesses_while_answer_model_only_answers():
+@pytest.mark.parametrize("planning_options", [{}, {"planning_model": None}], ids=["omitted", "explicit-none"])
+def test_routing_model_plans_and_assesses_while_answer_model_only_answers(planning_options):
     database, calls = coverage()
     evidence = RetrievedChunk("Revenue was $10 million.", "Apple FY2025 p. 1", {"page": 1})
     agent, routing, answering, _gate, retriever = make_agent(
         plans=[plan()], assessments=[{"is_sufficient": True}], answers=["10"],
-        retriever=Mock(return_value=[evidence]), coverage=database,
+        retriever=Mock(return_value=[evidence]), coverage=database, **planning_options,
     )
 
     result = agent.invoke("Apple FY2025 revenue in millions. Return only the number, no citations.")
@@ -389,12 +390,23 @@ def test_period_discovery_error_prevents_planning_and_answering():
 
 
 def test_optional_planning_model_owns_only_planning_while_router_assesses_and_answerer_answers():
-    database, _ = coverage()
-    planning = Model(plans=[plan()])
+    database, calls = coverage(("Apple", "Meta"))
+    gate = Gate()
+
+    class PlanningModel(Model):
+        def take(self, kind, value):
+            assert gate.questions == ["Apple FY2025 revenue?"]
+            assert calls == [("listed_companies", {}), ("company_periods", {"company": "Apple"}),
+                             ("company_periods", {"company": "Meta"})]
+            assert all(company in value.to_string() for company in ("Apple", "Meta"))
+            assert "FY2025" in value.to_string()
+            return super().take(kind, value)
+
+    planning = PlanningModel(plans=[plan()])
     routing = Model(assessments=[{"is_sufficient": True}])
     answering = Model(answers=["Apple revenue was 10 [Apple p. 1]."])
     agent = AgentV2(
-        answering, planning_model=planning, routing_model=routing, domain_gate=Gate(), coverage=database,
+        answering, planning_model=planning, routing_model=routing, domain_gate=gate, coverage=database,
         retriever=Mock(return_value=[RetrievedChunk("Apple revenue 10", "Apple p. 1")]),
         config=AgentV2Config(_env_file=None),
     )

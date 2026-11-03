@@ -1,0 +1,21 @@
+{
+  "kind": "deterministic replay of frozen answers, no new factual grading",
+  "cases": 132,
+  "assertions": 280,
+  "pass_fail_differences_from_saved_checks": [],
+  "cohorts": {
+    "reports/agent-v2/promptfoo.json / Agent v2 - Jev, nano routing, mini answers": {
+      "cases": 114,
+      "passed": 96
+    },
+    "reports/agent-v2/behavior-comparison.json / Baseline": {
+      "cases": 9,
+      "passed": 2
+    },
+    "reports/agent-v2/behavior-comparison.json / Agent v2": {
+      "cases": 9,
+      "passed": 8
+    }
+  },
+  "tokens": 0
+}

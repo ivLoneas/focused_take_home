@@ -25,12 +25,14 @@ class AgentV2(BaselineAgent):
         *,
         routing_model: ChatModel,
         domain_gate: Any,
+        planning_model: ChatModel | None = None,
         retriever: Retriever = placeholder_retriever,
         coverage: DatabaseCoverage | None = None,
         max_retrieval_attempts: int = 3,
         config: AgentV2Config | None = None,
     ) -> None:
         self.routing_model = routing_model
+        self.planning_model = routing_model if planning_model is None else planning_model
         self.domain_gate = domain_gate
         super().__init__(
             answer_model, retriever=retriever, coverage=coverage,
@@ -99,7 +101,7 @@ class AgentV2(BaselineAgent):
             "available_data": json.dumps(state.get("available_data", {}), ensure_ascii=False),
         }
         prompt = QUESTION_ANALYSIS_PROMPT.invoke(values)
-        analysis = self.routing_model.with_structured_output(QuestionPlan).invoke(prompt)
+        analysis = self.planning_model.with_structured_output(QuestionPlan).invoke(prompt)
         analysis = analysis.model_copy(update={"out_of_domain": False})
         if self.coverage is not None and self._route_question({**state, "analysis": analysis}) == "retrieve":
             for company in analysis.companies:

@@ -66,7 +66,10 @@ result = agent.invoke("What was Amazon's earnings in 2025?")
 gate.close()
 ```
 
-Both models, the gate, coverage and retrieval are injectable. The result uses the existing `BaselineResult` contract.
+Both models, the gate, coverage and retrieval are injectable. An optional `planning_model` owns only the planning
+stage; omitting it or passing `None` uses `routing_model` for planning and sufficiency as before. This enables
+separate planner experiments without changing the default evaluation configuration. The result uses the existing
+`BaselineResult` contract.
 The implementation reuses the baseline's tracer, retrieval boundary, result models and deterministic routing helpers;
 its graph and model/prompt policy are separate. The application backend remains on the baseline until deliberately
 switched; v2 can be evaluated without changing the demo.
@@ -92,6 +95,9 @@ The alias may change; traces record the resolved model. Jev 1.14 pricing observe
 $0.042 per million input tokens, with free output. OpenAI pricing is recorded separately in evaluation reports.
 
 ## Evaluation
+
+The [completion review](../../reports/agent-v2-completion/report.md) audits the implementation commits and saved
+live results, compares them with baseline v2, and records current test/replay validation and live-run prerequisites.
 
 From `evals/`, using the existing installed Promptfoo and project Python environment:
 
