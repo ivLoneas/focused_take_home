@@ -1,0 +1,20 @@
+Loading environment variables from ../.env
+Cache is disabled.
+Starting evaluation eval-XTA-2026-11-03T13:15:50
+Running 10 test cases (up to 4 at a time)...
+✓ Eval complete (ID: eval-XTA-2026-11-03T13:15:50)
+
+» View results: promptfoo view
+» Feedback: https://promptfoo.dev/feedback
+
+Total Tokens: 163,774
+  Provider: 150,722 (137,747 prompt, 12,975 completion, 11,136 cached)
+  Grading: 13,052 (9,118 prompt, 3,934 completion, 3,072 reasoning)
+
+Results:
+  ✓ 8 passed (80.00%)
+  ✗ 2 failed (20.00%)
+  0 errors (0%)
+Duration: 1m 16s (concurrency: 4)
+
+Writing output to ../reports/agent-v2-refinement-2026-11-03/behavior-final.json

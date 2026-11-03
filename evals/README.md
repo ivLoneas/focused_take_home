@@ -91,3 +91,29 @@ model calls are made. Pytest covers the workflow without calling OpenAI, Postgre
 ```sh
 uv run pytest -q tests/evals
 ```
+
+## 3 November 2026 prompt and ambiguity revision
+
+The suite retains 114 cases. AMB03/05/08/09/10 now ask genuinely underspecified financial questions; AMB02 asks only
+for the unidentified company. AMB06 still asks for Alphabet's 2026 results and must clarify metric and quarter.
+Specific profit/earnings, margins and explicit quarterly/annual alternatives remain answerable in the separate
+ten-case v2 behavior suite. Run `promptfooconfig.agent_v2_behavior.yaml` for the paired baseline/v2 comparison.
+
+The rubric accepts a short specific company-coverage explanation without manifest/tool names or redundant dates
+when the entire company is excluded. It still rejects invented facts, external-search offers and inappropriate
+clarification statuses. Previous raw results are immutable; compare question, expectation and rubric versions,
+not just case IDs. Before/after snapshots, the domain-only RTT/cost benchmark, and live results are recorded in
+`reports/agent-v2-refinement-2026-11-03/`.
+
+For a fresh full comparison after aligning baseline prompts with this policy, run both providers in one evaluation:
+
+```sh
+cd evals
+PYTHONPATH=.. PROMPTFOO_PYTHON=/Users/ivansmirnov/work/focused/.venv/bin/python \
+  ./node_modules/.bin/promptfoo eval -c promptfooconfig.aligned_comparison.yaml --env-file ../.env \
+  --no-cache --no-share --max-concurrency 4 --no-table --no-progress-bar -o ../reports/aligned-comparison.json
+```
+
+Then run `promptfooconfig.agent_v2_behavior.yaml` without a provider filter for the paired ten-case acceptance
+comparison. Baseline retains its original single-model/default-reasoning setup; v2 retains Jev screening and
+nano/mini low-reasoning stages. This measures the complete configured agents, not Jev's isolated contribution.

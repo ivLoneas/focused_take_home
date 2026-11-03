@@ -15,6 +15,18 @@ deterministic accuracy has eleven and ambiguous questions has nine after AMB04's
 - table lookup.
 - exact output formatting.
 
+The 3 November 2026 revision keeps all 114 IDs but replaces AMB03, AMB05, AMB08, AMB09 and AMB10 with genuinely
+underspecified financial requests. AMB02 requires resolving the company, without unnecessarily demanding a
+fiscal/calendar choice. AMB06 ("Show me Alphabet's 2026 results") requires a metric and quarter clarification.
+Bounded profit/earnings, margin families, and explicit quarterly/annual alternatives belong in the versioned
+`agent_v2_cases.csv` answer suite instead. That suite has ten cases, including V210's margin comparison.
+Saved evaluation exports preserve their original questions, rubrics and scores; an ID alone no longer establishes
+a matched contract. Before/after dataset snapshots are in `reports/agent-v2-refinement-2026-11-03/`.
+
+Known missing company or filing coverage finishes as `answered`, not `needs_clarification`. A concise company-level
+explanation is sufficient when the company is excluded; do not require manifest names or tool narration. A brief
+invitation to ask about something else is allowed. External-search offers and invented financial facts still fail.
+
 `AMB04` retains its ID for historical comparisons but belongs to `deterministic_accuracy`: its wording permits
 using the annual report's fiscal period. Expect a direct cited FY2025 sales answer with the fiscal year-end date,
 without requiring a clarification question. Saved results from earlier runs retain their original classification.

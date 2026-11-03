@@ -1,0 +1,197 @@
+{
+  "changed_rows": [
+    {
+      "id": "AMB02",
+      "before": {
+        "id": "AMB02",
+        "test": "How much revenue did it make in 2025?",
+        "topic": "ambiguous_questions",
+        "answer": "Ask which of the five companies “it” refers to and whether the user means a fiscal or calendar period.",
+        "source": "Active newest-100 FAANG corpus (data/active_manifest.csv); baseline selection (etl/AGENTS.md)",
+        "annotations": "Missing entity and possible period ambiguity.",
+        "required_tools": "",
+        "required_period_companies": "",
+        "allow_no_retrieval": "false",
+        "output_pattern": ""
+      },
+      "after": {
+        "id": "AMB02",
+        "test": "How much revenue did it make in 2025?",
+        "topic": "ambiguous_questions",
+        "answer": "Ask which company “it” refers to. Do not guess a company or answer for all five companies.",
+        "source": "Active newest-100 FAANG corpus (data/active_manifest.csv); baseline selection (etl/AGENTS.md)",
+        "annotations": "Essential unidentified company; fiscal/calendar clarification is unnecessary until the company is known.",
+        "required_tools": "",
+        "required_period_companies": "",
+        "allow_no_retrieval": "false",
+        "output_pattern": ""
+      }
+    },
+    {
+      "id": "AMB03",
+      "before": {
+        "id": "AMB03",
+        "test": "What was Amazon's profit in 2025?",
+        "topic": "ambiguous_questions",
+        "answer": "Clarify the profit measure, or give labeled alternatives: operating income was $79.975B and net income was $77.670B.",
+        "source": "Amazon 2025 Form 10-K (data/raw/amazon/2025/Q4/10-k--006d98fa8b.pdf), PDF p. 37",
+        "annotations": "Metric ambiguity; labeled alternatives are acceptable.",
+        "required_tools": "",
+        "required_period_companies": "",
+        "allow_no_retrieval": "false",
+        "output_pattern": ""
+      },
+      "after": {
+        "id": "AMB03",
+        "test": "Tell me about Amazon's financial performance.",
+        "topic": "ambiguous_questions",
+        "answer": "Ask which period and financial measure the user wants. Do not silently select revenue or net income.",
+        "source": "Active newest-100 FAANG corpus (data/active_manifest.csv); baseline selection (etl/AGENTS.md)",
+        "annotations": "No period or metric is specified; one concise clarification is required.",
+        "required_tools": "",
+        "required_period_companies": "",
+        "allow_no_retrieval": "false",
+        "output_pattern": ""
+      }
+    },
+    {
+      "id": "AMB05",
+      "before": {
+        "id": "AMB05",
+        "test": "What was Meta's profit in 2025?",
+        "topic": "ambiguous_questions",
+        "answer": "Clarify the measure, or give labeled alternatives: operating income was $83.276B and net income was $60.458B.",
+        "source": "Meta 2025 Form 10-K (data/raw/meta/2025/Q4/form-10-k--147aa03c23.pdf), PDF p. 90",
+        "annotations": "Metric ambiguity between operating and net income.",
+        "required_tools": "",
+        "required_period_companies": "",
+        "allow_no_retrieval": "false",
+        "output_pattern": ""
+      },
+      "after": {
+        "id": "AMB05",
+        "test": "How did Meta do?",
+        "topic": "ambiguous_questions",
+        "answer": "Ask which period and measure to use, such as revenue, net income or operating margin.",
+        "source": "Active newest-100 FAANG corpus (data/active_manifest.csv); baseline selection (etl/AGENTS.md)",
+        "annotations": "Broad performance request without a metric or period.",
+        "required_tools": "",
+        "required_period_companies": "",
+        "allow_no_retrieval": "false",
+        "output_pattern": ""
+      }
+    },
+    {
+      "id": "AMB06",
+      "before": {
+        "id": "AMB06",
+        "test": "Show me Alphabet's 2026 results.",
+        "topic": "ambiguous_questions",
+        "answer": "Ask which quarter and metric are wanted. The corpus includes Q1-Q3 2026, but no full-year 2026 annual report.",
+        "source": "Active newest-100 FAANG corpus (data/active_manifest.csv); baseline selection (etl/AGENTS.md)",
+        "annotations": "Granularity and incomplete-year ambiguity.",
+        "required_tools": "",
+        "required_period_companies": "",
+        "allow_no_retrieval": "false",
+        "output_pattern": ""
+      },
+      "after": {
+        "id": "AMB06",
+        "test": "Show me Alphabet's 2026 results.",
+        "topic": "ambiguous_questions",
+        "answer": "Ask which quarter and metric the user wants. Do not assume a full-year result or choose arbitrary financial metrics.",
+        "source": "Active newest-100 FAANG corpus (data/active_manifest.csv); baseline selection (etl/AGENTS.md)",
+        "annotations": "Broad results request needs one specific clarification. Available Q1-Q3 FY2026 coverage does not resolve the missing metric/quarter; the clarification need not list the inventory or annual-report gaps.",
+        "required_tools": "",
+        "required_period_companies": "",
+        "allow_no_retrieval": "false",
+        "output_pattern": ""
+      }
+    },
+    {
+      "id": "AMB08",
+      "before": {
+        "id": "AMB08",
+        "test": "Compare Apple's and Netflix's margins for 2025.",
+        "topic": "ambiguous_questions",
+        "answer": "Ask which margin is intended, such as gross, operating, or net margin, and keep definitions consistent across both companies.",
+        "source": "Apple 2025 Form 10-K (data/raw/apple/2025/Q4/10-k--15e31c78d1.pdf), PDF p. 32; Netflix 2025 Form 10-K (data/raw/netflix/2025/annual/netflix-2025-annual-report.pdf), PDF p. 42",
+        "annotations": "Metric-definition ambiguity across companies.",
+        "required_tools": "",
+        "required_period_companies": "",
+        "allow_no_retrieval": "false",
+        "output_pattern": ""
+      },
+      "after": {
+        "id": "AMB08",
+        "test": "Compare Apple and Netflix financially.",
+        "topic": "ambiguous_questions",
+        "answer": "Ask which period and financial measure to compare. Do not produce an arbitrary survey of financial metrics.",
+        "source": "Active newest-100 FAANG corpus (data/active_manifest.csv); baseline selection (etl/AGENTS.md)",
+        "annotations": "Both companies are identified but the comparison measure and period are missing.",
+        "required_tools": "",
+        "required_period_companies": "",
+        "allow_no_retrieval": "false",
+        "output_pattern": ""
+      }
+    },
+    {
+      "id": "AMB09",
+      "before": {
+        "id": "AMB09",
+        "test": "Did Alphabet's revenue grow 18% or 15% in 2025?",
+        "topic": "ambiguous_questions",
+        "answer": "Both appear on the retained slide for different periods: Q4 2025 revenue grew 18% year over year, while FY2025 revenue grew 15%. Explain the period distinction.",
+        "source": "Alphabet Q4 2025 Earnings Slides (data/raw/alphabet/2025/Q4/earnings-slides--f2a22a2eb2.pdf), PDF p. 5",
+        "annotations": "Apparent contradiction resolved by quarterly-versus-annual scope.",
+        "required_tools": "",
+        "required_period_companies": "",
+        "allow_no_retrieval": "false",
+        "output_pattern": ""
+      },
+      "after": {
+        "id": "AMB09",
+        "test": "Was Alphabet's growth good?",
+        "topic": "ambiguous_questions",
+        "answer": "Ask which growth metric, period and comparison benchmark the user means. Do not invent an overall judgment.",
+        "source": "Active newest-100 FAANG corpus (data/active_manifest.csv); baseline selection (etl/AGENTS.md)",
+        "annotations": "Missing metric, period and benchmark; a broad evaluative request is not a finite pair of known alternatives.",
+        "required_tools": "",
+        "required_period_companies": "",
+        "allow_no_retrieval": "false",
+        "output_pattern": ""
+      }
+    },
+    {
+      "id": "AMB10",
+      "before": {
+        "id": "AMB10",
+        "test": "How much did Meta spend on capital expenditures in 2025: the quarter or the whole year?",
+        "topic": "ambiguous_questions",
+        "answer": "Clarify the period or give both: Q4 2025 capital expenditures were $22.137B and full-year 2025 capital expenditures were $72.215B.",
+        "source": "Meta Q4 2025 Earnings Presentation (data/raw/meta/2025/Q4/earnings-slides--560bd181b2.pdf), PDF p. 9",
+        "annotations": "Period ambiguity and overlapping quarter/full-year totals.",
+        "required_tools": "",
+        "required_period_companies": "",
+        "allow_no_retrieval": "false",
+        "output_pattern": ""
+      },
+      "after": {
+        "id": "AMB10",
+        "test": "How much did Meta spend?",
+        "topic": "ambiguous_questions",
+        "answer": "Ask which period and spending measure the user wants, such as capital expenditures or operating expenses.",
+        "source": "Active newest-100 FAANG corpus (data/active_manifest.csv); baseline selection (etl/AGENTS.md)",
+        "annotations": "No period or spending measure is specified.",
+        "required_tools": "",
+        "required_period_companies": "",
+        "allow_no_retrieval": "false",
+        "output_pattern": ""
+      }
+    }
+  ],
+  "unchanged_rows": 107,
+  "row_count_before": 114,
+  "row_count_after": 114,
+  "note": "Original evaluation exports are unchanged; compare row content and rubric version, not just IDs."
+}

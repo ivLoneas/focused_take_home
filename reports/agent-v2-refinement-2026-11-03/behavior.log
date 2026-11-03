@@ -1,0 +1,24 @@
+Loading environment variables from ../.env
+Cache is disabled.
+Starting evaluation eval-KSB-2026-11-03T13:07:37
+Running 20 test cases (up to 4 at a time)...
+✓ Eval complete (ID: eval-KSB-2026-11-03T13:07:37)
+
+» View results: promptfoo view
+» Feedback: https://promptfoo.dev/feedback
+
+Total Tokens: 285,590
+  Provider: 259,046 (222,101 prompt, 36,945 completion, 33,920 cached)
+  Grading: 26,544 (17,801 prompt, 8,743 completion, 7,040 reasoning)
+
+Providers:
+  file://agent_v2_provider.py: 139,078 (36 requests; 127,662 prompt, 11,416 completion, 17,280 cached)
+  file://provider.py: 119,968 (32 requests; 94,439 prompt, 25,529 completion, 16,640 cached)
+
+Results:
+  ✓ 5 passed (25.00%)
+  ✗ 15 failed (75.00%)
+  0 errors (0%)
+Duration: 3m 45s (concurrency: 4)
+
+Writing output to ../reports/agent-v2-refinement-2026-11-03/behavior.json

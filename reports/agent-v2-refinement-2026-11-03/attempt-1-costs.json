@@ -1,0 +1,13 @@
+{
+  "kind": "Interrupted benchmark with max_tokens=512; excluded from final comparison",
+  "recorded_calls": 69,
+  "recorded_usd": 0.0077221,
+  "failed_call": {
+    "classifier": "nano",
+    "case_id": "advice_buy",
+    "input_tokens_from_exception": 338,
+    "output_tokens_from_exception": 512,
+    "estimated_usd": 0.00022170000000000002
+  },
+  "cause": "SDK raised LengthFinishReasonError after reasoning exhausted output allowance; final run uses2048 and records failures."
+}

@@ -8,7 +8,7 @@ from langchain_core.callbacks import BaseCallbackHandler
 from langchain_core.runnables import RunnableLambda
 from pydantic import SecretStr, ValidationError
 
-from agents.agent_v2.domain import JevDomainGate
+from agents.agent_v2.ood import JevDomainGate
 from agents.agent_v2.settings import AgentV2Config
 
 

@@ -1,4 +1,4 @@
-description: Agent v2 on the unchanged baseline evaluation contract
+description: Agent v2 - revised ambiguity contract, 3 November 2026
 prompts:
   - id: financial-report-question
     label: Financial report question

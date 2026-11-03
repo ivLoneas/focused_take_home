@@ -1,0 +1,8 @@
+{
+  "run_id": "2ffbbc74-c94c-45ac-bdf7-1dd54c88f06f",
+  "create_succeeded": true,
+  "update_succeeded": true,
+  "endpoint": "https://eu.api.smith.langchain.com",
+  "remote_readback_attempted": false,
+  "note": "Synchronous ingestion canary; benchmark and evaluations use inherited LangChain/LangSmith callbacks. This does not assert remote readback of every run."
+}

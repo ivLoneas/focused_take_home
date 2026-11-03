@@ -1,0 +1,8 @@
+{
+  "same_85_factual_tool_format_questions": true,
+  "previous_mean_words": 95.51764705882353,
+  "final_mean_words": 44.141176470588235,
+  "previous_median_words": 85,
+  "final_median_words": 37,
+  "words_definition": "whitespace-separated answer tokens; descriptive length proxy, not a quality judge"
+}

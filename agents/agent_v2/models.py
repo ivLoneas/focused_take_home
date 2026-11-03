@@ -11,9 +11,11 @@ from etl.companies import Company
 class QuestionPlan(QuestionAnalysis):
     out_of_domain: bool = Field(default=False, description="Always false: Jev has already screened domain.")
     needs_clarification: bool = Field(description=(
-        "True ONLY if essential missing information prevents any useful bounded answer, e.g. unidentified company. "
-        "False for revenue/net-income ambiguity or fiscal/calendar ambiguity: retrieve and answer alternatives. "
-        "A named year defaults to full-year reported results; do not ask annual versus quarterly by default."
+        "True only for essential missing intent: unidentified company, broad results/performance without a metric, "
+        "or generic growth without metric/baseline. 'Results in 2026' is still broad. "
+        "False for bounded profit, earnings or margins: retrieve labeled alternatives (revenue/net income etc.). "
+        "False for known missing coverage: return answered with the gap, no external-search offer. "
+        "A named metric and year default to annual results; fiscal/calendar ambiguity alone is not a clarification."
     ))
     companies: list[Company] = Field(default_factory=list, description=(
         "Every relevant company, using exact canonical names from listed_companies when supplied. "
@@ -23,7 +25,8 @@ class QuestionPlan(QuestionAnalysis):
     required_facts: list[str] = Field(default_factory=list, description=(
         "Every fact needed for all bounded interpretations. Broad 'earnings in 2025' requires BOTH revenue "
         "and net income, plus fiscal/calendar period dates. 'Profit' requires operating income and net income. "
-        "A year without a quarter means annual results. Do not replace revenue with EPS."
+        "For a named metric, a year without a quarter means annual results. "
+        "For broad results or unspecified growth, leave facts empty and ask for the missing intent. Do not replace revenue with EPS."
     ))
 
 

@@ -1,0 +1,20 @@
+Loading environment variables from ../.env
+Cache is disabled.
+Starting evaluation eval-Dxn-2026-11-03T12:32:29
+Running 114 test cases (up to 4 at a time)...
+✓ Eval complete (ID: eval-Dxn-2026-11-03T12:32:29)
+
+» View results: promptfoo view
+» Feedback: https://promptfoo.dev/feedback
+
+Total Tokens: 1,486,630
+  Provider: 1,357,731 (1,242,542 prompt, 115,189 completion, 176,512 cached)
+  Grading: 128,899 (86,196 prompt, 42,703 completion, 33,856 reasoning)
+
+Results:
+  ✓ 97 passed (85.09%)
+  ✗ 17 failed (14.91%)
+  0 errors (0%)
+Duration: 6m 59s (concurrency: 4)
+
+Writing output to ../reports/agent-v2-refinement-2026-11-03/full.json

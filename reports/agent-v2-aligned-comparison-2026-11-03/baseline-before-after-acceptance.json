@@ -1,0 +1,9 @@
+{
+  "contract_identical": true,
+  "cases": 10,
+  "before_alignment_strict_passes": 2,
+  "after_alignment_strict_passes": 8,
+  "before_source": "reports/agent-v2-refinement-2026-11-03/candidate-3-behavior.json",
+  "after_source": "behavior.json",
+  "caveat": "One trial before and after; observed prompt-alignment result, not a repeated-trial causal estimate."
+}

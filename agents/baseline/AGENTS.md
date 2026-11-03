@@ -79,6 +79,16 @@ table. Repeated companies are deduplicated. Google maps to Alphabet and Facebook
 
 ## Implementation highlights
 
+- The 3 November 2026 prompt alignment uses the revised evaluation policy: bounded profit/earnings/margin terms
+  receive labeled alternatives; broad results/performance, unidentified companies, and unspecified growth/spending
+  receive one specific clarification. Verified missing coverage stays in domain and returns `answered` with a
+  concise company/filing/period gap, retaining supported parts of mixed requests. No external-search offers.
+- Answers normally use one or two factual sentences. Exact number/company/CSV/JSON requests may omit inline
+  citations, while retrieval provenance remains in `BaselineResult.citations`. Units, signs, precision, material
+  fiscal periods, grounding and untrusted-evidence protections still apply. Few-shot figures are hypothetical.
+- This alignment changes prompt text only. The original graph, single-model configuration, discovery sequence,
+  retrieval loop and tracing remain independent of v2. Compare both through
+  `evals/promptfooconfig.aligned_comparison.yaml` on the same frozen dataset/grader.
 - Pydantic structured outputs make scope and context-sufficiency decisions explicit and validated.
 - Prompt roles and decision rules are explicit, and each prompt is limited to one workflow responsibility.
 - Prompts contain no company/period inventory. The graph first plans discovery, calls `listed_companies` and

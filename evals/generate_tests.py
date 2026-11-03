@@ -61,6 +61,10 @@ For a clarification or refusal, assess the requested scope behavior; do not dema
 citations. A concise refusal that clearly states the financial-report boundary is sufficient for an unrelated
 request, without restating its topic or naming a manifest file. For unavailable data, require a truthful specific
 coverage explanation without invented facts. Return a score from 0 to 1 and pass only at 0.8 or above.
+A company-level boundary such as 'I do not have reports for Uber in this collection' is a specific coverage
+explanation. When the entire company is unavailable, do not also require every requested date, a manifest name,
+tool names, or a narration of verification steps. A brief optional invitation to ask about something else is
+acceptable. Offers to search externally or fetch unavailable reports are not acceptable.
 """
 
 

@@ -104,3 +104,45 @@ def test_question_plan_keeps_unsupported_company_gap_without_retrieval_name():
     plan = QuestionPlan(needs_clarification=False, companies=[], required_facts=["Walmart reports unavailable"])
     assert plan.companies == []
     assert plan.required_facts == ["Walmart reports unavailable"]
+
+
+def test_planner_explicitly_answers_known_coverage_gaps_instead_of_clarifying():
+    text = system(QUESTION_ANALYSIS_PROMPT)
+
+    assert "coverage" in text and "needs_clarification=false" in text
+    assert "answered" in text
+    assert "uber" in text and "net income" in text and "2025" in text
+    assert "annual" in text and "quarter" in text
+    assert "external" in text
+
+
+@pytest.mark.parametrize("prompt", [QUESTION_ANALYSIS_PROMPT, ANSWER_PROMPT])
+def test_broad_results_and_unknown_entities_remain_essential_clarification_cases(prompt):
+    text = system(prompt)
+
+    assert "alphabet" in text and "2026" in text and "results" in text
+    assert "clarif" in text and "metric" in text and "period" in text
+    assert "unidentified company" in text or "which company" in text or "unknown company" in text
+
+
+def test_question_plan_schema_distinguishes_coverage_gaps_and_broad_results():
+    from agents.agent_v2.models import QuestionPlan
+
+    description = QuestionPlan.model_json_schema()["properties"]["needs_clarification"]["description"].lower()
+
+    assert "coverage" in description
+    assert "false" in description
+    assert "results" in description and "metric" in description
+
+
+def test_answer_prompt_demonstrates_short_factual_answers_and_bounds_followups():
+    text = system(ANSWER_PROMPT)
+
+    assert "short" in text or "brief" in text
+    assert "factual" in text and "sentence" in text
+    assert "preamble" in text
+    assert "repeat" in text and "source" in text
+    assert "hypothetical" in text
+    assert text.count("example") >= 3 or text.count("user:") >= 3
+    assert "uber" in text and "something else" in text
+    assert "external" in text and "search" in text

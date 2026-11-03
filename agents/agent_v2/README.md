@@ -77,7 +77,7 @@ switched; v2 can be evaluated without changing the demo.
 ## Jev policy
 
 Two independent Noul judgments share the original question state. The question wording and thresholds live in
-`domain.py`. No corpus inventory is guessed by the gate.
+`ood.py`. No corpus inventory is guessed by the gate.
 
 | Report question probability | Investment advice probability | Code action |
 | --- | --- | --- |
@@ -107,8 +107,9 @@ PYTHONPATH=.. PROMPTFOO_PYTHON=../.venv/bin/python npx promptfoo eval \
   -o ../reports/agent-v2/promptfoo.json
 ```
 
-The comparison config uses the unchanged historical suite, including its clarification-only trajectory assertions.
-Those assertions intentionally conflict with several new v2 behaviors; report their failures separately rather than
-silently weakening the historical contract. `agent_v2_cases.csv` provides versioned acceptance cases for answering
-bounded interpretations and exact formatting. Jev input/output counts are included in total tokens and separately
+The 3 November 2026 revision keeps 114 case IDs but replaces five bounded-interpretation ambiguity questions
+with genuinely underspecified requests; saved historical results retain their original questions and scores.
+`agent_v2_cases.csv` separately tests answerable profit/earnings, explicit period alternatives, margins, and exact
+formatting. Broad results/performance, unidentified companies and unspecified growth need one clarification.
+Known company/filing/period coverage gaps instead finish as `answered` with a concise explanation. Jev input/output counts are included in total tokens and separately
 attributed under `metadata.telemetry.by_model`; free Jev output tokens must not be priced like OpenAI output tokens.

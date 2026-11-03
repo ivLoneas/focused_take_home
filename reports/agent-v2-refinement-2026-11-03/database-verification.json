@@ -1,0 +1,13 @@
+{
+  "documents": 100,
+  "all_paths_and_checksums_match_active_manifest": true,
+  "chunks_by_company": {
+    "Alphabet": 3353,
+    "Amazon": 5829,
+    "Apple": 2779,
+    "Meta": 5344,
+    "Netflix": 2969
+  },
+  "total_chunks": 20274,
+  "read_only_verification": true
+}

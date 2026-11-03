@@ -1,0 +1,21 @@
+{
+  "frozen_source_config_dataset_grader_hashes_match": true,
+  "only_baseline_prompts_changed_in_implementation": true,
+  "paired_vars_assertions_match": true,
+  "full_invocations": 228,
+  "acceptance_invocations": 20,
+  "strict_passes": {
+    "baseline": 103,
+    "v2": 101
+  },
+  "provider_errors": {
+    "baseline": 5,
+    "v2": 0
+  },
+  "tests": {
+    "passed": 854,
+    "skipped": 19
+  },
+  "local_report_links_exist": true,
+  "configured_credentials_absent_from_artifacts": true
+}

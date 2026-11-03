@@ -1,0 +1,25 @@
+{
+  "date": "2026-11-03",
+  "files": {
+    "agents/agent_v2/prompts.py": "076934fcbe6ab8b562ef2fbc91242e4378fee2d42e343e188a6eafc01d1b093f",
+    "agents/agent_v2/models.py": "7e2871be0bac5d3486a33f9a4d1f93eb3e3b4976f119696e1d4eb705d3d6b11b",
+    "agents/agent_v2/ood.py": "d687c5085b93be3cdb63a71d2a5d96c75a2e23b0f6d0cd9a5fcb77858c1b2529",
+    "agents/agent_v2/agent.py": "5ab8202545927abed97b6caf84139261f241dc399410437d442a7d6bb02eadbb",
+    "evals/evals_tests.csv": "a23f094744a5e5f951c493521c045da87ee7f1c5ebd601e0806471c77c10fb3a",
+    "evals/agent_v2_cases.csv": "4a04d863481b50155c3f3a0b0454439301eb81aa211e00ff854c6d55f94af66a",
+    "evals/agent_v2_provider.py": "422aa5d69c16c2a6e734f2b241ce6a437b50cd8bf8695f3ad8b0c67f4a7c50b9",
+    "evals/assertions.py": "91bc3b2cbec0fe8a1b7c9f871a42c92a279507e38df547707066eba7e07857d3",
+    "evals/generate_tests.py": "7c83959a0214c13277018adf3566b7152095757f0d4cf6a64536b25c8a1e7ab5",
+    "data/active_manifest.csv": "2a390a2ca11db06a054e242626865fefbd01ff329c19dc9a7ddcc2e086a45142"
+  },
+  "changed_contract": "Five new clarification-only questions replace bounded interpretations, AMB02 clarification expectation narrowed to unknown company; old artifacts frozen. V210 adds margin alternatives.",
+  "runtime": {
+    "v2_routing_model": "gpt-5-nano",
+    "answer_model": "gpt-5-mini",
+    "reasoning_effort": "low",
+    "max_concurrency": 4,
+    "cache": false
+  },
+  "tracing": "Enabled using configured LangSmith destination; credentials excluded.",
+  "candidate": 3
+}

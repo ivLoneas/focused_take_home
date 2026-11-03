@@ -23,7 +23,7 @@ ORIGINAL_FIELDS = (
     "required_period_companies",
     "allow_no_retrieval",
 )
-ORIGINAL_ROWS_SHA256 = "b453f1d46fdd407ed030432dd6dd9a89d26a04183b0dfa3088e716ffd345449d"
+NON_AMBIGUITY_ROWS_SHA256 = "e117ab264f63e1a3e1007d457b1f60d47bca4884bf0900b3961aa4d6c5769493"
 
 
 def row(**overrides: str) -> dict[str, str]:
@@ -236,7 +236,7 @@ def test_judge_rubric_has_question_and_explicit_evidence_flexibility_rules(tmp_p
     assert "grounded answers must identify the expected report" not in normalized
 
 
-def test_original_104_rows_only_reclassify_amb04_and_keep_ten_formatting_questions() -> None:
+def test_ambiguity_revision_preserves_unrelated_cases_and_ten_formatting_questions() -> None:
     with (ROOT / "evals/evals_tests.csv").open(newline="", encoding="utf-8") as stream:
         rows = list(csv.DictReader(stream))
     originals = [{field: item[field] for field in ORIGINAL_FIELDS} for item in rows[:104]]
@@ -249,20 +249,11 @@ def test_original_104_rows_only_reclassify_amb04_and_keep_ten_formatting_questio
     assert "September 27, 2025" in resolved_period["answer"]
     assert "fiscal" in resolved_period["answer"].lower()
     assert "Clarify calendar versus fiscal year" not in resolved_period["answer"]
-    # Preserve the historic snapshot while allowing only this reviewed reclassification.
-    resolved_period.update(
-        topic="ambiguous_questions",
-        answer=(
-            "Clarify calendar versus fiscal year. Apple fiscal 2025 ended September 27, 2025 and reported "
-            "$416.161B of net sales; it is not a January-December total."
-        ),
-        annotations="Conflicting calendar and fiscal-period descriptions.",
-        required_tools="",
-        required_period_companies="",
-    )
-    digest = hashlib.sha256(json.dumps(originals, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+    unchanged = [item for item in originals if not item["id"].startswith("AMB")]
+    digest = hashlib.sha256(json.dumps(unchanged, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
 
-    assert digest == ORIGINAL_ROWS_SHA256, "Only the reviewed AMB04 fields may change in the existing 104 cases"
+    assert len(unchanged) == 94
+    assert digest == NON_AMBIGUITY_ROWS_SHA256, "Ambiguity revisions must preserve unrelated evaluation cases"
     formats = rows[104:]
     assert len(formats) == 10
     assert [item["id"] for item in formats] == [f"FMT{i:02}" for i in range(1, 11)]

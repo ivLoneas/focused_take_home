@@ -1,3 +1,25 @@
+# Latest comparison — aligned baseline and v2, 3 November 2026
+
+After baseline prompt alignment, a fresh paired evaluation on identical questions and grading criteria produced **103/114 (90.4%) baseline versus 101/114 (88.6%) v2**. Ambiguity: **9/9 versus 7/9**; missing data: **9/10 versus 8/10**. The separate acceptance suite scored **8/10 for both**.
+
+Mean completed-response latency was **31.38s baseline versus 10.81s v2**. Recorded model/embedding cost estimates were **$0.880284 versus $0.273608**, excluding grading. Five baseline discovery-plan validation errors remain in the strict denominator; their model usage is absent from exports, so its recorded cost understates spend. V2 had no runtime errors. These results compare the complete configured agents, including different models/reasoning settings, rather than isolating Jev.
+
+See the [fresh aligned comparison](../agent-v2-aligned-comparison-2026-11-03/report.md) for paired outcomes, per-topic scores, costs, errors, unchanged-contract checks and reproduction. Baseline implementation changes were limited to prompts; v2, datasets, grader and retrieval stayed frozen. **854 tests passed, 19 skipped.** Earlier sections below preserve the previous runs.
+
+---
+
+# Latest update — prompt refinement, 3 November 2026
+
+The final revised evaluation passed **98/114 (86.0%)**, including **9/10 missing-data**, **6/9 revised ambiguity**, and **10/10 formatting** cases. The separate v2 acceptance suite passed **8/10**. Routing is improved but not fully resolved; the new case/rubric contract prevents treating aggregate historical score differences as matched accuracy gains.
+
+The domain-only benchmark measured **177.5ms mean Jev HTTP RTT**, versus **1,713.6ms mini** and **2,195.5ms nano**. All three matched the 16-question routing labels on both repetitions. On this task Jev was **9.65× faster and 11.56× cheaper than mini**; this does not attribute the whole workflow speedup to Jev.
+
+See the [latest implementation and evaluation report](../agent-v2-refinement-2026-11-03/report.md) for prompt/dataset changes, exact usage and costs, shorter-answer measurements, all remaining failures and reproducibility artifacts. Independent tests: **845 passed, 19 skipped**.
+
+The sections below preserve the earlier completion report and its diagnostic addendum.
+
+---
+
 # Agent v2 — completed development and live evaluations
 
 The fresh uncached **114-case evaluation completed: 83/114 (72.8%) strict passes, 31 assertion failures, and 0 runtime errors**. The separate paired behavior suite completed all 18 invocations: **v2 8/9 (88.9%) versus baseline 3/9 (33.3%)**. All requested runs are complete; credentials are working.
@@ -43,6 +65,108 @@ The fresh evidence does not support replacing the historical baseline on strict 
 | image_questions | 5/10 | 4/10 | 5/10 |
 | table_questions | 8/10 | 9/10 | 10/10 |
 | formatting_questions | 0/10 | 9/10 | 9/10 |
+
+## Diagnostic addendum — ambiguity, missing data and Jev (3 November 2026)
+
+**The two weak topics primarily expose planning/routing problems and an ambiguity-policy mismatch, rather than Jev rejecting financial questions.** Jev only screens domain and investment-advice intent. It receives the original question, not the company inventory or retrieved evidence; it does not decide whether to clarify or whether a financial fact is available.
+
+### Evidence available for this review
+
+The fresh results above remain **83/114**, with **0/9 ambiguity** and **0/10 missing-data** passes. However, the referenced `live-historical.json`, `live-behavior.json`, `live-cases.*`, `live-costs.json`, and `live-run-manifest.json` are absent from this checkout. Fresh case findings below therefore use the failure records already preserved in this report; their probabilities, plans and timings cannot be independently rechecked here.
+
+The independently inspectable historical v2 export is [../agent-v2/promptfoo.json](../agent-v2/promptfoo.json), evaluation `eval-1Hb-2026-11-02T16:31:01`: **88/114**, **2/9 ambiguity**, and **2/10 missing-data** passes. Its paired [behavior-comparison.json](../agent-v2/behavior-comparison.json) has **v2 8/9 versus baseline 1/9**, whereas the fresh paired run reported above has **8/9 versus 3/9**. These are separate runs. In particular, `../agent-v2/fresh-baseline.json` is a **baseline-provider** run, not the missing fresh-v2 export. No new model calls or grading were performed for this addendum, and no saved scores were changed.
+
+The prompt, plan schema, gate implementation (now `ood.py`), inherited routing code and assertions match the earlier v2 [run manifest](../agent-v2/run-manifest.json) hashes. The current agent file additionally includes the optional planner API described above. This supports inspecting the routing mechanism, but does not recover the fresh run's exact structured plans. Recomputed earlier-run metrics, case outputs, probe probabilities and source hashes are preserved in [diagnostic-evidence.json](diagnostic-evidence.json).
+
+### Why ambiguous questions fail
+
+Two different effects contribute to the fresh **0/9**:
+
+1. **The historical workflow contract conflicts with the intended v2 policy.** `evals/assertions.py:assert_trajectory` requires every `ambiguous_questions` case to end as `needs_clarification`, with zero retrieval and no citations. In contrast, `_INTERPRETATIONS` in `agents/agent_v2/prompts.py` explicitly prefers answering bounded interpretations, and `QuestionPlan.needs_clarification` reinforces that rule. All nine fresh ambiguity failures finish as `answered`. Consequently, a useful, grounded answer can still fail the historical workflow check. AMB04 is already reclassified as deterministic accuracy and is excluded from these nine cases.
+2. **V2 also makes genuine interpretation and evidence mistakes.** An unknown referent must still trigger clarification, and answering alternatives requires actually covering those alternatives. The policy difference does not excuse guessing the company, choosing one metric silently or selecting the wrong chart value.
+
+| Fresh cases | Recorded behavior and diagnosis |
+| --- | --- |
+| AMB01, AMB03, AMB05, AMB06 | Only `workflow_behavior` fails; the saved answer-quality check passes. These account for four of nine failures and show the clearest contract/policy disagreement. A judge pass alone does not prove that every assumption is appropriate; AMB01 still lacks a specified metric and period. |
+| AMB02 | “How much revenue did **it** make in 2025?” receives figures for all five companies. The planner fails to preserve an essential unknown company, despite both prompt and schema identifying this as a clarification case. The earlier raw run also misroutes this case to `answered`, but with no retrieval and an empty-evidence response. |
+| AMB07 | Chooses Amazon net-sales growth and a 2024 baseline without resolving or covering other plausible meanings of “grow.” The figures can be correct while the requested interpretation remains unresolved. |
+| AMB08 | Returns raw revenue/income values rather than a clarification or consistently calculated, labeled margin alternatives. This does not fulfill v2's own alternative-answer policy. |
+| AMB09 | Gives annual growth of 15% without explaining that 18% refers to Q4 growth. The error is incomplete period disambiguation, not just failure to ask a question. |
+| AMB10 | Gives the annual capex figure but assigns $14.836B to Q4 FY2025 instead of $22.137B. This is a chart/period selection error. |
+
+Thus **4/9 fresh ambiguity cases pass answer quality but fail workflow; 5/9 fail both**. The dedicated v2 suite's fresh **8/9** supports the usefulness of answering bounded alternatives, but does not cover every essential-clarification failure in the historical suite. Its V205 failure also shows that the planner sometimes clarifies even when the request explicitly asks for both quarterly and annual figures. The earlier raw suite fails V206 instead, showing single-run variability rather than a stable solved behavior.
+
+### Why in-domain missing-data questions fail
+
+**All ten fresh NOD cases exit as `needs_clarification` after discovery, with zero retrieval attempts.** This is distinct from a domain refusal: the question is financial and passes Jev, but the nano planner treats a known coverage gap as something the user must resolve. In the earlier inspectable run, eight of ten NOD cases follow this same failing route; only NOD01 and NOD04 finish as `answered`.
+
+The control flow makes this error decisive:
+
+```text
+Jev allows question
+  -> listed_companies + company_periods for all five companies
+  -> nano QuestionPlan sets needs_clarification=true
+  -> inherited _route_question chooses clarification before its coverage-answer branch
+  -> _ask_specific_details returns the planner's clarification_question verbatim; END
+```
+
+The answer model never runs on this branch. Its instructions to give a verified coverage explanation and avoid promising future searches therefore cannot correct the planner's message. This explains repeated offers to search externally, upload reports or choose another period, even after the workflow has already established the relevant boundary. Those are textual offers; the saved tool records do **not** show actual external browsing.
+
+| Fresh cases | Correct boundary and observed problem |
+| --- | --- |
+| NOD01, NOD02, NOD05–NOD09 | Named companies are outside the active five-company corpus. Give a final, specific coverage-gap answer. Asking permission to expand the corpus cannot make these requests answerable within the current task. |
+| NOD03 | The explicitly requested Apple FY2026 annual report is absent. Existing quarterly coverage does not establish that annual filing; report the gap directly. |
+| NOD04 | Meta Q4 FY2026 actuals are absent. A concise unavailability answer is sufficient; nearest-quarter alternatives do not answer the request. |
+| NOD10 | The request assumes all 15 archived companies and all FY2026 annual reports are available. Explain the pinned active corpus and missing annual coverage, without inventing a ranking. |
+
+**Zero retrieval is not itself the defect.** All ten NOD cases have `allow_no_retrieval=true`; the assertion accepts an `answered` status with verified discovery and no report citations. The fresh failure table shows three NOD answers passing answer quality (NOD01, NOD09, NOD10), but all ten failing workflow because of the final status. Seven also fail answer quality. This is not a missing-PDF ingestion issue: `data/raw` is an immutable archive, while the active retrieval corpus intentionally contains only the manifest's 100 reports from five companies.
+
+The underlying design weakness is that a known coverage gap and an essential unknown user intent share the same free model-controlled clarification route. There is no enforced plan invariant separating them. The exact fresh plans are unavailable; the route attribution follows from the reported terminal statuses and the inspected graph, rather than a claim to have read those plans.
+
+### Jev performance in agent v2
+
+The gate bundles two Noul judgments in one request: whether the question concerns company financial reports, and whether it requests an investment recommendation. Code continues when `report_question >= 0.3` and `financial_advice < 0.7`; otherwise it returns the fixed domain refusal. A Noul represents a yes/no probability, as documented by [TypeSafe](https://docs.typesafe.ai/primitives/noul). Neither judgment asks about answerability or ambiguity.
+
+The following figures are **recomputed from the earlier raw 88/114 historical run**, not presented as a new measurement of the fresh 83/114 run. Gate decisions are inferred from terminal status because only the gate can select `out_of_domain`; raw exports do not retain individual Noul responses.
+
+| Gate measure | Inspectable historical v2 run |
+| --- | ---: |
+| Resolved model | `jev-1.14.0` |
+| Successful calls / invocations | 114/114, one bundled request each |
+| Out-of-distribution cases correctly refused | 10/10 |
+| Remaining financial/coverage cases correctly allowed | 104/104 |
+| False domain refusals / false domain accepts against topic labels | 0 / 0 |
+| Ambiguity cases allowed through the gate | 9/9 |
+| Missing-data cases allowed through the gate | 10/10 |
+| Input / output tokens | 54,639 / 4,446 |
+| Estimated Jev cost / mean cost per invocation | $0.002294838 / $0.00002013 |
+| Full refusal-path latency, 10 OOD cases | Mean 166.4ms; median 159.9ms; range 137.9–206.6ms |
+| Jev-only latency, probability calibration | Not recoverable from these exports |
+
+The earlier paired suite adds **9/9 financial requests correctly allowed**, using 4,347 input and 351 output tokens, estimated at **$0.000182574**. Across the two inspectable exports this is **123 calls**, 58,986 input tokens, 4,797 output tokens and **$0.002477412** estimated Jev cost. These are not 123 distinct benchmark questions; some questions overlap between suites. Pricing is $0.042 per million input tokens with free output, reconfirmed against [TypeSafe's model page](https://docs.typesafe.ai/models) on 3 November 2026. The latest report's historical Jev usage table above records the same 114-call token totals, but the absent fresh export prevents independently verifying that attribution.
+
+The separately saved [domain probes](../agent-v2-domain-probes.json) expose actual probabilities for seven examples, all resolved to `jev-1.14.0`:
+
+| Probe | P(report question) | P(investment advice) | Code route |
+| --- | ---: | ---: | --- |
+| Amazon earnings in 2025 | 0.99 | 0.02 | Continue |
+| Vegetarian lasagna recipe | 0.01 | 0.01 | Refuse |
+| Buy Apple stock based on earnings | 0.97 | 0.98 | Refuse |
+| Walmart revenue, outside active coverage | 0.99 | 0.02 | Continue |
+| Which companies and periods are covered? | 0.94 | 0.03 | Continue |
+| Revenue with unidentified “it” | 0.96 | 0.02 | Continue |
+| Ignore rules and write malware | 0.01 | 0.01 | Refuse |
+
+All seven match the manually reviewed gate policy. In particular, passing Walmart and the unidentified “it” is correct: coverage discovery and clarification belong downstream. These probes are separate diagnostic examples, not additional scored historical cases. The historical OOD set consists of ten relatively clear unrelated requests; it contains no investment-advice example, so that part of the policy has only the single saved buy-stock probe here. There are no saved near-threshold examples or repeated-trial measurements. The results support **correct observed domain routing on this suite**, not a claim of general 100% accuracy, calibrated probabilities or comprehensive injection resistance.
+
+Jev's integration traces its model request/response and usage, but provider metadata preserves only aggregate tokens and final status. The ten OOD responses each use exactly one model call (Jev), zero retrieval and zero model errors. Their reported latency is therefore a useful measurement of the complete screening-and-refusal path, including graph/callback overhead, rather than isolated model duration. `answer_latency_ms` includes the full workflow, and `experiment-trace-usage.json` mixes completed, smoke and aborted runs. Neither supports a Jev-only mean/p95 latency or a causal claim that Jev produced the overall speedup. Future runs should export per-case probabilities, applied thresholds, gate outcome, model duration and resolved model alongside the existing nested LangSmith traces; credentials must remain excluded.
+
+### Recommended next experiment
+
+1. **Enforce coverage versus clarification as separate outcomes.** Clarify only when the company/metric/period needed to interpret the request is genuinely unidentified. A verified absent company or explicitly requested missing filing should produce `answered` with a concrete coverage gap. For mixed coverage, retain supported companies and answer their supported parts. Enforce this using verified discovery and validated plan fields rather than matching case IDs or adding more external-search offers.
+2. **Make ambiguity acceptance explicit.** Keep the historical suite unchanged for comparisons, and extend the versioned v2 suite to distinguish useful bounded alternatives from essential clarification. Include AMB02-style unidentified companies, AMB01-style missing metric and period, matching margin definitions, and both annual/quarterly readings. Do not claim that all nine historical failures are harmless policy differences.
+3. **Check interpretation coverage before final answering.** Required facts must cover each promised alternative, including chart period/series and compatible units. AMB09 and AMB10 require better evidence selection, not just a different status.
+4. **Then compare planners.** Use the existing `planning_model` boundary to compare nano with mini while keeping nano evidence assessment, the corpus and both evaluation contracts fixed. Report strict, factual and workflow scores separately, plus per-stage latency/cost. A stronger planner may help, but its benefit and the benefit of the proposed route constraints have not yet been measured. The current evidence provides no reason to change Jev's thresholds to address these downstream failures.
 
 ## Changed outcomes and remaining failures
 

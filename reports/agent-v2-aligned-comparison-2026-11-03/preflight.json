@@ -1,0 +1,17 @@
+{
+  "documents": 100,
+  "manifest_paths_and_checksums_match": true,
+  "chunks": {
+    "Alphabet": 3353,
+    "Amazon": 5829,
+    "Apple": 2779,
+    "Meta": 5344,
+    "Netflix": 2969
+  },
+  "total_chunks": 20274,
+  "trace_create_update_succeeded": true,
+  "trace_run_id": "550cbc49-c63c-43c9-adc9-007f70b11ed3",
+  "trace_endpoint": "https://eu.api.smith.langchain.com",
+  "readback_attempted": false,
+  "model_keys_present": true
+}

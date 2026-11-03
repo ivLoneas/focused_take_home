@@ -1,0 +1,20 @@
+description: Prompt-aligned baseline versus unchanged agent v2 - revised 114-case contract, 3 November 2026
+prompts:
+  - id: financial-report-question
+    label: Financial report question
+    raw: "{{test}}"
+providers:
+  - id: file://provider.py
+    label: Baseline - aligned prompts
+  - id: file://agent_v2_provider.py
+    label: Agent v2 - unchanged
+defaultTest:
+  options:
+    provider: openai:gpt-5-mini
+tests:
+  - file://generate_tests.py:generate_tests
+evaluateOptions:
+  maxConcurrency: 4
+  timeoutMs: 300000
+  showProgressBar: true
+writeLatestResults: false

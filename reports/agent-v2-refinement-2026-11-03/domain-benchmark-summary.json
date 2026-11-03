@@ -1,0 +1,63 @@
+{
+  "summaries": {
+    "jev": {
+      "calls": 32,
+      "correct": 32,
+      "errors": 0,
+      "mean_http_rtt_ms": 177.52771871880668,
+      "median_http_rtt_ms": 169.98583300028258,
+      "p95_http_rtt_ms": 197.0374170014111,
+      "mean_invocation_ms": 180.63082546854048,
+      "estimated_usd": 0.0006315120000000001,
+      "usage": {
+        "input_tokens": 15036,
+        "output_tokens": 1248,
+        "cached_input_tokens": 0
+      }
+    },
+    "mini": {
+      "calls": 32,
+      "correct": 32,
+      "errors": 0,
+      "mean_http_rtt_ms": 1713.591433624913,
+      "median_http_rtt_ms": 1673.4968334994846,
+      "p95_http_rtt_ms": 2188.419292000617,
+      "mean_invocation_ms": 1725.1036654375298,
+      "estimated_usd": 0.007298,
+      "usage": {
+        "input_tokens": 10760,
+        "output_tokens": 2304,
+        "cached_input_tokens": 0
+      }
+    },
+    "nano": {
+      "calls": 32,
+      "correct": 32,
+      "errors": 0,
+      "mean_http_rtt_ms": 2195.477539062665,
+      "median_http_rtt_ms": 2147.550895500899,
+      "p95_http_rtt_ms": 3440.7054999992397,
+      "mean_invocation_ms": 2206.950123812419,
+      "estimated_usd": 0.0038480000000000003,
+      "usage": {
+        "input_tokens": 10760,
+        "output_tokens": 8275,
+        "cached_input_tokens": 0
+      }
+    }
+  },
+  "all_calls_including_warmup_usd": 0.012061868,
+  "timing": "httpx.Client.send through complete body; network + API service, excludes LangChain parsing; serial pooled clients; warmups excluded",
+  "p95_method": "sorted index floor((n-1)*0.95)",
+  "scope": "standalone domain-only classifiers, not a causal measurement of the complete baseline-v2 difference",
+  "comparisons": {
+    "mini": {
+      "mean_http_rtt_speedup_vs_jev": 9.65252888952592,
+      "cost_ratio_vs_jev": 11.556391644180948
+    },
+    "nano": {
+      "mean_http_rtt_speedup_vs_jev": 12.366956297907317,
+      "cost_ratio_vs_jev": 6.093312557797793
+    }
+  }
+}
