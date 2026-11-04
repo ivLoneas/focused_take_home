@@ -172,10 +172,11 @@ def test_build_baseline_agent_wires_existing_components_without_connecting(monke
         model="gpt-test-model",
         api_key=settings.openai_api_key,
     )
-    openai_embeddings.assert_called_once_with(
-        model="embedding-test-model",
-        api_key=settings.openai_api_key,
-    )
+    from agents.telemetry import record_embedding_response
+    openai_embeddings.assert_called_once()
+    assert openai_embeddings.call_args.kwargs["model"] == "embedding-test-model"
+    assert openai_embeddings.call_args.kwargs["api_key"] is settings.openai_api_key
+    assert openai_embeddings.call_args.kwargs["http_client"].event_hooks["response"] == [record_embedding_response]
     assert pgvector.call_count == 5
     assert {call.kwargs["company"] for call in pgvector.call_args_list} == {
         "Alphabet", "Amazon", "Apple", "Meta", "Netflix"

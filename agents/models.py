@@ -1,6 +1,7 @@
 """Version-neutral financial-report workflow contracts."""
 
-from dataclasses import dataclass
+from collections.abc import Iterator
+from dataclasses import dataclass, field
 from typing import Any, Literal, Protocol, TypedDict
 
 from langchain_core.messages import BaseMessage
@@ -27,6 +28,7 @@ class AgentResult:
     citations: tuple[str, ...]
     retrieval_attempts: int
     tool_calls: tuple[dict[str, object], ...] = ()
+    source_urls: dict[str, str] = field(default_factory=dict)
 
 
 class QuestionAnalysis(BaseModel):
@@ -79,6 +81,8 @@ class WorkflowState(TypedDict, total=False):
 
 class ChatModel(Protocol):
     def invoke(self, input: object, **kwargs: Any) -> BaseMessage | str: ...
+
+    def stream(self, input: object, **kwargs: Any) -> Iterator[BaseMessage | str]: ...
 
     def with_structured_output[OutputT: BaseModel](
         self,

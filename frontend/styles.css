@@ -102,15 +102,9 @@ textarea:disabled {
 .page-shell {
   width: min(1180px, 90vw);
   margin: 0 auto;
-  padding: 5rem 0 7rem;
+  padding: 2rem 0 7rem;
 }
 
-.intro {
-  max-width: 780px;
-  margin-bottom: 3rem;
-}
-
-.eyebrow,
 .step-label {
   margin: 0 0 0.65rem;
   color: var(--accent);
@@ -127,15 +121,7 @@ p {
   margin-top: 0;
 }
 
-h1 {
-  margin-bottom: 1.2rem;
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(2.35rem, 5.5vw, 4.6rem);
-  font-weight: 500;
-  letter-spacing: -0.045em;
-  line-height: 0.98;
-}
-
+h1,
 h2 {
   margin-bottom: 0;
   font-family: Georgia, "Times New Roman", serif;
@@ -147,13 +133,6 @@ h3 {
   font-size: 0.8rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-}
-
-.intro-copy {
-  max-width: 680px;
-  color: var(--muted);
-  font-size: 1.05rem;
-  line-height: 1.7;
 }
 
 .workspace {
@@ -171,7 +150,7 @@ h3 {
 }
 
 .run-panel,
-.flow-panel,
+.details-panel,
 .result-panel {
   padding: clamp(1.4rem, 3.5vw, 2.3rem);
 }
@@ -253,6 +232,36 @@ textarea::placeholder {
   line-height: 1.5;
 }
 
+.thread-context {
+  margin: 0.8rem 0 0;
+  padding: 0.85rem;
+  border-left: 3px solid var(--accent);
+  color: var(--accent-dark);
+  background: var(--accent-soft);
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.thread-message + .thread-message {
+  margin-top: 1.2rem;
+}
+
+.thread-message .message-label {
+  margin: 0 0 0.4rem;
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 750;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.user-message .message-body {
+  padding: 0.9rem 1rem;
+  border-radius: 0.6rem;
+  background: var(--paper);
+  white-space: pre-wrap;
+}
+
 .example-row {
   margin: 1.25rem 0 1.75rem;
   display: flex;
@@ -298,55 +307,47 @@ textarea::placeholder {
   transform: translateY(-1px);
 }
 
-.flow-list {
-  margin: 1.8rem 0;
-  padding: 0;
-  list-style: none;
+.sources-disclosure {
+  margin: 1.6rem 0;
+  border: 1px solid var(--line);
+  border-radius: 0.7rem;
+  padding: 0.85rem 1rem;
 }
 
-.flow-list li {
-  position: relative;
-  display: grid;
-  grid-template-columns: 2rem 1fr;
-  gap: 0.8rem;
-  padding-bottom: 1.25rem;
-}
-
-.flow-list li:not(:last-child)::after {
-  content: "";
-  position: absolute;
-  top: 1.75rem;
-  bottom: 0.15rem;
-  left: 0.86rem;
-  width: 1px;
-  background: var(--line);
-}
-
-.flow-list li > span {
-  width: 1.75rem;
-  height: 1.75rem;
-  display: grid;
-  place-items: center;
-  z-index: 1;
-  border: 1px solid #bcd4c6;
-  border-radius: 50%;
+.sources-disclosure summary {
+  cursor: pointer;
   color: var(--accent-dark);
-  background: var(--surface);
-  font-size: 0.7rem;
-  font-weight: 800;
-}
-
-.flow-list strong {
-  display: block;
-  margin: 0.1rem 0 0.28rem;
   font-size: 0.86rem;
+  font-weight: 750;
 }
 
-.flow-list p {
-  margin-bottom: 0;
+.sources-disclosure[open] summary {
+  margin-bottom: 1rem;
+}
+
+.run-metrics {
+  margin: 0 0 1.6rem;
+}
+
+.run-metrics > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  padding: 0.85rem 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.run-metrics dt {
   color: var(--muted);
-  font-size: 0.76rem;
-  line-height: 1.4;
+  font-size: 0.8rem;
+}
+
+.run-metrics dd {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
 }
 
 .privacy-note {
@@ -380,18 +381,78 @@ textarea::placeholder {
 }
 
 .answer {
-  max-width: 850px;
-  white-space: pre-wrap;
+  max-width: 100%;
+  white-space: normal;
   line-height: 1.7;
+  overflow-wrap: anywhere;
 }
 
-.result-meta {
-  margin-top: 2rem;
-  padding-top: 1.5rem;
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 2rem;
-  border-top: 1px solid var(--line);
+.answer > :last-child {
+  margin-bottom: 0;
+}
+
+.answer h1, .answer h2, .answer h3, .answer h4 {
+  font-family: inherit;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: normal;
+  text-transform: none;
+  line-height: 1.4;
+  margin: 1.3rem 0 0.7rem;
+}
+
+.answer pre {
+  white-space: pre;
+  overflow: auto;
+  padding: 1rem;
+  background: var(--paper);
+  border-radius: 0.6rem;
+}
+
+.answer code {
+  padding: 0.1rem 0.3rem;
+  background: var(--paper);
+  border-radius: 0.2rem;
+  font-size: 0.88em;
+}
+
+.answer pre code { padding: 0; }
+
+.answer table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+  margin: 1.2rem 0;
+  font-size: 0.9rem;
+}
+
+.answer th, .answer td {
+  border: 1px solid var(--line);
+  padding: 0.5rem 0.8rem;
+  text-align: left;
+}
+
+.answer th { background: var(--paper); }
+
+.answer blockquote {
+  border-left: 3px solid var(--line);
+  margin-left: 0;
+  padding-left: 1rem;
+  color: var(--muted);
+}
+
+.answer a, .citations a {
+  color: var(--accent-dark);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+.answer .citation-link {
+  font-size: 0.83em;
+  background: var(--accent-soft);
+  border-radius: 0.25rem;
+  padding: 0.12rem 0.25rem;
 }
 
 .citations {
@@ -400,32 +461,14 @@ textarea::placeholder {
   color: var(--muted);
   font-size: 0.82rem;
   line-height: 1.6;
+  overflow-wrap: anywhere;
 }
+
+.citations li + li { margin-top: 0.65rem; }
 
 .muted-citation {
   list-style: none;
   margin-left: -1.15rem;
-}
-
-.attempt-card {
-  min-width: 120px;
-  padding: 0.8rem 1rem;
-  border-radius: 0.7rem;
-  text-align: center;
-  background: var(--paper);
-}
-
-.attempt-card span {
-  display: block;
-  color: var(--muted);
-  font-size: 0.68rem;
-}
-
-.attempt-card strong {
-  display: block;
-  margin-top: 0.2rem;
-  font-family: Georgia, serif;
-  font-size: 1.7rem;
 }
 
 .history-panel {
@@ -506,29 +549,13 @@ textarea::placeholder {
 @media (max-width: 780px) {
   .page-shell {
     width: min(92vw, 640px);
-    padding-top: 3.5rem;
+    padding-top: 1.5rem;
   }
 
   .workspace {
     grid-template-columns: 1fr;
   }
 
-  .flow-panel {
-    order: -1;
-  }
-
-  .result-meta {
-    grid-template-columns: 1fr;
-  }
-
-  .attempt-card {
-    text-align: left;
-  }
-
-  .attempt-card strong {
-    display: inline;
-    margin-left: 0.5rem;
-  }
 }
 
 @media (max-width: 520px) {
@@ -538,10 +565,6 @@ textarea::placeholder {
 
   .system-status {
     display: none;
-  }
-
-  h1 {
-    font-size: 2.45rem;
   }
 
   .section-heading,

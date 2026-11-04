@@ -22,9 +22,11 @@ class Settings(BaseSettings):
     embedding_model: str = "text-embedding-3-small"
     retrieval_limit: int = Field(default=5, ge=1, le=100, strict=True)
     max_question_length: int = Field(default=2_000, ge=1, strict=True)
+    session_ttl_seconds: int = Field(default=1800, ge=60, strict=True)
+    session_cookie_secure: bool = False
     cors_origins: list[str] = Field(default_factory=lambda: list(DEFAULT_CORS_ORIGINS))
 
-    @field_validator("retrieval_limit", "max_question_length", mode="before")
+    @field_validator("retrieval_limit", "max_question_length", "session_ttl_seconds", mode="before")
     @classmethod
     def parse_integer_setting(cls, value: object) -> object:
         if isinstance(value, str) and value.isdecimal():

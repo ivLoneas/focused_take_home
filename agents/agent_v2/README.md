@@ -40,6 +40,7 @@ TYPESAFE_MODEL=jev-latest
 TYPESAFE_TIMEOUT_SECONDS=15
 AGENT_MODEL=gpt-6.1-terra
 AGENT_V2_ROUTING_MODEL=gpt-6-luna
+AGENT_V2_STREAMING=false
 ```
 
 `AgentV2Config` inherits existing `LANGSMITH_*` configuration and validation. Enabled tracing requires a nonblank
@@ -73,8 +74,15 @@ separate planner experiments without changing the default evaluation configurati
 `BaselineAgent` (v1) and `AgentV2` are sibling implementations of `FinancialReportAgent` in `agents/workflow.py`.
 The shared base owns tracing, validation, retrieval and deterministic routing helpers; each version owns its graph
 and model/prompt policy. Shared contracts live in `agents/models.py`; `BaselineResult` remains a compatible alias
-for `AgentResult`. The application backend remains on the baseline until deliberately
-switched; v2 can be evaluated without changing the demo.
+for `AgentResult`. The web app offers both versions and selects v2 by default.
+
+`streaming` defaults to `False`. With `AgentV2Config(streaming=True)`, `agent.stream(question)` yields
+`{"type": "token", "text": "..."}` events from the final answer model, then exactly one
+`{"type": "result", "result": AgentResult(...)}` event. Planning and reasoning content is not emitted.
+Refusals and clarifications yield only the result; dependency errors propagate without a successful result.
+When disabled, `stream()` yields only the ordinary `invoke()` result. `invoke()` always returns an `AgentResult`.
+Streaming model calls retain the complete graph's nested LangChain/LangSmith callbacks and usage metadata.
+The web builder enables streaming explicitly; Promptfoo forces it off even if `AGENT_V2_STREAMING=true`.
 
 ## Jev policy
 

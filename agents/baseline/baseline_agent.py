@@ -15,6 +15,7 @@ from agents.baseline.models import (
 from agents.baseline.prompts import ANSWER_PROMPT, CONTEXT_ASSESSMENT_PROMPT, QUESTION_ANALYSIS_PROMPT
 from agents.models import ChatModel
 from agents.tools.models import RetrievalRequest, RetrievedChunk
+from agents.tracing import thread_metadata
 from agents.workflow import FinancialReportAgent
 from utils import format_bullets, format_evidence, require_nonblank_string
 
@@ -38,6 +39,7 @@ class BaselineAgent(FinancialReportAgent):
                 "workflow": "financial-report-rag",
                 "model": self.config.model,
                 "max_retrieval_attempts": self.max_retrieval_attempts,
+                **thread_metadata(),
             },
         }
         if self.tracer is not None:
@@ -47,14 +49,7 @@ class BaselineAgent(FinancialReportAgent):
             {"question": question, "context": [], "retrieval_attempts": 0},
             config,
         )
-        citations = tuple(dict.fromkeys(chunk.source for chunk in state.get("context", [])))
-        return BaselineResult(
-            status=state["status"],
-            answer=state["answer"],
-            citations=citations,
-            retrieval_attempts=state.get("retrieval_attempts", 0),
-            tool_calls=tuple(state.get("tool_calls", [])),
-        )
+        return self._result(state)
 
     def _build_graph(self):
         """Compile the routing branches and bounded retrieval-refinement loop."""

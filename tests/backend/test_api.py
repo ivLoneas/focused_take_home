@@ -76,15 +76,14 @@ def test_health_endpoint_is_small_and_does_not_construct_agent(settings: Setting
     assert factory_calls == 0
 
 
-def test_agent_catalog_contains_only_the_baseline_agent(client: TestClient):
+def test_agent_catalog_contains_baseline_and_v2_agents(client: TestClient):
     response = client.get("/api/agents")
 
     assert response.status_code == 200
     agents = response.json()["agents"]
-    assert len(agents) == 1
-    assert agents[0]["id"] == "baseline"
-    assert agents[0]["name"]
-    assert "financial" in agents[0]["description"].lower()
+    assert {agent["id"] for agent in agents} == {"baseline", "agent_v2"}
+    assert all(agent["name"] for agent in agents)
+    assert all("financial" in agent["description"].lower() for agent in agents)
 
 
 @pytest.mark.parametrize(
@@ -261,4 +260,4 @@ def test_cors_allows_only_the_configured_frontend_origin(client: TestClient):
     assert allowed.status_code == 200
     assert allowed.headers["access-control-allow-origin"] == "http://localhost:5173"
     assert denied.headers.get("access-control-allow-origin") is None
-    assert allowed.headers.get("access-control-allow-credentials") != "true"
+    assert allowed.headers.get("access-control-allow-credentials") == "true"

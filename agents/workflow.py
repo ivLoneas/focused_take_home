@@ -2,11 +2,12 @@
 
 from abc import ABC, abstractmethod
 from typing import Any, Literal
+from urllib.parse import urlsplit
 
 from langchain_core.tracers import LangChainTracer
 from langsmith import Client, agent_address
 
-from agents.models import ChatModel, WorkflowState
+from agents.models import AgentResult, ChatModel, WorkflowState
 from agents.settings import AgentConfig
 from agents.tools import DatabaseCoverage, invoke_retriever, placeholder_retriever
 from agents.tools.models import RetrievalRequest, Retriever
@@ -108,6 +109,29 @@ class FinancialReportAgent(ABC):
         if state["context_is_sufficient"] or state["retrieval_attempts"] >= self.max_retrieval_attempts:
             return "answer"
         return "retrieve"
+
+    @staticmethod
+    def _result(state: WorkflowState) -> AgentResult:
+        chunks = state.get("context", [])
+        source_urls = {}
+        for chunk in chunks:
+            url = chunk.metadata.get("url")
+            if not isinstance(url, str) or any(ord(character) < 32 for character in url):
+                continue
+            url = url.strip()
+            try:
+                parsed = urlsplit(url)
+                if parsed.scheme not in {"http", "https"} or not parsed.hostname or parsed.username or parsed.password:
+                    continue
+            except ValueError:
+                continue
+            source_urls.setdefault(chunk.source, url)
+        return AgentResult(
+            status=state["status"], answer=state["answer"],
+            citations=tuple(dict.fromkeys(chunk.source for chunk in chunks)),
+            retrieval_attempts=state.get("retrieval_attempts", 0),
+            tool_calls=tuple(state.get("tool_calls", [])), source_urls=source_urls,
+        )
 
     @abstractmethod
     def _build_graph(self):

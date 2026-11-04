@@ -1,9 +1,11 @@
 """Jev scope screening with cheaper planning and evidence-bound final answers."""
 
 import json
+from collections.abc import Iterator
 from typing import Any
 
 from langchain_core.messages import BaseMessage
+from langgraph.config import get_stream_writer
 from langgraph.graph import END, START, StateGraph
 
 from agents.agent_v2.models import QuestionPlan
@@ -12,12 +14,15 @@ from agents.agent_v2.settings import AgentV2Config
 from agents.models import AgentResult, ChatModel, ContextAssessment, QuestionAnalysis, WorkflowState
 from agents.tools import DatabaseCoverage, placeholder_retriever
 from agents.tools.models import Retriever
+from agents.tracing import thread_metadata
 from agents.workflow import FinancialReportAgent
 from utils import format_bullets, format_evidence, require_nonblank_string
 
 
 class AgentV2(FinancialReportAgent):
     """Screen domain, discover coverage and plan retrieval independently of the baseline."""
+
+    config: AgentV2Config
 
     def __init__(
         self,
@@ -41,6 +46,31 @@ class AgentV2(FinancialReportAgent):
 
     def invoke(self, question: str) -> AgentResult:
         question = require_nonblank_string(question, field_name="question")
+        state = self.graph.invoke(
+            {"question": question, "context": [], "retrieval_attempts": 0}, self._run_config(),
+        )
+        return self._result(state)
+
+    def stream(self, question: str) -> Iterator[dict[str, Any]]:
+        """Yield final-answer text followed by one complete result; errors propagate."""
+        question = require_nonblank_string(question, field_name="question")
+        if not self.config.streaming:
+            yield {"type": "result", "result": self.invoke(question)}
+            return
+
+        state: WorkflowState = {"question": question, "context": [], "retrieval_attempts": 0}
+        for event in self.graph.stream(
+            state.copy(), self._run_config(), stream_mode=["custom", "updates"], version="v2",
+        ):
+            if event["type"] == "custom":
+                yield event["data"]
+            elif event["type"] == "updates":
+                for update in event["data"].values():
+                    if update is not None:
+                        state.update(update)
+        yield {"type": "result", "result": self._result(state)}
+
+    def _run_config(self) -> dict[str, Any]:
         config: dict[str, Any] = {
             "recursion_limit": 2 * self.max_retrieval_attempts + 12,
             "run_name": "agent-v2",
@@ -49,16 +79,13 @@ class AgentV2(FinancialReportAgent):
                 "component": "agent-v2", "model": self.config.model,
                 "routing_model": self.config.routing_model, "typesafe_model": self.config.typesafe_model,
                 "max_retrieval_attempts": self.max_retrieval_attempts,
+                "streaming": self.config.streaming,
+                **thread_metadata(),
             },
         }
         if self.tracer is not None:
             config["callbacks"] = [self.tracer]
-        state = self.graph.invoke({"question": question, "context": [], "retrieval_attempts": 0}, config)
-        return AgentResult(
-            status=state["status"], answer=state["answer"],
-            citations=tuple(dict.fromkeys(chunk.source for chunk in state.get("context", []))),
-            retrieval_attempts=state.get("retrieval_attempts", 0), tool_calls=tuple(state.get("tool_calls", [])),
-        )
+        return config
 
     def _build_graph(self):
         graph = StateGraph(WorkflowState)  # ty: ignore[invalid-argument-type]
@@ -152,5 +179,15 @@ class AgentV2(FinancialReportAgent):
             "context_is_sufficient": state.get("context_is_sufficient", False),
             "available_data": json.dumps(state.get("available_data", {}), ensure_ascii=False),
         })
-        response = self.model.invoke(prompt)
-        return {"status": "answered", "answer": response.text if isinstance(response, BaseMessage) else response}
+        if not self.config.streaming:
+            response = self.model.invoke(prompt)
+            return {"status": "answered", "answer": response.text if isinstance(response, BaseMessage) else response}
+
+        writer = get_stream_writer()
+        parts = []
+        for chunk in self.model.stream(prompt):
+            text = chunk.text if isinstance(chunk, BaseMessage) else chunk
+            if text:
+                parts.append(text)
+                writer({"type": "token", "text": text})
+        return {"status": "answered", "answer": "".join(parts)}

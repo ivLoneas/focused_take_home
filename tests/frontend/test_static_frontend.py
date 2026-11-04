@@ -61,13 +61,15 @@ def test_frontend_is_buildless_and_references_local_css_and_javascript(markup: M
     ]
     scripts = [attrs.get("src") for attrs in markup.elements("script") if attrs.get("src")]
 
-    assert "styles.css" in stylesheets or "./styles.css" in stylesheets
-    assert "app.js" in scripts or "./app.js" in scripts
+    stylesheet_paths = [value.split("?", 1)[0] for value in stylesheets if value]
+    assert "styles.css" in stylesheet_paths or "./styles.css" in stylesheet_paths
+    script_paths = [value.split("?", 1)[0] for value in scripts]
+    assert "app.js" in script_paths or "./app.js" in script_paths
     assert not any(value.startswith(("http://", "https://")) for value in [*stylesheets, *scripts] if value)
     assert not (FRONTEND / "package.json").exists()
 
 
-def test_page_presents_a_focused_question_form_and_baseline_only_selector(markup: Markup):
+def test_page_presents_a_focused_question_form_and_v2_default_selector(markup: Markup):
     form = markup.by_id("question-form")
     select = markup.by_id("agent-select")
     question = markup.by_id("question")
@@ -76,8 +78,9 @@ def test_page_presents_a_focused_question_form_and_baseline_only_selector(markup
     assert form is not None and form[0] == "form"
     assert select is not None and select[0] == "select"
     assert select[1].get("name") == "agent_id"
-    assert len(options) == 1
-    assert options[0].get("value") == "baseline"
+    assert {option.get("value") for option in options} == {"baseline", "agent_v2"}
+    selected = next((option for option in options if "selected" in option), options[0])
+    assert selected.get("value") == "agent_v2"
     assert question is not None and question[0] in {"textarea", "input"}
     assert question[1].get("name") == "question"
     assert "required" in question[1]
@@ -95,14 +98,20 @@ def test_controls_have_programmatic_labels_and_results_are_announced(markup: Mar
     assert status[1].get("role") in {"status", "alert"}
 
 
-def test_page_explains_the_baseline_decision_and_retrieval_flow(markup: Markup):
+def test_page_uses_run_details_sidebar_instead_of_workflow_explanation(markup: Markup):
     copy = " ".join(markup.text).lower()
-
     assert "financial report" in copy
-    assert "out of domain" in copy or "out-of-domain" in copy
-    assert "clarif" in copy
-    assert "retriev" in copy
-    assert "3" in copy
+    assert "how a request is handled" not in copy
+    assert markup.by_id("flow-title") is None
+    assert markup.by_id("run-details")[0] == "aside"
+    details = markup.by_id("sources-details")
+    assert details is not None and details[0] == "details" and "open" not in details[1]
+    assert markup.by_id("sources-summary")[0] == "summary"
+    assert markup.by_id("answer")[0] == "div"
+    assert all(markup.by_id(key) is not None for key in (
+        "response-time", "first-token-time", "retrieval-attempts", "total-tokens", "estimated-cost",
+    ))
+    assert "total tokens" in copy and "estimated cost (usd)" in copy
     assert "chat" not in copy or "not a chat" in copy or "not a general chat" in copy
 
 
@@ -123,18 +132,12 @@ def test_javascript_handles_all_agent_statuses(javascript: str, status: str):
     assert status in javascript
 
 
-def test_run_request_sends_only_agent_id_and_current_question(javascript: str):
-    compact = re.sub(r"\s+", " ", javascript)
-    payload = re.search(
-        r"body\s*:\s*JSON\.stringify\(\s*\{(?P<body>[^{}]*)\}\s*\)",
-        compact,
-    )
-
+def test_run_request_uses_cookie_session_without_client_clarification_transcript(javascript: str):
     assert "fetch(" in javascript
-    assert "/api/run" in javascript
-    assert payload is not None
-    fields = set(re.findall(r"\b(agent_id|question|history|messages|conversation|session_id)\b", payload["body"]))
-    assert fields == {"agent_id", "question"}
+    assert "/api/session/run" in javascript
+    assert "JSON.stringify(" in javascript
+    assert "thread_id" in javascript
+    assert "agent_id" in javascript and "questionInput.value" in javascript
 
 
 def test_javascript_exposes_loading_success_and_error_states(javascript: str):
@@ -147,22 +150,31 @@ def test_javascript_exposes_loading_success_and_error_states(javascript: str):
     assert "finally" in javascript
 
 
-def test_history_is_browser_only_and_corrupt_storage_is_recovered_safely(javascript: str):
+def test_history_is_server_backed_with_safe_one_time_browser_import(javascript: str):
     assert "localStorage.getItem" in javascript
     assert "localStorage.setItem" in javascript
     assert re.search(r"try\s*\{[\s\S]*?JSON\.parse[\s\S]*?\}\s*catch", javascript)
     assert "document.cookie" not in javascript
     assert "/history" not in javascript
-    assert "/session" not in javascript
+    assert "/api/session" in javascript
+    assert "credentials" in javascript and "include" in javascript
+    assert "financial-report-agent:session-imported:v1" in javascript
 
 
-def test_saved_runs_can_be_reused_removed_and_cleared(javascript: str):
+def test_saved_threads_can_be_opened_removed_and_cleared(javascript: str):
     lower = javascript.lower()
-
-    assert "reuse" in lower
+    assert "open" in lower
     assert "remove" in lower or "delete" in lower
     assert "clear-history" in javascript
     assert "localStorage.removeItem" in javascript or "localStorage.setItem" in javascript
+
+
+def test_page_keeps_new_question_control_and_hides_session_and_thread_information(markup: Markup):
+    assert markup.by_id("new-thread")[0] == "button"
+    assert "hidden" in markup.by_id("thread-context")[1]
+    assert "hidden" in markup.by_id("thread-history")[1]
+    assert "thread-context" not in markup.by_id("question")[1].get("aria-describedby", "")
+    assert "Threads are saved on the server" not in " ".join(markup.text)
 
 
 def test_rendered_history_uses_safe_text_insertion(javascript: str):

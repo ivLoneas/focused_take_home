@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Run evidence-grounded financial-report agents.">
     <title>Financial Report Agent</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css?v=4">
   </head>
   <body>
     <header class="site-header">
@@ -17,29 +17,21 @@
     </header>
 
     <main id="main-content" class="page-shell">
-      <section class="intro" aria-labelledby="page-title">
-        <p class="eyebrow">Evidence-grounded analysis</p>
-        <h1 id="page-title">Ask a focused question about public financial reports.</h1>
-        <p class="intro-copy">
-          This is not a general chat. Each request is independently scoped, checked, retrieved, and answered from
-          available report evidence.
-        </p>
-      </section>
-
       <div class="workspace">
         <section class="run-panel card" aria-labelledby="run-title">
           <div class="section-heading">
             <div>
               <p class="step-label">New analysis</p>
-              <h2 id="run-title">Run an agent</h2>
+              <h1 id="run-title">Run an agent</h1>
             </div>
-            <span class="agent-count">1 available</span>
+            <button id="new-thread" class="text-button" type="button">New question</button>
           </div>
 
           <form id="question-form">
             <div class="field">
               <label for="agent-select">Agent</label>
               <select id="agent-select" name="agent_id">
+                <option value="agent_v2" selected>Agent v2 — Streaming financial report RAG</option>
                 <option value="baseline">Baseline — Financial report RAG</option>
               </select>
               <p class="field-help">Routes questions, requests missing details, and retrieves supporting evidence.</p>
@@ -47,7 +39,7 @@
 
             <div class="field">
               <div class="label-row">
-                <label for="question">Question</label>
+                <label id="question-label" for="question">Question</label>
                 <span id="character-count">0 / 2000</span>
               </div>
               <textarea
@@ -56,9 +48,14 @@
                 rows="5"
                 maxlength="2000"
                 required
+                aria-describedby="question-note"
                 placeholder="e.g. What was Apple's total net sales in FY2025?"
               ></textarea>
-              <p class="field-help">Include the company, fiscal period, and metric when possible.</p>
+              <p id="question-note" class="field-help">
+                * This is not a general chat. Each request is independently scoped, checked, retrieved, and answered
+                from available report evidence.
+              </p>
+              <p id="thread-context" class="thread-context" role="status" hidden></p>
             </div>
 
             <div class="example-row" aria-label="Example questions">
@@ -78,16 +75,22 @@
           </form>
         </section>
 
-        <aside class="flow-panel card" aria-labelledby="flow-title">
-          <p class="step-label">Baseline workflow</p>
-          <h2 id="flow-title">How a request is handled</h2>
-          <ol class="flow-list">
-            <li><span>1</span><div><strong>Scope</strong><p>Reject out-of-domain questions.</p></div></li>
-            <li><span>2</span><div><strong>Clarify</strong><p>Ask for specific missing details.</p></div></li>
-            <li><span>3</span><div><strong>Retrieve</strong><p>Gather evidence, up to 3 attempts.</p></div></li>
-            <li><span>4</span><div><strong>Answer</strong><p>Respond with report citations.</p></div></li>
-          </ol>
-          <p class="privacy-note">History stays in this browser. The backend stores no conversation or session.</p>
+        <aside id="run-details" class="details-panel card" aria-labelledby="details-title">
+          <p class="step-label">Latest analysis</p>
+          <h2 id="details-title">Sources &amp; metrics</h2>
+          <details id="sources-details" class="sources-disclosure">
+            <summary id="sources-summary">0 sources</summary>
+            <ul id="citations" class="citations">
+              <li class="muted-citation">Sources will appear when the analysis is complete.</li>
+            </ul>
+          </details>
+          <dl class="run-metrics">
+            <div><dt>Response time</dt><dd id="response-time">—</dd></div>
+            <div><dt>Time to first token</dt><dd id="first-token-time">—</dd></div>
+            <div><dt>Retrieval attempts</dt><dd id="retrieval-attempts">—</dd></div>
+            <div><dt>Total tokens</dt><dd id="total-tokens">—</dd></div>
+            <div><dt title="Estimated model and embedding cost at standard API rates.">Estimated cost (USD)</dt><dd id="estimated-cost">—</dd></div>
+          </dl>
         </aside>
       </div>
 
@@ -99,32 +102,24 @@
           </div>
           <span id="response-status" class="status-badge" role="status" aria-live="polite">Ready</span>
         </div>
-        <p id="answer" class="answer"></p>
-        <div class="result-meta">
-          <div>
-            <h3>Sources</h3>
-            <ul id="citations" class="citations"></ul>
-          </div>
-          <div class="attempt-card">
-            <span>Retrieval attempts</span>
-            <strong id="retrieval-attempts">0</strong>
-          </div>
-        </div>
+        <div id="answer" class="answer"></div>
       </section>
 
-      <section class="history-panel" aria-labelledby="history-title">
+      <section id="thread-history" class="history-panel" aria-labelledby="history-title" hidden>
         <div class="section-heading">
           <div>
-            <p class="step-label">Browser memory</p>
-            <h2 id="history-title">Recent runs</h2>
+            <p class="step-label">Current session</p>
+            <h2 id="history-title">Question threads</h2>
           </div>
-          <button id="clear-history" class="text-button" type="button">Clear history</button>
+          <button id="clear-history" class="text-button" type="button">Clear threads</button>
         </div>
-        <p id="empty-history" class="empty-state">Completed runs will appear here on this device.</p>
-        <ul id="history-list" class="history-list" aria-label="Saved runs"></ul>
+        <p id="empty-history" class="empty-state">Saved questions and clarification replies will appear here.</p>
+        <ul id="history-list" class="history-list" aria-label="Saved question threads"></ul>
       </section>
     </main>
 
-    <script src="app.js"></script>
+    <script src="vendor/marked.umd.js"></script>
+    <script src="vendor/purify.min.js"></script>
+    <script src="app.js?v=8"></script>
   </body>
 </html>
