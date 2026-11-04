@@ -99,7 +99,7 @@ Documents include tables and images that make retrieval a non-trivial task.
 
 Because of the size of the dataset, it does not represent a production retrieval environment: production datasets are much bigger.
 
-The [active manifest](data/active_manifest.csv) pins the newest 20 reports per company: **3,503 pages**, approximately **91.6 MB of PDFs**, and **20,274 indexed chunks**.
+Used dataset lists 20 newest reports per company: **3,503 pages**, approximately **91.6 MB of PDFs**, and **20,274 indexed chunks**.
 
 | Company | Documents | Pages | Indexed chunks | Retained fiscal periods |
 | --- | ---: | ---: | ---: | --- |
@@ -117,7 +117,9 @@ To save disk space for you and GitHub, the source PDFs are not committed to the 
 
 This system uses vector similarity RAG with hierarchy-aware chunking and image annotation.
 
-Docling was used for PDF conversion, table extraction, and heading reconstruction, with `gpt-6-luna` annotating images. Chunks use a 1,000-character budget and 200-character overlap within sections. Tables retain column headers when split, and image descriptions retain their source pages. `text-embedding-3-small` supplies 1,536-dimensional embeddings.
+Docling was used for PDF conversion, table extraction, and heading reconstruction, with `gpt-6-luna` annotating images. 
+Chunks use a 1,000-character budget and 200-character overlap within sections. 
+Tables retain column headers when split, and image descriptions retain their source pages. `text-embedding-3-small` supplies 1,536-dimensional embeddings.
 
 The prepared database lets you skip ETL. To rebuild it from the pinned source PDFs, follow the [ETL instructions](etl/AGENTS.md#docker-operation). The [source-data contract](data/AGENTS.md) and [dataset README](data/raw/README.md) describe the archive and active corpus.
 
@@ -135,8 +137,11 @@ We also maintain chunk-document-page references. When generating an answer, we s
 
 **Evals**
 
-Before building an agent, we need to formalize the task it is going to solve. Therefore, evaluation tests are written before the baseline solution. Evals should cover a variety of possible examples, which makes them hard to get right in one shot.
-The current set includes these 11 topics. For each topic, one question was handcrafted and then used as an example for AI to generate synthetic data:
+Before building an agent, we need to formalize the task it is going to solve. 
+Therefore, evaluation tests are written before the baseline solution. 
+Evals should cover a variety of possible examples, which makes them hard to get right in one shot.
+The current set includes these 11 topics. For each topic, one question was handcrafted and then used as an example 
+for AI to generate synthetic data:
 
 1. Factual questions. Checking basic capabilities and RAG quality
 2. Tool usage checks
@@ -166,13 +171,16 @@ For this task we have:
 - Company coverage: `(company) -> time periods`. The same logic as above: retrieving specific information and using it only when needed. Helps with missing-data handling.
 - Retrieve: `(company, question) -> document chunks`. The retrieval itself. The agent formulates the retrieval query.
 
-The current baseline uses `gpt-6.1-terra` for all model calls. The starting evaluation below used `gpt-5-mini`. Evaluations retrieve up to eight chunks per company per round, with at most three retrieval rounds.
+The baseline uses `gpt-6.1-terra` for all model calls. Evaluations retrieve up to eight chunks per company per round, with at most three retrieval rounds.
 
 ---
 
 **Performance and error analysis**
 
-After evaluating the baseline agent in **`eval-2ad-2026-11-02T13:59:24`**, we got a **73.7% pass rate (84/114)**, with 29 assertion failures and one runtime error. Main sources of error included formatting, unnecessary clarifications, and image recognition. All ten formatting cases failed the format check, and only five of ten image cases passed.
+After evaluating the baseline agent, we got a **73.7% pass rate (84/114)**, 
+with 29 assertion failures and one runtime error. Main sources of error included formatting, unnecessary 
+clarifications, and image recognition. All ten formatting cases failed the format check, and only five of ten image 
+cases passed.
 
 While formatting and clarification behavior can be improved by adjusting prompts that were not aligned with the desired behavior, image recognition may also be a data-processing or retrieval issue.
 
@@ -193,7 +201,11 @@ Some costs, token usage, and response times are shown here:
 | Median cumulative retrieval time | 0.391 s | 0.365 s |
 | p95 cumulative retrieval time | 1.185 s | 1.257 s |
 
-Latency and token statistics use completed responses: 113 in the starting run and 114 in the latest run. Retrieval times sum retrieval calls per question, including query embedding, and include only questions that retrieved evidence: 70 and 81 respectively. Model tokens exclude query embeddings and grading. P95 throughout these tables uses sorted index `floor((n−1) × 0.95)`, recalculated from the raw exports. Runtime cost includes model calls and query embeddings; the starting run also includes recovered usage from its failed invocation. Costs use the dated rates recorded for each run and exclude grading and infrastructure.
+Latency and token statistics use completed responses: 113 in the starting run and 114 in the latest run. 
+Retrieval times sum retrieval calls per question, including query embedding, 
+and include only questions that retrieved evidence: 70 and 81 respectively. 
+Model tokens exclude query embeddings and grading. 
+Runtime cost includes model calls and query embeddings; the starting run also includes recovered usage from its failed invocation. Costs use the dated rates recorded for each run and exclude grading and infrastructure.
 
 Sources: [starting evaluation](reports/baseline-2026-11-02-v2.md), [latest evaluation](reports/model-refresh-2026-11-03/report.md), and [latest cost estimates](reports/model-refresh-2026-11-03/cost-comparison.md).
 
@@ -205,14 +217,17 @@ Such a result suggests that the main eval suite is approaching saturation, altho
 
 ![focused-v2.png](focused-v2.png)
 
-Given the high main-suite pass rate, we focused on reducing costs and making the workflow faster.
+Given the high main-suite pass rate, a focus was on reducing costs and making the workflow faster.
 Out-of-domain handling can be done using Jev instead of a generative LLM. A separate domain-only benchmark measured mean Jev HTTP round-trip time at **177.5 ms**, compared with **1.71 s for `gpt-5-mini`** and **2.20 s for `gpt-5-nano`**. All three classified **32/32 requests** correctly, using 16 questions repeated twice.
 
-This was approximately **9.7× faster than mini** and **12.4× faster than nano**, while Jev also cost less under the benchmark's recorded pricing. These are historical component measurements, not a Luna comparison or a measurement of the complete workflow. See the [benchmark results](reports/agent-v2-refinement-2026-11-03/domain-benchmark-summary.json).
+This was approximately **9.7× faster than mini** and **12.4× faster than nano**, 
+while Jev also cost less under the benchmark's recorded pricing. 
+See the [benchmark results](reports/agent-v2-refinement-2026-11-03/domain-benchmark-summary.json).
 
-Jev is currently used only for domain screening. Its suitability for other stages has not yet been evaluated.
+Jev is currently used only for domain screening.
 
-Planning and evidence assessment were moved to `gpt-6-luna`; answers still use `gpt-6.1-terra`. After running evals, the pass rate stayed the same, while mean time to answer was **27% lower (1.37× faster)** and estimated runtime API cost was **53% lower**.
+Planning and evidence assessment were moved to `gpt-6-luna`; answers still use `gpt-6.1-terra`. After running evals, 
+the pass rate stayed the same, while mean time to answer was **27% lower (1.37× faster)** and estimated runtime API cost was **53% lower**.
 You can see the comparison below:
 
 | Metric | Baseline | Agent v2 |
@@ -229,19 +244,23 @@ You can see the comparison below:
 | Median cumulative retrieval time | 0.365 s | 0.364 s |
 | p95 cumulative retrieval time | 1.257 s | 1.362 s |
 
-Both agents were evaluated on the same questions and assertions in the [latest paired run](reports/model-refresh-2026-11-03/report.md), with cache disabled and concurrency set to four. V2 tokens and runtime costs include Jev. The same timing and cost definitions apply as above. These are single-run results; the speed and cost differences reflect the complete configured workflows, including model choices and reasoning settings.
+Both agents were evaluated on the same questions and assertions. V2 tokens and runtime costs include Jev.
+The same timing and cost definitions apply as above. 
+These are single-run results; the speed and cost differences reflect the complete configured workflows,
+including model choices and reasoning settings.
 
 
 ---
 
 **Tracing**
 
-With `LANGSMITH_TRACING=true`, app requests include `metadata.session_id` on the root trace and nested model,
-tool, and retrieval runs. This ID matches the saved question thread: the initial question and its clarification
-replies appear together under **Threads** in the configured LangSmith project (or agent environment).
-Independent questions receive separate IDs, even within the same browser session. One-shot API calls and
-Promptfoo evaluations keep their existing tracing behavior. Earlier traces without this metadata are not
-retroactively grouped. See [LangSmith thread configuration](https://docs.langchain.com/langsmith/threads).
+Langsmith handles tracing and threads. In a real app we would configure threads in similar system as
+OpenTelemetry threads: same thread for a user session. See some examples here:
+
+- https://eu.smith.langchain.com/public/d55ab27b-b40d-4144-878f-4e95b87262e3/t
+- https://eu.smith.langchain.com/public/69bfba2a-4555-4f81-b86f-57ddcbbab990/t
+- https://eu.smith.langchain.com/public/e13d7330-2f30-48fe-830d-8386925ea9f3/t
+
 
 ---
 
