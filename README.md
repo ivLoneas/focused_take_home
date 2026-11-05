@@ -270,5 +270,3 @@ OpenTelemetry threads: same thread for a user session. See some examples here:
 
 - Image retrieval quality
 - Using Jev was a positive experience. We may try to use it for identifying whether we have enough information.
-
-What was Amazon's net income in each quarter in 2025?
